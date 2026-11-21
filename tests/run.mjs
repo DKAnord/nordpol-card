@@ -9,9 +9,16 @@ const TESTS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(TESTS_DIR, "..");
 const CARD_JS_PATH = path.join(ROOT_DIR, "dist", "nordpol-card.js");
 
+const BEH = r => `${r.count} checks (${r.groups})`;
 const SUITES = [
   { file: "escaping.html", expr: "window.__runTests()", report: r => `${r.suiteA.length} suiteA + ${r.suiteB.length} suiteB checks` },
-  { file: "editors.html", expr: "window.__runEditorTests()", report: r => `${r.count} checks` }
+  { file: "editors.html", expr: "window.__runEditorTests()", report: r => `${r.count} checks` },
+  /* behaviour suites: fake hass + fake clock; the runner emulates time zone, viewport and media features per run */
+  { file: "behavior.html?groups=all", tz: "Europe/Copenhagen", width: 1280, expr: "window.__runBehaviorTests()", report: BEH },
+  { file: "behavior.html?groups=dst,dates", tz: "America/New_York", width: 1280, expr: "window.__runBehaviorTests()", report: BEH },
+  { file: "behavior.html?groups=dst,dates", tz: "Australia/Sydney", width: 1280, expr: "window.__runBehaviorTests()", report: BEH },
+  { file: "behavior.html?groups=width", tz: "Europe/Copenhagen", width: 320, expr: "window.__runBehaviorTests()", report: BEH },
+  { file: "behavior.html?groups=motion", tz: "Europe/Copenhagen", width: 1280, reducedMotion: true, expr: "window.__runBehaviorTests()", report: BEH }
 ];
 
 function findBrowser() {
@@ -38,11 +45,23 @@ function startServer() {
   const routes = new Map([
     ["/nordpol-card.js", { file: CARD_JS_PATH, type: "application/javascript; charset=utf-8" }],
     ["/escaping.html", { file: path.join(TESTS_DIR, "escaping.html"), type: "text/html; charset=utf-8" }],
-    ["/editors.html", { file: path.join(TESTS_DIR, "editors.html"), type: "text/html; charset=utf-8" }]
+    ["/editors.html", { file: path.join(TESTS_DIR, "editors.html"), type: "text/html; charset=utf-8" }],
+    ["/behavior.html", { file: path.join(TESTS_DIR, "behavior.html"), type: "text/html; charset=utf-8" }]
   ]);
+  const TINY = { file: path.join(TESTS_DIR, "fixtures", "tiny.mp4"), type: "video/mp4" };
+  const reqlog = [];
   const server = http.createServer((req, res) => {
     const u = new URL(req.url, "http://127.0.0.1");
-    const entry = routes.get(u.pathname);
+    /* request log for the behaviour suite (probe counting) */
+    if (u.pathname === "/__reqlog") {
+      const body = JSON.stringify(reqlog);
+      if (u.searchParams.get("reset")) reqlog.length = 0;
+      res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" }); res.end(body); return;
+    }
+    if (u.pathname.startsWith("/local/") || u.pathname.startsWith("/remote/")) reqlog.push({ m: req.method, p: u.pathname });
+    /* fake media: /local/present/* and /remote/* exist, everything else under /local/ is a 404 */
+    let entry = routes.get(u.pathname);
+    if (!entry && (u.pathname.startsWith("/local/present/") || u.pathname.startsWith("/remote/")) && u.pathname.endsWith(".mp4")) entry = TINY;
     if (!entry) { res.writeHead(404); res.end(); return; }
     const buf = fs.readFileSync(entry.file);
     res.writeHead(200, { "Content-Type": entry.type, "Content-Length": buf.length });
@@ -129,7 +148,12 @@ async function main() {
     await cdp.send("Page.enable");
     await cdp.send("Runtime.enable");
 
+    let failed = 0;
     for (const suite of SUITES) {
+      await cdp.send("Emulation.setTimezoneOverride", { timezoneId: suite.tz || "" });
+      if (suite.width) await cdp.send("Emulation.setDeviceMetricsOverride", { width: suite.width, height: 900, deviceScaleFactor: 1, mobile: false });
+      else await cdp.send("Emulation.clearDeviceMetricsOverride");
+      await cdp.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: suite.reducedMotion ? "reduce" : "no-preference" }] });
       const loaded = cdp.once("Page.loadEventFired");
       await cdp.send("Page.navigate", { url: `http://127.0.0.1:${port}/${suite.file}` });
       await loaded;
@@ -139,11 +163,16 @@ async function main() {
         awaitPromise: true,
         returnByValue: true
       });
+      const label = suite.file + (suite.tz ? ` [${suite.tz}${suite.width ? ", " + suite.width + "px" : ""}${suite.reducedMotion ? ", reduced-motion" : ""}]` : "");
       if (res.exceptionDetails) {
-        throw new Error(`${suite.file} exception: ${JSON.stringify(res.exceptionDetails, null, 2)}`);
+        const ex = res.exceptionDetails.exception;
+        console.log(`FAIL ${label}: ${(ex && ex.description) || JSON.stringify(res.exceptionDetails, null, 2)}`);
+        failed++;
+        continue;
       }
-      console.log(`PASS ${suite.file}: ${suite.report(res.result.value)}`);
+      console.log(`PASS ${label}: ${suite.report(res.result.value)}`);
     }
+    if (failed) throw new Error(`${failed} suite(s) failed`);
   } finally {
     if (cdp) try { cdp.close(); } catch {}
     if (proc) {

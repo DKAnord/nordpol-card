@@ -1,0 +1,523 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nordpol behaviour tests (fake hass + fake clock)</title>
+<style>body{margin:0;background:#111;font-family:sans-serif}#root>div{margin:8px}</style>
+<script>
+/* ---- fake clock: everything the card does with Date goes through this ---- */
+(() => {
+  const RealDate = Date; let OFF = 0;
+  class FakeDate extends RealDate {
+    constructor(...a) { if (a.length) super(...a); else super(RealDate.now() + OFF); }
+    static now() { return RealDate.now() + OFF; }
+  }
+  window.RealDate = RealDate;
+  window.Date = FakeDate;
+  window.__setNow = ms => { OFF = ms - RealDate.now(); };
+  /* interval accounting (leak checks) */
+  window.__iv = new Set(); const si = window.setInterval, ci = window.clearInterval;
+  window.setInterval = function (f, ms, ...a) { const id = si(f, ms, ...a); __iv.add(id); return id; };
+  window.clearInterval = function (id) { __iv.delete(id); return ci(id); };
+})();
+</script>
+<script src="/nordpol-card.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const root = document.getElementById("root");
+const LANGS = ["en","da","fr","de","es","sv","nb","nl","fi","pl","it","pt","cs"];
+
+/* ---------- time helpers (independent of the card's implementation) ---------- */
+function wallMs(tz, ms) {
+  const p = new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" })
+    .formatToParts(new RealDate(ms)).reduce((a, x) => (a[x.type] = x.value, a), {});
+  return RealDate.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
+}
+/* absolute instant of a wall-clock time in a zone (tz falsy = browser local) */
+function instant(tz, y, mo, d, h, mi) {
+  if (!tz) return new RealDate(y, mo, d, h, mi).getTime();
+  const want = RealDate.UTC(y, mo, d, h, mi); let g = want;
+  for (let i = 0; i < 4; i++) g = want - (wallMs(tz, g) - g);
+  return g;
+}
+
+/* ---------- fake Home Assistant with an in-memory to-do backend ---------- */
+function mkHA(opts = {}) {
+  const lists = opts.lists || { "todo.nordpol_nice_list": [] };
+  const subs = {};          // entity -> [cb]
+  const log = { subscribe: [], unsub: [], calls: [] };
+  const delay = opts.delay ?? 25;
+  let uidN = 1;
+  const states = Object.assign({}, opts.states || {});
+  for (const id of Object.keys(lists)) states[id] = { entity_id: id, state: String(lists[id].length), attributes: {} };
+  const ha = { lists, log, states, cards: [] };
+  const push = id => setTimeout(() => (subs[id] || []).forEach(cb => cb({ items: JSON.parse(JSON.stringify(lists[id])) })), delay);
+  const findItem = (id, key) => lists[id].find(i => i.uid === key) || lists[id].find(i => i.summary === key);
+  ha.makeHass = () => ({
+    config: Object.assign({ time_zone: "Europe/Copenhagen", latitude: 55.68, longitude: 12.57, location_name: "Hjem" }, opts.config || {}),
+    states: Object.assign({}, ha.states),
+    user: { is_admin: true },
+    language: "en",
+    connection: {
+      subscribeMessage: (cb, msg) => {
+        log.subscribe.push(msg.entity_id);
+        if (!lists[msg.entity_id]) return Promise.reject({ code: "invalid_entity_id", message: "not found" });
+        (subs[msg.entity_id] = subs[msg.entity_id] || []).push(cb); push(msg.entity_id);
+        return Promise.resolve(() => { log.unsub.push(msg.entity_id); subs[msg.entity_id] = (subs[msg.entity_id] || []).filter(x => x !== cb); });
+      }
+    },
+    callWS: m => Promise.resolve({ items: JSON.parse(JSON.stringify(lists[m.entity_id] || [])) }),
+    callService: (domain, service, data, target) => {
+      log.calls.push([domain, service, JSON.parse(JSON.stringify(data || {})), target]);
+      if (opts.failServices) return Promise.reject(new Error("boom"));
+      const id = target && target.entity_id;
+      return new Promise((res, rej) => setTimeout(() => {
+        try {
+          if (domain === "todo") {
+            const L = lists[id]; if (!L) throw new Error("no list " + id);
+            if (service === "add_item") L.push({ uid: "u" + (uidN++), summary: data.item, status: "needs_action", description: data.description || null });
+            else if (service === "update_item") {
+              const it = findItem(id, data.item); if (!it) throw new Error("item not found " + data.item);
+              if (data.rename) it.summary = data.rename;
+              if ("description" in data) it.description = data.description;
+              if (data.status) it.status = data.status;
+            } else if (service === "remove_item") {
+              for (const k of [].concat(data.item)) { const it = findItem(id, k); if (it) L.splice(L.indexOf(it), 1); }
+            }
+            push(id);
+          } else if (domain === "input_text" && service === "set_value") {
+            ha.states[id] = Object.assign({}, ha.states[id], { state: data.value });
+            setTimeout(() => { const h = ha.makeHass(); ha.cards.forEach(c => c.hass = h); }, delay);
+          }
+          res({});
+        } catch (e) { rej(e); }
+      }, delay));
+    }
+  });
+  return ha;
+}
+const kid = (uid, name, score, start = 75, emoji = "🧒") => ({ uid, summary: name, status: "needs_action", description: JSON.stringify({ emoji, score, start }) });
+
+function mount(tag, cfg, { width, hass, ha, parent } = {}) {
+  const wrap = document.createElement("div");
+  if (width) wrap.style.width = width + "px";
+  (parent || root).appendChild(wrap);
+  const el = document.createElement(tag);
+  el.setConfig(cfg || {});
+  wrap.appendChild(el);
+  if (ha) { ha.cards.push(el); el.hass = ha.makeHass(); } else if (hass) el.hass = hass;
+  return el;
+}
+function cleanup() { root.innerHTML = ""; document.querySelectorAll("body > div[style*='z-index: 10000']").forEach(x => x.remove()); }
+const snowCanvases = () => document.querySelectorAll("body > canvas").length;
+const reqlog = async (reset) => (await fetch("/__reqlog" + (reset ? "?reset=1" : ""), { cache: "no-store" })).json();
+const heroVals = el => { const g = id => +el.shadowRoot.getElementById(id).textContent; return { d: g("d"), h: g("h"), m: g("m"), s: g("s") }; };
+const cardText = el => (el.shadowRoot.querySelector("ha-card") || el.shadowRoot).textContent.replace(/\s+/g, " ").trim();
+
+/* ---------- registry ---------- */
+const TESTS = [];
+const test = (group, name, fn) => TESTS.push({ group, name, fn });
+
+window.__runBehaviorTests = async function () {
+  const want = (new URLSearchParams(location.search).get("groups") || "all").split(",");
+  const ALL = ["base", "width", "dst", "dates", "nice", "probes", "live", "preview", "editor", "elf", "a11y", "helpers"];
+  const groups = want.includes("all") ? ALL : want;
+  const results = []; const ran = new Set();
+  const ctx = {
+    ok: (cond, msg) => { if (!cond) throw new Error("Assertion failed: " + msg); results.push(msg); },
+    eq: (a, b, msg) => { const ja = JSON.stringify(a), jb = JSON.stringify(b); if (ja !== jb) throw new Error(`${msg}: expected ${jb}, got ${ja}`); results.push(msg); }
+  };
+  const failures = [];
+  for (const t of TESTS) {
+    if (!groups.includes(t.group)) continue;
+    ran.add(t.group);
+    try { await t.fn(ctx); }
+    catch (e) { failures.push(`[${t.group}] ${t.name}: ${e.message}`); }
+    finally { cleanup(); }
+  }
+  if (failures.length) throw new Error(`${failures.length} failing test(s):\n  ✗ ` + failures.join("\n  ✗ "));
+  return { count: results.length, groups: [...ran].join(","), tz: Intl.DateTimeFormat().resolvedOptions().timeZone, checks: results };
+};
+
+/* ===================================================================== */
+/* base: every card renders in every language, no exceptions, no timer leaks */
+test("base", "all cards render in all 13 languages and clean up their timers", async ({ ok, eq }) => {
+  __setNow(RealDate.parse("2026-12-10T10:00:00Z"));
+  const errors = []; const onErr = e => errors.push(e.message || String(e.reason)); window.addEventListener("error", onErr); window.addEventListener("unhandledrejection", onErr);
+  const before = __iv.size;
+  for (const lg of LANGS) {
+    const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)] } });
+    for (const t of ["hero", "cam", "nice", "elf", "sleigh"]) mount(`nordpol-${t}-card`, { language: lg, snow: false, store: "todo.nordpol_nice_list", remote_dir: "/remote" }, { ha });
+    mount("nordpol-board-card", { language: lg, cams: { remote_dir: "/remote" }, hero: { snow: false } }, { ha });
+  }
+  await sleep(400);
+  ok(root.querySelectorAll("*").length > 0, "cards mounted");
+  cleanup(); await sleep(50);
+  eq(__iv.size, before, "no intervals left after removing 78 cards");
+  window.removeEventListener("error", onErr); window.removeEventListener("unhandledrejection", onErr);
+  eq(errors, [], "no uncaught errors / rejections");
+});
+
+/* ===================================================================== */
+/* B1: layout – nothing may spill out of the card at phone/column widths */
+function outside(el, sels) {
+  const sr = el.shadowRoot; const card = (sr.querySelector("ha-card") || sr.querySelector(".board")).getBoundingClientRect();
+  const bad = [];
+  for (const n of sr.querySelectorAll(sels)) {
+    const r = n.getBoundingClientRect(); if (!r.width || !r.height || getComputedStyle(n).display === "none") continue;
+    if (r.left < card.left - 1 || r.right > card.right + 1) bad.push(`${n.className || n.localName} [${Math.round(r.left)}–${Math.round(r.right)}] vs card [${Math.round(card.left)}–${Math.round(card.right)}]`);
+  }
+  return bad;
+}
+test("width", "hero countdown, labels and pill stay inside the card (all languages, 3-digit days)", async ({ ok }) => {
+  const vw = document.documentElement.clientWidth;
+  for (const iso of ["2027-01-02T11:00:00Z", "2026-12-01T10:00:00Z"]) {
+    __setNow(RealDate.parse(iso));
+    for (const w of [320, 380, 430, 600]) {
+      const cw = Math.min(w, vw) - 16;
+      for (const lg of LANGS) {
+        const el = mount("nordpol-hero-card", { language: lg, snow: false }, { width: cw, hass: mkHA().makeHass() });
+        await sleep(30);
+        const bad = outside(el, ".u,.v,.k,.sl,.lbl,.t,.st");
+        ok(!bad.length, `hero ${lg} @${w}px (${iso.slice(0, 10)}) inside card ${bad.join("; ")}`);
+        const sr = el.shadowRoot;
+        for (const u of sr.querySelectorAll(".u")) { const ur = u.getBoundingClientRect(), k = u.querySelector(".k").getBoundingClientRect(), v = u.querySelector(".v").getBoundingClientRect();
+          ok(k.left >= ur.left - 1 && k.right <= ur.right + 1 && v.left >= ur.left - 1 && v.right <= ur.right + 1, `hero ${lg} @${w}px unit label/value inside box`); }
+        const sl = sr.querySelector(".sl").getBoundingClientRect();
+        for (const tr of sr.querySelectorAll(".tree")) { if (getComputedStyle(tr).display === "none") continue; const r = tr.getBoundingClientRect();
+          ok(r.right <= sl.left || r.left >= sl.right || r.bottom <= sl.top || r.top >= sl.bottom, `hero ${lg} @${w}px corner emoji does not cover the nights pill`); }
+        cleanup();
+      }
+    }
+  }
+});
+test("width", "cam, nice, elf and sleigh cards stay inside the card", async ({ ok }) => {
+  __setNow(RealDate.parse("2026-12-10T10:00:00Z"));
+  const vw = document.documentElement.clientWidth;
+  for (const w of [320, 380, 430, 600]) {
+    const cw = Math.min(w, vw) - 16;
+    for (const lg of ["en", "da", "nl", "fi", "de", "pt", "cs"]) {
+      const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Maximilian-Alexander", 95), kid("b", "Bo", 10)] } });
+      const els = ["cam", "nice", "elf", "sleigh"].map(t => mount(`nordpol-${t}-card`, { language: lg, store: "todo.nordpol_nice_list", remote_dir: "/remote" }, { width: cw, ha }));
+      await sleep(80);
+      for (const el of els) { const bad = outside(el, ".tile,.kid,.nm,.bar,.log,.scroll,.task,.j,.n,.map,.row,.big,.eta,.foot"); ok(!bad.length, `${el.localName} ${lg} @${w}px inside card ${bad.join("; ")}`); }
+      cleanup();
+    }
+  }
+});
+test("width", "tablet board fits the viewport (stacked on phones)", async ({ ok }) => {
+  __setNow(RealDate.parse("2026-12-10T10:00:00Z"));
+  const vw = document.documentElement.clientWidth;
+  for (const lg of ["en", "da", "nl"]) {
+    const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)] } });
+    const b = mount("nordpol-board-card", { language: lg, hero: { snow: false }, cams: { remote_dir: "/remote" }, nice: { store: "todo.nordpol_nice_list" } }, { ha });
+    await sleep(100);
+    const hero = b.shadowRoot.querySelector("nordpol-hero-card");
+    const bad = outside(hero, ".u,.v,.k,.sl,.lbl,.t,.st");
+    ok(!bad.length, `board hero ${lg} @${vw}px inside card ${bad.join("; ")}`);
+    const br = b.getBoundingClientRect(); ok(br.right <= vw + 1, `board ${lg} @${vw}px within viewport`);
+    cleanup();
+  }
+});
+
+/* ===================================================================== */
+/* B4: countdown is an absolute instant, whatever the browser time zone */
+test("dst", "countdown equals the real remaining time across DST mismatches", async ({ ok }) => {
+  const nows = ["2026-10-03T12:00:00Z", "2026-10-20T12:00:00Z", "2026-10-28T12:00:00Z", "2026-11-01T12:00:00Z", "2026-12-01T09:30:00Z", "2026-12-24T10:00:00Z", "2027-03-20T12:00:00Z", "2027-03-30T12:00:00Z"];
+  const cases = [
+    { cfg: null, haTz: "Europe/Copenhagen", tz: "Europe/Copenhagen" },
+    { cfg: "Europe/Copenhagen", haTz: "Europe/Copenhagen", tz: "Europe/Copenhagen" },
+    { cfg: "America/New_York", haTz: "Europe/Copenhagen", tz: "America/New_York" },
+    { cfg: "Australia/Sydney", haTz: "Europe/Copenhagen", tz: "Australia/Sydney" },
+    { cfg: null, haTz: "America/New_York", tz: "America/New_York" },
+    { cfg: null, haTz: null, tz: null }      // no zone anywhere → browser local time
+  ];
+  for (const c of cases) for (const iso of nows) for (const lg of ["en", "nl"]) {
+    const now = RealDate.parse(iso); __setNow(now);
+    const ha = mkHA({ config: { time_zone: c.haTz || undefined } });
+    const cfg = { language: lg, snow: false }; if (c.cfg) cfg.time_zone = c.cfg;
+    const el = mount("nordpol-hero-card", cfg, { ha }); el._tick();
+    const [mo, d, h] = lg === "nl" ? [11, 25, 0] : [11, 24, 18];
+    const y = new RealDate(now).getUTCMonth() < 6 ? 2027 : 2026;
+    const truth = Math.floor((instant(c.tz, y, mo, d, h, 0) - now) / 1000);
+    const v = heroVals(el), shown = ((v.d * 24 + v.h) * 60 + v.m) * 60 + v.s;
+    ok(Math.abs(shown - truth) <= 1, `${lg} cfg=${c.cfg} ha=${c.haTz} browser=${Intl.DateTimeFormat().resolvedOptions().timeZone} now=${iso}: shown ${shown}s vs real ${truth}s (Δ ${(shown - truth) / 3600}h)`);
+    cleanup();
+  }
+});
+test("dst", "nights counter uses the configured zone's calendar day", async ({ eq }) => {
+  for (const [tz, iso, want] of [["America/New_York", "2026-12-24T03:00:00Z", "Only 1 night to go! 😴"], ["Australia/Sydney", "2026-12-23T14:00:00Z", "Santa comes tonight! 🎅"], ["Europe/Copenhagen", "2026-12-23T22:59:00Z", "Only 1 night to go! 😴"], ["Europe/Copenhagen", "2026-12-23T23:01:00Z", "Santa comes tonight! 🎅"]]) {
+    __setNow(RealDate.parse(iso));
+    const el = mount("nordpol-hero-card", { language: "en", snow: false, time_zone: tz }, { hass: mkHA().makeHass() }); el._tick();
+    eq(el.shadowRoot.querySelector("#sl > span:last-child").textContent.trim(), want, `nights text ${tz} at ${iso}`);
+    cleanup();
+  }
+});
+
+/* ===================================================================== */
+/* dates: 24/25/26 Dec + New Year — hero, sleigh and elf agree */
+function seasonState(lang = "en") {
+  const ha = mkHA();
+  const hero = mount("nordpol-hero-card", { language: lang, snow: false }, { ha }); hero._tick();
+  const sl = mount("nordpol-sleigh-card", { language: lang }, { ha }); sl._tick();
+  const elf = mount("nordpol-elf-card", { language: lang }, { ha });
+  const party = !!hero.shadowRoot.querySelector(".party");
+  const mode = sl.shadowRoot.getElementById("mode").textContent;
+  const info = sl.shadowRoot.getElementById("info").textContent;
+  const sleigh = /^LIVE/.test(mode) ? "live" : /back home/.test(info) ? "after" : "workshop";
+  const elfDate = elf.shadowRoot.querySelector(".hd small").textContent;
+  const elfName = elf.shadowRoot.querySelector(".n").textContent;
+  const days = party ? null : heroVals(hero).d;
+  cleanup();
+  return { party, sleigh, elfDate, elfName, days };
+}
+test("dates", "Christmas Eve, Christmas week and New Year are consistent across cards", async ({ eq, ok }) => {
+  const at = (mo, d, h, mi) => __setNow(instant("Europe/Copenhagen", mo === 0 ? 2027 : 2026, mo, d, h, mi));
+  at(11, 24, 9, 0);    let s = seasonState(); eq([s.party, s.sleigh, s.elfDate, s.elfName], [false, "live", "December 24", "Elf Gumdrop"], "24 Dec 09:00 countdown + sleigh loading + elf 24");
+  at(11, 24, 17, 59);  s = seasonState(); eq([s.party, s.sleigh], [false, "live"], "24 Dec 17:59 still counting down, sleigh flying");
+  at(11, 24, 18, 1);   s = seasonState(); eq([s.party, s.sleigh], [true, "live"], "24 Dec 18:01 party + sleigh flying");
+  at(11, 25, 18, 0);   s = seasonState(); eq([s.party, s.sleigh, s.elfDate, s.elfName], [true, "after", "December 25", "Elf Icicle"], "25 Dec party + sleigh after + elf 25 same date format");
+  at(11, 26, 18, 30);  s = seasonState(); eq([s.party, s.sleigh, s.elfDate], [true, "after", "December 26"], "26 Dec 18:30 hero still party (matches sleigh after-mode)");
+  at(11, 30, 22, 0);   s = seasonState(); eq([s.party, s.sleigh, s.elfDate], [true, "after", "December 30"], "30 Dec 22:00 party + after");
+  at(11, 31, 1, 0);    s = seasonState(); eq([s.party, s.sleigh], [false, "workshop"], "31 Dec 01:00 next season: countdown + workshop");
+  ok(s.days >= 357 && s.days <= 358 && /Trial/.test(s.elfDate), "31 Dec countdown ~358 days and trial elf");
+  at(0, 2, 12, 0);     s = seasonState(); eq([s.party, s.sleigh], [false, "workshop"], "2 Jan countdown + workshop"); ok(/Trial/.test(s.elfDate), "2 Jan trial elf");
+  at(11, 1, 0, 30);    s = seasonState(); eq([s.party, s.elfDate, s.elfName], [false, "December 1", "Elf Pip"], "1 Dec 00:30 first elf");
+  /* Dutch counts down to 25 Dec 00:00 */
+  at(11, 24, 23, 59);  s = seasonState("nl"); eq(s.party, false, "nl 24 Dec 23:59 still counting");
+  at(11, 25, 0, 1);    s = seasonState("nl"); eq(s.party, true, "nl 25 Dec 00:01 party");
+});
+
+/* ===================================================================== */
+/* B2: nice list – rapid taps, single log item, input_text log, errors */
+async function niceCard(ha, cfg = {}) {
+  const el = mount("nordpol-nice-card", Object.assign({ store: "todo.nordpol_nice_list" }, cfg), { ha });
+  await sleep(120); el._toggleParent(); return el;
+}
+const tap = (el, uid, d) => el.shadowRoot.querySelector(`.kid[data-uid="${uid}"] button[data-d="${d}"]`).click();
+const scoreOf = (ha, uid) => JSON.parse(ha.lists["todo.nordpol_nice_list"].find(i => i.uid === uid).description).score;
+const logItems = ha => ha.lists["todo.nordpol_nice_list"].filter(i => i.summary === "📜 log");
+test("nice", "two rapid +1 taps → 82, two log lines, exactly one log item", async ({ eq }) => {
+  const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)] } });
+  const el = await niceCard(ha);
+  tap(el, "a", 1); tap(el, "a", 1);
+  await sleep(500);
+  eq(scoreOf(ha, "a"), 82, "backend score is 82");
+  eq(logItems(ha).length, 1, "exactly one 📜 log item");
+  eq(logItems(ha)[0].description.split("\n"), ["Anna +1", "Anna +1"], "log has both lines");
+  eq(logItems(ha)[0].status, "completed", "log item is completed (hidden from the kids list)");
+  eq(el.shadowRoot.querySelector('.kid[data-uid="a"] .bar .fill').style.width, "82%", "card shows 82%");
+});
+test("nice", "five taps mixed +5/−1 with an existing log keep every point and line", async ({ eq }) => {
+  const log = { uid: "L", summary: "📜 log", status: "completed", description: "old line" };
+  const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 50), kid("b", "Bo", 50), log] } });
+  const el = await niceCard(ha);
+  tap(el, "a", 5); tap(el, "b", -1); tap(el, "a", 5); await sleep(10); tap(el, "a", -1); tap(el, "b", -1);
+  await sleep(600);
+  eq([scoreOf(ha, "a"), scoreOf(ha, "b")], [59, 48], "scores 59 / 48");
+  eq(logItems(ha).length, 1, "still one log item");
+  eq(logItems(ha)[0].description.split("\n").length, 6, "5 new lines + old line");
+  eq(logItems(ha)[0].description.split("\n")[5], "old line", "old line kept last");
+});
+test("nice", "input_text log: rapid taps keep both lines", async ({ eq, ok }) => {
+  const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)] }, states: { "input_text.elf": { state: "", attributes: { max: 255 } } } });
+  const el = await niceCard(ha, { log_entity: "input_text.elf" });
+  tap(el, "a", 1); tap(el, "a", 5);
+  await sleep(500);
+  eq(scoreOf(ha, "a"), 86, "score 86");
+  eq(ha.states["input_text.elf"].state, "Anna +5 • Anna +1", "input_text has both lines, newest first");
+  ok(!ha.lists["todo.nordpol_nice_list"].some(i => i.summary === "📜 log"), "no to-do log item when log_entity is set");
+});
+test("nice", "a failed write shows the error banner instead of failing silently", async ({ ok }) => {
+  const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)] }, failServices: true });
+  const el = await niceCard(ha);
+  const errs = []; const onErr = e => errs.push(String(e.reason)); window.addEventListener("unhandledrejection", onErr);
+  tap(el, "a", 1); await sleep(200);
+  window.removeEventListener("unhandledrejection", onErr);
+  ok(el.shadowRoot.getElementById("err").classList.contains("on"), "error banner visible");
+  ok(!errs.length, "no unhandled promise rejection " + errs.join());
+  ok(el.shadowRoot.querySelector('.kid[data-uid="a"] .bar .fill').style.width === "80%", "score rolled back to 80% in the card");
+});
+test("nice", "reset puts every child back to its start and starts one fresh log", async ({ eq }) => {
+  const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 95, 70), kid("b", "Bo", 10, 60)] } });
+  const el = await niceCard(ha);
+  el.shadowRoot.getElementById("rst").click(); el.shadowRoot.getElementById("yes").click();
+  await sleep(600);
+  eq([scoreOf(ha, "a"), scoreOf(ha, "b")], [70, 60], "scores back to start");
+  eq(logItems(ha).length, 1, "one log item");
+  eq(logItems(ha)[0].description, "Fresh start – the elves are watching! 👀", "fresh-start line only");
+});
+
+/* ===================================================================== */
+/* B3: cam probes */
+const camCfg = (x = {}) => Object.assign({ language: "en" }, x);
+async function camRun(cfg, ms = 600) { await reqlog(true); const el = mount("nordpol-cam-card", cfg, { hass: mkHA().makeHass() }); await sleep(ms); return { el, log: await reqlog() }; }
+const srcs = el => [...el.shadowRoot.querySelectorAll(".tile[data-i] video")].map(v => v.getAttribute("src") || "");
+test("probes", "default config (hosted clips): zero requests to /local and src = hosted clip", async ({ eq, ok }) => {
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 12, 0));
+  const { el, log } = await camRun(camCfg(), 300);
+  eq(log.filter(r => r.p.startsWith("/local/")).length, 0, "no /local probes (no 404s)");
+  ok(srcs(el).every((s, i) => s === `https://dkanord.github.io/nordpol-card/media/cam${i + 1}_day.mp4`), "all 4 tiles use the hosted day clip " + srcs(el).join(" "));
+});
+test("probes", "custom remote_dir: zero 404s, every request succeeds", async ({ eq, ok }) => {
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 19, 0));
+  const { el, log } = await camRun(camCfg({ remote_dir: "/remote" }));
+  eq(log.filter(r => r.p.startsWith("/local/")).length, 0, "no /local requests");
+  ok(log.length > 0 && log.every(r => r.p.startsWith("/remote/cam")), "only /remote clip requests");
+  ok(srcs(el).every((s, i) => s.endsWith(`/remote/cam${i + 1}_evening.mp4`)), "evening clips");
+});
+test("probes", "local files present: 1 HEAD per cam, local wins, no duplicate probes, recheck is bounded", async ({ eq, ok }) => {
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 12, 0));
+  const { el, log } = await camRun(camCfg({ file_dir: "/local/present", remote_dir: "/remote" }));
+  const heads = log.filter(r => r.m === "HEAD");
+  eq(heads.length, 4, "exactly 4 HEAD probes on load (setConfig + first hass do not double up)");
+  ok(heads.every(r => /\/local\/present\/cam[1-4]_day\.mp4/.test(r.p)), "probes are for the current period only");
+  ok(srcs(el).every((s, i) => s.startsWith(`/local/present/cam${i + 1}_day.mp4`)), "local clips are used");
+  await reqlog(true); await el._update(false); await el._update(false); await sleep(100);
+  eq((await reqlog()).filter(r => r.m === "HEAD").length, 0, "no new probes within 10 minutes");
+  __setNow(Date.now() + 11 * 60000); await reqlog(true); await Promise.all([el._update(false), el._update(false)]); await sleep(100);
+  ok((await reqlog()).filter(r => r.m === "HEAD").length <= 4, "recheck after 10 min: at most one probe per cam");
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 18, 0)); await reqlog(true); await el._update(false); await sleep(200);
+  ok(srcs(el).every((s, i) => s.startsWith(`/local/present/cam${i + 1}_evening.mp4`)), "period change switches to the evening clips");
+});
+test("probes", "remote: false probes local files (offline mode) and shows signal lost when missing", async ({ ok }) => {
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 12, 0));
+  const { el, log } = await camRun(camCfg({ remote: false }));
+  ok(log.some(r => r.p.startsWith("/local/nordpol/")), "probes /local/nordpol");
+  ok([...el.shadowRoot.querySelectorAll(".tile[data-i]")].every(t => t.dataset.kind === "none"), "all tiles show signal lost");
+});
+test("probes", "prefer_files: false never probes", async ({ eq }) => {
+  const { log } = await camRun(camCfg({ prefer_files: false, file_dir: "/local/present", remote_dir: "/remote" }));
+  eq(log.filter(r => r.m === "HEAD").length, 0, "no HEAD probes");
+});
+
+/* ===================================================================== */
+/* B5: live config changes */
+test("live", "switching the nice list store re-subscribes and shows the new list", async ({ eq, ok }) => {
+  const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)], "todo.other": [kid("x", "Xena", 40)] } });
+  const el = mount("nordpol-nice-card", { store: "todo.nordpol_nice_list" }, { ha }); await sleep(120);
+  ok(cardText(el).includes("Anna"), "first list shown");
+  el.setConfig({ store: "todo.other" }); el.hass = ha.makeHass(); await sleep(150);
+  ok(cardText(el).includes("Xena") && !cardText(el).includes("Anna"), "second list shown after setConfig");
+  eq(ha.log.subscribe, ["todo.nordpol_nice_list", "todo.other"], "subscribed to the new list");
+  eq(ha.log.unsub, ["todo.nordpol_nice_list"], "old subscription closed");
+  el._toggleParent(); tap(el, "x", 5); await sleep(200);
+  eq(JSON.parse(ha.lists["todo.other"][0].description).score, 45, "taps write to the new list");
+});
+test("live", "hero snow follows setConfig on a live card", async ({ eq }) => {
+  const el = mount("nordpol-hero-card", { snow: true }, { hass: mkHA().makeHass() }); await sleep(30);
+  eq(snowCanvases(), 1, "snow on");
+  el.setConfig({ snow: false }); await sleep(30); eq(snowCanvases(), 0, "snow off after setConfig");
+  el.setConfig({ snow: true }); await sleep(30); eq(snowCanvases(), 1, "snow back on");
+  el.setConfig({ snow: true, title: "x" }); await sleep(30); eq(snowCanvases(), 1, "no second canvas");
+  el.remove(); await sleep(30); eq(snowCanvases(), 0, "removed → snow gone");
+});
+test("live", "elf card with an entity renders immediately after setConfig", async ({ ok }) => {
+  const ha = mkHA({ states: { "sensor.elf": { state: "Elf Test|Why? Because!|Smile", attributes: {} } } });
+  const el = mount("nordpol-elf-card", {}, { ha }); await sleep(20);
+  el.setConfig({ entity: "sensor.elf" }); await sleep(20);
+  ok(cardText(el).includes("Elf Test"), "entity elf shown without waiting for a hass update");
+});
+
+/* ===================================================================== */
+/* card picker / editor preview: no snow, no videos, no probes */
+customElements.define("hui-card-picker", class extends HTMLElement { constructor() { super(); this.attachShadow({ mode: "open" }).innerHTML = `<div class="preview" inert></div>`; } });
+test("preview", "card picker previews stay quiet (no snow, no video, no requests)", async ({ eq, ok }) => {
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 12, 0));
+  await reqlog(true);
+  const picker = document.createElement("hui-card-picker"); root.appendChild(picker);
+  const host = picker.shadowRoot.querySelector(".preview");
+  const ha = mkHA();
+  const els = [mount("nordpol-board-card", NordpolStub("nordpol-board-card"), { ha, parent: host }), mount("nordpol-hero-card", { snow: true }, { ha, parent: host }), mount("nordpol-cam-card", NordpolStub("nordpol-cam-card"), { ha, parent: host })];
+  await sleep(400);
+  eq(snowCanvases(), 0, "no snow overlay from the picker");
+  const vids = []; for (const el of els) { const all = [el, ...el.shadowRoot.querySelectorAll("*")]; for (const n of all) if (n.shadowRoot) vids.push(...n.shadowRoot.querySelectorAll("video")); vids.push(...el.shadowRoot.querySelectorAll("video")); }
+  ok(vids.length >= 8, "cam tiles rendered (" + vids.length + ")");
+  ok(vids.every(v => !v.getAttribute("src")), "no video sources in the picker");
+  eq((await reqlog()).length, 0, "no clip or probe requests");
+});
+test("preview", "editor preview (preview = true) does not start the page-wide snow", async ({ eq }) => {
+  const el = document.createElement("nordpol-hero-card"); el.setConfig({ snow: true }); el.preview = true; root.appendChild(el); el.hass = mkHA().makeHass(); await sleep(30);
+  eq(snowCanvases(), 0, "no snow while preview");
+  el.preview = false; await sleep(30); eq(snowCanvases(), 1, "snow once on the dashboard");
+});
+function NordpolStub(tag) { return customElements.get(tag).getStubConfig(mkHA().makeHass(), []); }
+
+/* ===================================================================== */
+/* fallback board editor (no ha-form available) */
+test("editor", "fallback editor countdown placeholder follows the language default", async ({ eq }) => {
+  for (const lg of LANGS) {
+    const ed = document.createElement("nordpol-board-card-editor"); root.appendChild(ed); ed.setConfig({ language: lg });
+    const want = ["fr", "es", "nl", "it", "pt"].includes(lg) ? "12-25 00:00" : "12-24 18:00";
+    eq(ed.shadowRoot.getElementById("target").getAttribute("placeholder"), want, `placeholder ${lg}`);
+    cleanup();
+  }
+  const ed = document.createElement("nordpol-board-card-editor"); root.appendChild(ed); ed.setConfig({ language: "nl", date: "01-07" });
+  eq(ed.shadowRoot.getElementById("target").getAttribute("placeholder"), "01-07 00:00", "placeholder follows a custom date");
+});
+
+/* ===================================================================== */
+/* elf date label is one format through the whole season */
+test("elf", "elf date label keeps the elf_date format from 1 to 30 December", async ({ ok }) => {
+  for (const lg of ["en", "da", "de", "nl", "cs"]) {
+    const labels = [];
+    for (const d of [1, 24, 25, 26, 30]) { __setNow(instant("Europe/Copenhagen", 2026, 11, d, 12, 0)); const el = mount("nordpol-elf-card", { language: lg }, { hass: mkHA().makeHass() }); labels.push(el.shadowRoot.querySelector(".hd small").textContent); cleanup(); }
+    const shape = labels.map(s => s.replace(/\d+/, "#"));
+    ok(new Set(shape).size === 1, `${lg} same date format: ${labels.join(" | ")}`);
+  }
+});
+
+/* ===================================================================== */
+/* accessibility basics (keyboard + ARIA) */
+const key = (el, k) => el.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true, composed: true }));
+test("a11y", "keyboard and ARIA basics", async ({ ok, eq }) => {
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 12, 0));
+  const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)] } });
+  const hero = mount("nordpol-hero-card", { snow: false }, { ha });
+  const cd = hero.shadowRoot.querySelector(".cd");
+  eq(cd.getAttribute("role"), "timer", "countdown has role=timer"); ok(/\d/.test(cd.getAttribute("aria-label") || ""), "countdown has a spoken summary");
+  eq(cd.getAttribute("aria-live"), "off", "ticking digits are not announced every second");
+  const nice = mount("nordpol-nice-card", { store: "todo.nordpol_nice_list" }, { ha }); await sleep(120);
+  const hd = nice.shadowRoot.getElementById("hd");
+  eq(hd.getAttribute("tabindex"), "0", "nice title focusable"); eq(hd.getAttribute("role"), "button", "nice title role=button");
+  key(hd, "Enter"); ok(nice.shadowRoot.getElementById("bd").classList.contains("parent"), "Enter on the title opens parent mode");
+  key(hd, "Enter"); ok(!nice.shadowRoot.getElementById("bd").classList.contains("parent"), "Enter again closes it");
+  const sl = mount("nordpol-sleigh-card", {}, { ha }); const shd = sl.shadowRoot.getElementById("hd");
+  eq(shd.getAttribute("tabindex"), "0", "sleigh title focusable"); key(shd, "Enter"); ok(sl._demo === true, "Enter starts the test flight");
+  const elf = mount("nordpol-elf-card", {}, { ha }); const ans = elf.shadowRoot.getElementById("ans");
+  eq(ans.getAttribute("role"), "button", "joke answer is a button"); eq(ans.getAttribute("tabindex"), "0", "joke answer focusable");
+  key(ans, "Enter"); ok(ans.classList.contains("show"), "Enter reveals the answer");
+  const task = elf.shadowRoot.getElementById("task"); eq(task.getAttribute("role"), "button", "task is a toggle button"); ok(task.hasAttribute("aria-pressed"), "task has aria-pressed");
+  const cam = mount("nordpol-cam-card", { remote_dir: "/remote" }, { ha }); await sleep(200);
+  const tile = cam.shadowRoot.querySelector(".tile[data-i]"); eq(tile.getAttribute("tabindex"), "0", "cam tile focusable"); ok(!!tile.getAttribute("aria-label"), "cam tile labelled");
+  key(tile, "Enter"); const modal = document.querySelector("body > div[role=dialog]"); ok(!!modal, "Enter opens the full-screen dialog");
+  eq(modal.getAttribute("aria-modal"), "true", "dialog is modal");
+  key(modal, "Escape"); await sleep(10); ok(!document.querySelector("body > div[role=dialog]"), "Escape closes the dialog");
+  const b = mount("nordpol-board-card", { hero: { snow: false }, cams: { remote_dir: "/remote" } }, { ha });
+  const tabs = b.shadowRoot.querySelector(".tabs"); eq(tabs.getAttribute("role"), "tablist", "board tabs role=tablist");
+  const btns = [...tabs.querySelectorAll("button[role=tab]")]; eq(btns.length, 3, "3 tabs");
+  eq(btns.map(x => x.getAttribute("aria-selected")), ["true", "false", "false"], "first tab selected");
+  btns[1].click(); eq(btns.map(x => x.getAttribute("aria-selected")), ["false", "true", "false"], "aria-selected follows the tab");
+});
+
+/* reduced motion (run with prefers-reduced-motion: reduce) */
+test("motion", "prefers-reduced-motion stops snow, twinkle, wobble, glitch and noise", async ({ eq, ok }) => {
+  ok(matchMedia("(prefers-reduced-motion: reduce)").matches, "runner emulates reduced motion");
+  const ha = mkHA();
+  const hero = mount("nordpol-hero-card", { snow: true }, { ha }); await sleep(30);
+  eq(snowCanvases(), 0, "no snow canvas");
+  eq(getComputedStyle(hero.shadowRoot.querySelector(".lights i")).animationName, "none", "no light twinkle");
+  const elf = mount("nordpol-elf-card", {}, { ha });
+  eq(getComputedStyle(elf.shadowRoot.querySelector(".elf")).animationName, "none", "no elf wobble");
+  const cam = mount("nordpol-cam-card", { cams: [{ label: "A", src: "/remote/cam1_day.mp4" }], prefer_files: false, remote: false }, { ha }); await sleep(100);
+  for (let i = 0; i < 20; i++) cam._glitch();
+  eq(cam.shadowRoot.querySelectorAll(".tile.glitch,.tile.blip").length, 0, "no glitch effect");
+  eq(getComputedStyle(cam.shadowRoot.querySelector(".dot")).animationName, "none", "REC dot does not blink");
+});
+</script>
+</body>
+</html>
