@@ -845,6 +845,8 @@ function dateMD(c){ const m=String((c&&c.date)||"12-24").match(/(\d+)-(\d+)/)||[
 /* `now` is a wall-clock Date in the card's zone (nowInTz); the season rolls over at 00:00 on celebration date + 7 days */
 function eventYear(now,c){ const [mo,d]=dateMD(c); let y=now.getFullYear(); if(now>=new Date(y,mo,d+7)) y++; return y; }
 function css(el, s){ const st=document.createElement("style"); st.textContent=s; el.appendChild(st); }
+/* true inside Home Assistant's card picker (its previews sit in an inert container in <hui-card-picker>) */
+function inPicker(el){ let n=el; while(n){ if(n.nodeType===1 && (n.localName==="hui-card-picker" || n.hasAttribute("inert"))) return true; n=n.parentNode||n.host||null; } return false; }
 function longPress(el, ms, fn){
   let t=null; const start=e=>{t=setTimeout(()=>{t=null;fn(e);},ms)}; const stop=()=>{if(t){clearTimeout(t);t=null}};
   el.addEventListener("pointerdown",start); ["pointerup","pointerleave","pointercancel"].forEach(ev=>el.addEventListener(ev,stop));
@@ -905,7 +907,10 @@ class NordpolHero extends HTMLElement {
   }
   setConfig(c){ this._t=T(c); const tr=TRaw(c); this._c = Object.assign({title:tr.hero_title, subtitle:tr.hero_sub, snow:true}, c||{}); this._build(); this._applySnow(); }
   /* the page-wide snow layer follows the config live (also when the editor changes it on a mounted card) */
-  _applySnow(){ const want=this.isConnected && !!this._c && this._c.snow!==false;
+  /* HA sets preview=true in the card editor; the picker is detected from the DOM. Neither starts the page-wide snow. */
+  set preview(v){ this._preview=!!v; this._applySnow(); }
+  get preview(){ return !!this._preview; }
+  _applySnow(){ const want=this.isConnected && !!this._c && this._c.snow!==false && !this._preview && !inPicker(this);
     if(want && !this._snow){ Snow.start(); this._snow=true; } else if(!want && this._snow){ Snow.stop(); this._snow=false; } }
   set hass(h){ const first=!this._hass; this._hass=h; if(first) this._tick(); }
   getCardSize(){ return 4; }
@@ -1043,6 +1048,7 @@ class NordpolCams extends HTMLElement {
     .lost span{background:rgba(0,0,0,.6);padding:3px 8px;border-radius:4px}
     .gl{display:none}.tile.glitch .gl{display:flex}.tile.glitch video{filter:grayscale(1) blur(2px) contrast(2)}
     .tile[data-kind=none] .gl{display:flex}.tile[data-kind=none] video{display:none}
+    .tile[data-kind=preview] canvas.gl{display:block;opacity:.3}.tile[data-kind=preview] video{display:none}
     .lost .rs{display:none;font-size:.7em}.tile[data-kind=none] .lost .rs,.lostT .lost .rs{display:inline}
     .tile.blip canvas.gl{display:block;opacity:.22;mix-blend-mode:screen}
     .tile.blip video{filter:contrast(1.15) brightness(1.08)}
@@ -1114,7 +1120,8 @@ class NordpolCams extends HTMLElement {
   _update(force){ if(!this._vids) return Promise.resolve();
     if(this._busy){ this._again = this._again===true || force===true ? true : "soft"; return this._busy; }
     return this._busy=this._doUpdate(force).finally(()=>{ this._busy=null; const a=this._again; this._again=false; if(a) this._update(a===true); }); }
-  async _doUpdate(force){ if(!this._vids) return; const per=this._period();
+  async _doUpdate(force){ if(!this._vids || !this.isConnected) return; const per=this._period();
+    if(inPicker(this)){ this._showPreview(); return; }
     if(!force && per===this._per && Date.now()-(this._lastProbe||0) < CAM_RECHECK_MIN*60000) return;
     this._per=per; this._lastProbe=Date.now();
     /* order: local file for the period → same cam's other periods → explicit src → hosted release clip (remote!==false) → "signal lost" */
@@ -1131,10 +1138,11 @@ class NordpolCams extends HTMLElement {
       }
       this._setNone(i); }));
     const pl=this.shadowRoot.querySelector(".per"); if(pl) pl.textContent=(this._c.period_labels||this._tr.periods)[per]||per; }
-  _noise(){
+  _showPreview(){ for(const t of this.shadowRoot.querySelectorAll(".tile[data-i]")) t.dataset.kind="preview"; this._noise(true); }
+  _noise(once){
     if (document.hidden) return;
     for (const cv of this._canv){
-      if (cv.classList.contains("gl")){ const tl=cv.closest(".tile"); if(!(tl.classList.contains("glitch")||tl.classList.contains("blip")||tl.dataset.kind==="none")) continue; }
+      if (cv.classList.contains("gl")){ const tl=cv.closest(".tile"); if(!(tl.classList.contains("glitch")||tl.classList.contains("blip")||tl.dataset.kind==="none"||(once&&tl.dataset.kind==="preview"))) continue; }
       const ctx=cv.getContext("2d"); const id=ctx.createImageData(cv.width,cv.height); const d=id.data;
       for(let i=0;i<d.length;i+=4){const v=Math.random()*255|0; d[i]=d[i+1]=d[i+2]=v; d[i+3]=255}
       ctx.putImageData(id,0,0);
@@ -1177,6 +1185,8 @@ class NordpolCams extends HTMLElement {
   }
   connectedCallback(){
     this._iv=setInterval(()=>this._clock(),1000);
+    this._update(true);
+    if(inPicker(this)) return;          /* card picker preview: static tiles, no clips, no probes, no animation timers */
     this._pv=setInterval(()=>this._update(false),30000);
     this._nv=setInterval(()=>this._noise(),80);
     this._gv=setInterval(()=>this._glitch(), 7000+Math.random()*5000);
@@ -1682,9 +1692,11 @@ class NordpolBoard extends HTMLElement {
     bn.style.cssText="position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:50;background:#b3121f;color:#fff;font:700 16px system-ui;padding:10px 18px;border-radius:12px;border:2px solid #ffd878;cursor:pointer";
     bn.addEventListener("click",()=>location.reload()); r.appendChild(bn);
     if(n<2){ try{ sessionStorage.setItem(key,String(n+1)); }catch(e){} setTimeout(()=>location.reload(),4000); } }
+  set preview(v){ this._preview=!!v; (this._kids||[]).forEach(k=>{ k.preview=this._preview; }); }
+  get preview(){ return !!this._preview; }
   getCardSize(){ return 12; }
   getGridOptions(){ return {columns:"full", rows:"auto"}; }
-  _mk(tag,cfg,cls){ const e=document.createElement(tag); const base={}; for(const k of ["language","strings","date","target","time_zone"]) if(this._c[k]) base[k]=this._c[k]; e.setConfig(Object.assign(base,cfg||{})); if(cls) cls.split(" ").forEach(x=>e.classList.add(x)); if(this._hass) e.hass=this._hass; this._kids.push(e); return e; }
+  _mk(tag,cfg,cls){ const e=document.createElement(tag); const base={}; for(const k of ["language","strings","date","target","time_zone"]) if(this._c[k]) base[k]=this._c[k]; e.setConfig(Object.assign(base,cfg||{})); if(cls) cls.split(" ").forEach(x=>e.classList.add(x)); if(this._hass) e.hass=this._hass; if(this._preview) e.preview=true; this._kids.push(e); return e; }
   _build(){
     const r=this.shadowRoot||this.attachShadow({mode:"open"}); r.innerHTML=""; this._kids=[];
     css(r, `
