@@ -9,7 +9,7 @@ All notable changes to Nordpol Card are documented here. Dates are in Europe/Cop
 - Examples: `examples/dashboard.nb.yaml`, `.nl.yaml`, `.fi.yaml`, `.pl.yaml`, `.it.yaml`, `.pt.yaml`, `.cs.yaml`.
 - Translation review of the seven new language packs: tighter, more faithful wording where meaning had drifted; native jokes where English puns did not carry; local gift-bringer names in UI strings (Julenissen, Kerstman, Joulupukki, Święty Mikołaj, Babbo Natale, Pai Natal, and Czech **Ježíšek** in place of Santa); and a few local Christmas-tradition touches in elves, daily tasks and sleigh news.
 - Visual editor: camera overlay and CCTV filter dropdown labels are now translated per language. `nordpol-board-card` reports `getGridOptions()` like the other cards (`columns: "full"`, `rows: "auto"`).
-- Docs: added this changelog, refreshed the publishing checklist, documented the hosted cam clips in the JS header, and pinned `hacs/action` to a commit SHA. `hacs.json` now has `"render_readme": true`.
+- Docs: added this changelog, refreshed the publishing checklist, documented the hosted cam clips in the JS header, and pinned `hacs/action` to a commit SHA.
 
 ### Fixes (2.5.0)
 
