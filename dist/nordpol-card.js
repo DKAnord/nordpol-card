@@ -31,7 +31,7 @@ ha-card{display:block}
 .gold{color:#ffd878}.red{color:#ff5a64}.green{color:#7ef0a8}
 `;
 const pad = n => String(n).padStart(2,"0");
-/* ===== Sprog / language (config: language: da|en|fr|de|es, strings: {...} to override) ===== */
+/* ===== Sprog / language (config: language: da|en|fr|de|es|sv, strings: {...} to override) ===== */
 const I18N = {
  da: {
   hero_title:"🎅 Nordpolen", hero_sub:"Julemandens hemmelige kontrolrum", until:"⏳ Juleaften om",
@@ -97,6 +97,71 @@ const I18N = {
    "Kanen får nye bjælder monteret 🔔","Nissebanden sorterer ønskesedler 📜","Gavepapir: 4.812 km rullet ud 🎁",
    "Julemanden prøver sin nye røde dragt 🎅","Rensdyrene får ekstra havre 🌾","Nisse-radaren kalibreres 📡","Slæde-GPS opdateres med nye veje 🗺️"],
   tab_sleigh:"Kanen", tab_nice:"Artig", tab_elf:"Nissen", locale:"da-DK"
+ },
+ sv: {
+  hero_title:"🎅 Nordpolen", hero_sub:"Tomtens hemliga kontrollrum", until:"⏳ Julafton om",
+  u_d:"dagar", u_h:"timmar", u_m:"min", u_s:"sek",
+  n_many:"{n} nätter kvar", n_one:"Bara 1 natt kvar! 😴", n_zero:"I kväll kommer tomten! 🎅", n_title:"{n} nätter",
+  party:"🎉 God jul! 🎉", party_sub:"Tomten har varit här – titta under granen! 🎁",
+  cam_title:"📹 Nordpolskamerorna", cam_live:"● LIVE", cam_tap:"tryck för helskärm", cam_lost:"⚠ SIGNAL BORTA", cam_restore:"återansluter…",
+  cam_lost_label:"CAM 01 – TOMTENS KONTOR", cam_foot:"🔒 Hemlig nissekamera · bara för snälla barn", cam_close:"tryck för att stänga ✕",
+  periods:{morning:"🌅 morgon", day:"☀️ dag", evening:"🌙 kväll", morgen:"🌅 morgon", dag:"☀️ dag", aften:"🌙 kväll"},
+  nice_title:"⭐ Snällistan", nice_sub:"Tomtens anteckningsbok", parent:"🔓 Föräldraläge (stängs efter 2 min)",
+  why:"Vad hände? (t.ex. hjälpte till att duka)", log_title:"📜 Nisseloggen", no_log:"Inga anteckningar än…", hold:"🔒 håll på rubriken i 1 sek.",
+  lv:["Oj då… kol i strumpan? 🪨","Nissarna håller koll 👀","Nästan snäll 🙂","Snäll ⭐","SUPERsnäll 🌟"],
+  reset:"🔄 Nollställ snällistan", reset_q:"Nollställa snällistan?", reset_txt:"Alla barn får tillbaka sin startpoäng och nisseloggen börjar om.",
+  yes_reset:"Ja, nollställ", cancel:"Avbryt", new_start:"Nystart – nissarna håller koll! 👀",
+  edit:"✏️ Redigera barn", edit_done:"✔ Klar", e_emoji:"Emoji", e_name:"Namn", e_start:"Start", add:"➕ Lägg till", save:"💾", del:"🗑",
+  del_q:"Ta bort {name}?", del_txt:"{name} tas bort från snällistan. Det går inte att ångra.", yes_del:"Ja, ta bort", new_name:"Nytt barn",
+  no_kids:"Inga barn på listan än.", add_kid:"➕ Lägg till barn", loading:"Hämtar barnen från tomtens anteckningsbok…",
+  load_err:"Kunde inte hämta barnen från {store}: {err}", no_entity:"finns inte i Home Assistant", retry:"🔄 Försök igen",
+  stale:"🔄 Ny version av Nordpolen – laddar om sidan…", no_store:"Skapa en <b>Local To-do</b>-lista med namnet <code>Nordpol nice list</code>, eller välj en att göra-lista i kortets visuella redigerare.",
+  elf_title:"🧝 Dagens nisse", elf_date:"{d} december", elf_trial:"Provnisse (den riktiga nissen kommer 1 december)", elf_duty:"dagens jourhavande nisse",
+  elf_joke:"Dagens nissevits:", elf_tap:"(tryck för svaret)", elf_task:"Dagens nisseuppdrag:",
+  elves:[["Nisse Pip", "Varför sjunger renar så bra? De sjunger alltid rent!", "Rita en julstjärna"],
+    ["Nisse Snorre", "Vad kallar man en nisse med hörlurar? Vad du vill – han hör dig ändå inte!", "Hjälp till att duka"],
+    ["Nisse Klister", "Vad äter snögubbar till frukost? Snöflingor!", "Städa ditt rum"],
+    ["Nisse Gröt", "Varför går nissen aldrig hungrig i säng? Han får alltid tomtegröt på julafton!", "Ge någon du tycker om en kram"],
+    ["Nisse Bjällra", "Varför gick tomten till doktorn? Han hade för mycket ho-ho-hosta!", "Pyssla en julprydnad"],
+    ["Nisse Kanel", "Vad får man om man korsar tomten med en anka? Kalle Anka på julafton!", "Säg tack tre gånger i dag"],
+    ["Nisse Glitter", "Vad är rött och vitt och rött och vitt och rött och vitt? Tomten som rullar nerför en backe!", "Skriv eller rita ett julkort till någon du känner"],
+    ["Nisse Kardemumma", "Var förvarar snögubbar sina pengar? På snöbanken!", "Hjälp till att baka eller laga mat"],
+    ["Nisse Lussekatt", "Varför fick snögubben skäll? Han var så näsvis!", "Drick ett extra glas vatten som en pigg nisse"],
+    ["Nisse Polkagris", "Varför blir snögubbar aldrig arga? De håller huvudet kallt!", "Sjung en julsång högt"],
+    ["Nisse Kula", "Vad kallas en snögubbe i juli? En vattenpöl!", "Ge någon en ärlig komplimang"],
+    ["Nisse Frost", "Varför gick granen till frisören? Den behövde en barrklippning!", "Gå ut och få frisk luft i 15 minuter"],
+    ["Nisse Pepparkaka", "Vilken är den bästa julklappen? En trasig trumma – den går inte att slå!", "Läs en saga i 10 minuter"],
+    ["Nisse Ingefära", "Varför åker tomten ner genom skorstenen? Han orkar inte ringa på dörren!", "Bädda din säng helt själv"],
+    ["Nisse Gnista", "Vilket är nissens favoritämne i skolan? Nisse-matik!", "Dela en leksak eller lite godis med någon"],
+    ["Nisse Klubba", "Varför har Rudolf röd nos? Han glömmer alltid näsduken!", "Berätta för någon om en sak du är tacksam för"],
+    ["Nisse Kakao", "Vad sa den ena snögubben till den andra? Känner du också lukten av morötter?", "Ställ undan skor och jacka snyggt"],
+    ["Nisse Marsipan", "Hur många paket får plats i en tom säck? Bara ett – sedan är den inte tom längre!", "Gör en snäll tjänst utan att någon ber dig"],
+    ["Nisse Snöboll", "Vad säger en snögubbe som är kär? Jag smälter för dig!", "Bygg något av klossar, papper eller snö"],
+    ["Nisse Peppar", "Vilken kaka gillar tomten mest? Ho-ho-hallongrottor!", "Ring eller skriv till en mor- eller farförälder eller en kompis"],
+    ["Nisse Våffla", "Varför är tomten så bra på trädgårdsarbete? Han älskar att ho-ho-hacka!", "Hjälp till att slå in en julklapp"],
+    ["Nisse Saffran", "Varför gick pepparkaksgubben till doktorn? Han kände sig lite smulig!", "Rita ditt bästa julminne"],
+    ["Nisse Knäck", "Varför gömmer man en mandel i risgrynsgröten? Så att någon får en överraskning – och kanske gifter sig nästa år!", "Välj en leksak som du vill ge vidare"],
+    ["Nisse Lakrits", "Vad står i vardagsrummet, är grönt och har massor av kulor? Julgranen!", "Berätta ett skämt så att någon skrattar"],
+    ["Nisse Istapp", "Vad kallas en nisse utan luva? En nisse med kall skalle!", "Gör 10 hampelmän som nisselärlingarna"],
+    ["Nisse Kola", "Varför har nissen bjällror på skorna? Så att han inte går vilse i snön!", "Borsta tänderna extra noga – nissarna kollar!"],
+    ["Nisse Vante", "Varför kan renar inte leka kurragömma? Hornen sticker alltid upp!", "Hjälp någon att bära något"],
+    ["Nisse Lingon", "Varför luktar renar alltid så gott? De är ju rena!", "Säg tack och varsågod hela dagen"],
+    ["Nisse Pepparmint", "Varför är tomten så glad hela tiden? Han jobbar bara en dag om året!", "Ha en skärmfri timme"],
+    ["Nisse Mandel", "Varför är det så mörkt i december? Solen har också jullov!", "Dansa till din favoritlåt"]],
+  sl_title:"🛷 Slädspårare", sl_radar:"Nisseradar", sl_status:"Status från verkstaden", sl_demo_mode:"PROVTUR (simulerad)", sl_live:"LIVE {date}",
+  sl_rows:["🎁 Paket inslagna","📜 Önskelistor lästa","🦌 Renarnas form","✨ Magiskt stoft i tanken","🍪 Pepparkakor provsmakade"],
+  sl_after_rows:["🎁 Paket levererade","😴 Tomten","🦌 Renar i stallet"],
+  sl_after:"🎅 Tomten är hemma igen och sover länge. Tack för i år! 💤",
+  sl_parked:"🛷 Släden står parkerad på Nordpolen. Den {date} kan ni följa den live här – den räknar med att vara i {home} runt kl. {eta}.",
+  sl_pre:"🛷 Släden lastas på Nordpolen… avgång kl. {t}", sl_done:"🏁 Tomten har landat på Nordpolen igen. God natt! 💤",
+  sl_land:"📍 Tomten landar i <b>{a}</b>", sl_fly:"✈️ På väg från <b>{a}</b> till <b>{b}</b>", sl_here:"🎅🏠 Tomten är i <b>{home}</b> just nu! Titta ut genom fönstret ✨",
+  sl_in_h:"om {h} h {m} min", sl_in_m:"om {m} min!", sl_now:"NU! 👀 Titta ut genom fönstret!", sl_been:"Har redan varit här ✔",
+  sl_gifts:"🎁 Paket levererade: {n} miljoner", sl_speed:"⚡ Fart: {s} km/s", sl_rudolf:"🦌 Rudolf: lyser klart", sl_eta:"🏠 ETA {home}",
+  sl_hint:"håll på rubriken för en provtur ✈️", sl_np:"Nordpolen", sl_home:"Hem",
+  sl_news:["Nissarna målar de sista dalahästarna 🐴","Rudolf övar landningar på hustak 🏠","Tomtemor provbakar nya pepparkakor 🍪",
+   "Släden får nya bjällror monterade 🔔","Nissarna sorterar önskelistor 📜","Presentpapper: 4 812 km utrullat 🎁",
+   "Tomten provar sin nya röda dräkt 🎅","Renarna får extra havre 🌾","Nisseradarn kalibreras 📡","Slädens GPS får nya kartor 🗺️"],
+  tab_sleigh:"Släden", tab_nice:"Snäll", tab_elf:"Nissen", locale:"sv-SE"
  },
  en: {
   hero_title:"🎅 North Pole", hero_sub:"Santa's secret control room", until:"⏳ Christmas Eve in",
@@ -359,7 +424,7 @@ const I18N = {
   tab_sleigh:"Trineo", tab_nice:"Buenos", tab_elf:"Elfo", locale:"es-ES"
  }
 };
-function langOf(c){ const l=String((c&&c.language)||document.documentElement.lang||navigator.language||"en").toLowerCase(); for(const k of ["da","fr","de","es"]) if(l.startsWith(k)) return k; return "en"; }
+function langOf(c){ const l=String((c&&c.language)||document.documentElement.lang||navigator.language||"en").toLowerCase(); for(const k of ["da","fr","de","es","sv"]) if(l.startsWith(k)) return k; return "en"; }
 function escVal(v){
   if(Array.isArray(v)) return v.map(escVal);
   if(v && typeof v==="object"){ const o={}; for(const k of Object.keys(v)) o[k]=escVal(v[k]); return o; }
@@ -384,7 +449,7 @@ function hasDefaultTodo(hass, entities){
   return (Array.isArray(entities)&&entities.includes(id)) || Boolean(hass&&hass.states&&hass.states[id]);
 }
 function assertObj(c){ if(!c || typeof c!=="object" || Array.isArray(c)) throw new Error("Invalid card configuration"); }
-const LANG_OPTS = [{value:"",label:"Auto"},{value:"en",label:"English"},{value:"da",label:"Dansk"},{value:"fr",label:"Français"},{value:"de",label:"Deutsch"},{value:"es",label:"Español"}];
+const LANG_OPTS = [{value:"",label:"Auto"},{value:"en",label:"English"},{value:"da",label:"Dansk"},{value:"fr",label:"Français"},{value:"de",label:"Deutsch"},{value:"es",label:"Español"},{value:"sv",label:"Svenska"}];
 const OV_OPTS = [{value:"minimal",label:"Minimal (REC + clock + label)"},{value:"cctv",label:"CCTV (scanlines + vignette)"},{value:"off",label:"Off (video only)"}];
 const CCTV_OPTS = [{value:"color",label:"Color"},{value:"mono",label:"Monochrome"}];
 const ED_T = {
@@ -392,14 +457,16 @@ const ED_T = {
  da: {lang:"Sprog",tab:"Startfane",date:"Festdato (MM-DD)",target:"Nedtællingsmål (MM-DD TT:MM)",until:"Nedtællingstekst",eta:"Kane-ankomst (TT:MM)",store:"Artig-liste (Local To-do entitet)",sel:"Vælg to-do liste",log:"Nisse-log entitet (valgfri)",dstart:"Startpoint som standard",llines:"Synlige loglinjer",ov:"Kamera-overlay",cctv:"CCTV-filterstil",df:"Kamera-ur format",foot:"Kamera-bundtekst",gl:"Kamera signal-glitch effekt",hb:"Hjem-knap sti (valgfri)",snow:"Snevejr i toppen",tz:"Tidszone (valgfri)",title:"Korttitel",sub:"Undertitel",elf_ent:"Brugerdefineret nisse-entitet (valgfri)",tip:"Tip: Avancerede felter (kameraer, tekster, ekstra stop) bevares i YAML."},
  fr: {lang:"Langue",tab:"Onglet par défaut",date:"Date de fête (MM-JJ)",target:"Cible du compte à rebours (MM-JJ HH:MM)",until:"Titre du compte à rebours",eta:"Arrivée du traîneau (HH:MM)",store:"Liste des enfants sages (entité To-do)",sel:"Choisir une liste",log:"Entité journal des lutins (optionnel)",dstart:"Score de départ par défaut",llines:"Lignes de journal visibles",ov:"Superposition caméra",cctv:"Style de filtre CCTV",df:"Format de l’horloge caméra",foot:"Texte pied de carte caméra",gl:"Effet de brouillage caméra",hb:"Chemin bouton Accueil (optionnel)",snow:"Neige qui tombe dans l’en-tête",tz:"Fuseau horaire (optionnel)",title:"Titre de la carte",sub:"Sous-titre",elf_ent:"Entité lutin personnalisée (optionnel)",tip:"Astuce : Les options avancées (caméras, textes, arrêts) sont conservées en YAML."},
  de: {lang:"Sprache",tab:"Start-Tab",date:"Feiertag (MM-TT)",target:"Countdown-Ziel (MM-TT SS:MM)",until:"Countdown-Überschrift",eta:"Schlitten-Ankunft (SS:MM)",store:"Artig-Liste (Local-To-do-Entität)",sel:"To-do-Liste wählen",log:"Wichtel-Log-Entität (optional)",dstart:"Standard-Startpunktzahl",llines:"Sichtbare Log-Zeilen",ov:"Kamera-Overlay",cctv:"CCTV-Filterstil",df:"Kamera-Uhrformat",foot:"Kamera-Fußzeile",gl:"Kamera-Signalstörung (Glitch)",hb:"Home-Button-Pfad (optional)",snow:"Schneefall im Kopfbereich",tz:"Zeitzone (optional)",title:"Kartentitel",sub:"Untertitel",elf_ent:"Benutzerdefinierte Wichtel-Entität (optional)",tip:"Tipp: Erweiterte Optionen (Kameras, Texte, Extra-Stopps) bleiben in YAML erhalten."},
- es: {lang:"Idioma",tab:"Pestaña inicial",date:"Fecha de celebración (MM-DD)",target:"Objetivo cuenta atrás (MM-DD HH:MM)",until:"Título cuenta atrás",eta:"Llegada del trineo (HH:MM)",store:"Lista de niños buenos (entidad To-do)",sel:"Seleccionar lista",log:"Entidad de registro élfico (opcional)",dstart:"Puntuación inicial por defecto",llines:"Líneas de registro visibles",ov:"Superposición de cámara",cctv:"Estilo de filtro CCTV",df:"Formato del reloj de cámara",foot:"Texto de pie de cámara",gl:"Efecto de interferencia en cámara",hb:"Ruta botón Inicio (opcional)",snow:"Nieve cayendo en la cabecera",tz:"Zona horaria (opcional)",title:"Título de la tarjeta",sub:"Subtítulo",elf_ent:"Entidad de duende personalizada (opcional)",tip:"Consejo: Las opciones avanzadas (cámaras, textos, paradas) se conservan en YAML."}
+ es: {lang:"Idioma",tab:"Pestaña inicial",date:"Fecha de celebración (MM-DD)",target:"Objetivo cuenta atrás (MM-DD HH:MM)",until:"Título cuenta atrás",eta:"Llegada del trineo (HH:MM)",store:"Lista de niños buenos (entidad To-do)",sel:"Seleccionar lista",log:"Entidad de registro élfico (opcional)",dstart:"Puntuación inicial por defecto",llines:"Líneas de registro visibles",ov:"Superposición de cámara",cctv:"Estilo de filtro CCTV",df:"Formato del reloj de cámara",foot:"Texto de pie de cámara",gl:"Efecto de interferencia en cámara",hb:"Ruta botón Inicio (opcional)",snow:"Nieve cayendo en la cabecera",tz:"Zona horaria (opcional)",title:"Título de la tarjeta",sub:"Subtítulo",elf_ent:"Entidad de duende personalizada (opcional)",tip:"Consejo: Las opciones avanzadas (cámaras, textos, paradas) se conservan en YAML."},
+ sv: {lang:"Språk",tab:"Startflik",date:"Festdatum (MM-DD)",target:"Nedräkningsmål (MM-DD TT:MM)",until:"Nedräkningsrubrik",eta:"Slädens ankomst (TT:MM)",store:"Snällista (Local To-do-entitet)",sel:"Välj att göra-lista",log:"Nisselogg-entitet (valfri)",dstart:"Startpoäng som standard",llines:"Synliga loggrader",ov:"Kameraöverlägg",cctv:"CCTV-filterstil",df:"Format för kameraklocka",foot:"Kamerans sidfot",gl:"Signalstörningseffekt för kamera",hb:"Sökväg för hemknapp (valfri)",snow:"Snöfall i toppen",tz:"Tidszon (valfri)",title:"Korttitel",sub:"Underrubrik",elf_ent:"Egen nisse-entitet (valfri)",tip:"Tips: Avancerade inställningar (kameror, texter, extra stopp) bevaras i YAML."}
 };
 const ED_H = {
  en: {date:"Default 12-24 (or e.g. 12-25, 01-07).",target:"MM-DD HH:MM or HH:MM (uses celebration date). Default 12-24 18:00 (fr/es 12-25 00:00).",eta:"Local 24-hour arrival time (default 23:59).",tz:"IANA zone, e.g. Europe/Copenhagen (defaults to Home Assistant time zone).",df:"Tokens: YYYY, MM, DD, HH, mm, ss.",hb:"Lovelace path, e.g. /lovelace/0 (adds a Home tab button).",store:"Stores children & scores; defaults to todo.nordpol_nice_list if present.",log:"Optional input_text entity; otherwise logs are saved inside the To-do list.",elf_ent:"State formatted as Name|Joke? Answer|Task."},
  da: {date:"Standard 12-24 (eller f.eks. 12-25, 01-07).",target:"MM-DD TT:MM eller TT:MM (bruger festdato). Standard 12-24 18:00.",eta:"Lokal ankomsttid i 24-timers format (standard 23:59).",tz:"IANA-tidszone, f.eks. Europe/Copenhagen (bruger ellers HA’s tidszone).",df:"Koder: YYYY, MM, DD, HH, mm, ss.",hb:"Lovelace-sti, f.eks. /lovelace/0 (tilføjer en Hjem-fane).",store:"Gemmer børn og point; bruger todo.nordpol_nice_list hvis den findes.",log:"Valgfri input_text-entitet; ellers gemmes loggen i To-do listen.",elf_ent:"Tilstand i formatet Navn|Vits? Svar|Opgave."},
  fr: {date:"Par défaut 12-24 (ou p. ex. 12-25, 01-07).",target:"MM-JJ HH:MM ou HH:MM (utilise la date de fête). Par défaut 12-25 00:00.",eta:"Heure locale d’arrivée sur 24 h (par défaut 23:59).",tz:"Fuseau IANA, p. ex. Europe/Paris (sinon celui de Home Assistant).",df:"Jetons : YYYY, MM, DD, HH, mm, ss.",hb:"Chemin Lovelace, p. ex. /lovelace/0 (ajoute un bouton Accueil).",store:"Stocke enfants et scores ; utilise todo.nordpol_nice_list si présente.",log:"Entité input_text optionnelle ; sinon le journal reste dans la liste To-do.",elf_ent:"État au format Nom|Blague ? Réponse|Mission."},
  de: {date:"Standard 12-24 (oder z. B. 12-25, 01-07).",target:"MM-TT SS:MM oder SS:MM (nutzt Feiertag). Standard 12-24 18:00.",eta:"Lokale Ankunftszeit im 24h-Format (Standard 23:59).",tz:"IANA-Zeitzone, z. B. Europe/Berlin (sonst HA-Zeitzone).",df:"Platzhalter: YYYY, MM, DD, HH, mm, ss.",hb:"Lovelace-Pfad, z. B. /lovelace/0 (fügt einen Home-Button hinzu).",store:"Speichert Kinder & Punkte; nutzt todo.nordpol_nice_list falls vorhanden.",log:"Optionale input_text-Entität; sonst wird das Log in der To-do-Liste gespeichert.",elf_ent:"Zustand im Format Name|Witz? Antwort|Aufgabe."},
- es: {date:"Por defecto 12-24 (o p. ej. 12-25, 01-07).",target:"MM-DD HH:MM o HH:MM (usa la fecha de celebración). Por defecto 12-25 00:00.",eta:"Hora local de llegada en formato 24 h (por defecto 23:59).",tz:"Zona IANA, p. ej. Europe/Madrid (si no, la de Home Assistant).",df:"Códigos: YYYY, MM, DD, HH, mm, ss.",hb:"Ruta de Lovelace, p. ej. /lovelace/0 (añade un botón de Inicio).",store:"Guarda niños y puntos; usa todo.nordpol_nice_list si existe.",log:"Entidad input_text opcional; si no, el registro se guarda en la lista To-do.",elf_ent:"Estado con formato Nombre|Chiste? Respuesta|Misión."}
+ es: {date:"Por defecto 12-24 (o p. ej. 12-25, 01-07).",target:"MM-DD HH:MM o HH:MM (usa la fecha de celebración). Por defecto 12-25 00:00.",eta:"Hora local de llegada en formato 24 h (por defecto 23:59).",tz:"Zona IANA, p. ej. Europe/Madrid (si no, la de Home Assistant).",df:"Códigos: YYYY, MM, DD, HH, mm, ss.",hb:"Ruta de Lovelace, p. ej. /lovelace/0 (añade un botón de Inicio).",store:"Guarda niños y puntos; usa todo.nordpol_nice_list si existe.",log:"Entidad input_text opcional; si no, el registro se guarda en la lista To-do.",elf_ent:"Estado con formato Nombre|Chiste? Respuesta|Misión."},
+ sv: {date:"Standard 12-24 (eller t.ex. 12-25, 01-07).",target:"MM-DD TT:MM eller TT:MM (använder festdatum). Standard 12-24 18:00.",eta:"Lokal ankomsttid i 24-timmarsformat (standard 23:59).",tz:"IANA-tidszon, t.ex. Europe/Stockholm (annars används HA:s tidszon).",df:"Koder: YYYY, MM, DD, HH, mm, ss.",hb:"Lovelace-sökväg, t.ex. /lovelace/0 (lägger till en Hem-flik).",store:"Sparar barn och poäng; använder todo.nordpol_nice_list om den finns.",log:"Valfri input_text-entitet; annars sparas loggen i att göra-listan.",elf_ent:"Tillstånd i formatet Namn|Vits? Svar|Uppdrag."}
 };
 const ED_KEY = {
   language:"lang", default_tab:"tab", date:"date", target:"target", until:"until", eta:"eta",
@@ -1059,7 +1126,8 @@ const STOPS = [
 const STOP_NAMES = {
  fr: {"New Zealand":"Nouvelle-Zélande","Australia":"Australie","Japan":"Japon","China":"Chine","India":"Inde","Dubai":"Dubaï","Greece":"Grèce","Italy":"Italie","Germany":"Allemagne","England":"Angleterre","Iceland":"Islande","Brazil":"Brésil","Mexico":"Mexique","Hawaii":"Hawaï","Fiji":"Fidji"},
  de: {"New Zealand":"Neuseeland","Australia":"Australien","Japan":"Japan","China":"China","India":"Indien","Dubai":"Dubai","Greece":"Griechenland","Italy":"Italien","Germany":"Deutschland","England":"England","Iceland":"Island","Brazil":"Brasilien","Mexico":"Mexiko","Hawaii":"Hawaii","Fiji":"Fidschi"},
- es: {"New Zealand":"Nueva Zelanda","Australia":"Australia","Japan":"Japón","China":"China","India":"India","Dubai":"Dubái","Kenya":"Kenia","Greece":"Grecia","Italy":"Italia","Germany":"Alemania","England":"Inglaterra","Iceland":"Islandia","Brazil":"Brasil","Mexico":"México","Hawaii":"Hawái","Fiji":"Fiyi"}
+ es: {"New Zealand":"Nueva Zelanda","Australia":"Australia","Japan":"Japón","China":"China","India":"India","Dubai":"Dubái","Kenya":"Kenia","Greece":"Grecia","Italy":"Italia","Germany":"Alemania","England":"Inglaterra","Iceland":"Islandia","Brazil":"Brasil","Mexico":"México","Hawaii":"Hawái","Fiji":"Fiyi"},
+ sv: {"New Zealand":"Nya Zeeland","Australia":"Australien","Japan":"Japan","China":"Kina","India":"Indien","Dubai":"Dubai","Kenya":"Kenya","Greece":"Grekland","Italy":"Italien","Germany":"Tyskland","England":"England","Iceland":"Island","Brazil":"Brasilien","Mexico":"Mexiko","Hawaii":"Hawaii","Fiji":"Fiji"}
 };
 const hm = s => { const plus=/\+$/.test(s); const [h,m]=String(s).replace("+","").split(":").map(Number); return h*60+(m||0)+(plus?1440:0); };
 function tzOffsetH(tz, y, mo=11, dd=24){ if(!tz) return null; try{ const d=new Date(Date.UTC(y,mo,dd,12));

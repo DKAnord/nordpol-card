@@ -159,8 +159,40 @@ ES = [
  ("Elfo Menta","¿Qué llevan los muñecos de nieve en la cabeza? ¡Gorros de hielo!","Pasa una hora sin pantallas"),
  ("Elfo Polvorón","¿Cuál es la música favorita de los elfos? ¡El papel de regalo rap!","Baila tu canción favorita"),
 ]
-assert len(EN)==len(DA)==len(FR)==len(DE)==len(ES)==30
-for lang_list in (EN, DA, FR, DE, ES):
+SV = [
+ ("Nisse Pip","Varför sjunger renar så bra? De sjunger alltid rent!","Rita en julstjärna"),
+ ("Nisse Snorre","Vad kallar man en nisse med hörlurar? Vad du vill – han hör dig ändå inte!","Hjälp till att duka"),
+ ("Nisse Klister","Vad äter snögubbar till frukost? Snöflingor!","Städa ditt rum"),
+ ("Nisse Gröt","Varför går nissen aldrig hungrig i säng? Han får alltid tomtegröt på julafton!","Ge någon du tycker om en kram"),
+ ("Nisse Bjällra","Varför gick tomten till doktorn? Han hade för mycket ho-ho-hosta!","Pyssla en julprydnad"),
+ ("Nisse Kanel","Vad får man om man korsar tomten med en anka? Kalle Anka på julafton!","Säg tack tre gånger i dag"),
+ ("Nisse Glitter","Vad är rött och vitt och rött och vitt och rött och vitt? Tomten som rullar nerför en backe!","Skriv eller rita ett julkort till någon du känner"),
+ ("Nisse Kardemumma","Var förvarar snögubbar sina pengar? På snöbanken!","Hjälp till att baka eller laga mat"),
+ ("Nisse Lussekatt","Varför fick snögubben skäll? Han var så näsvis!","Drick ett extra glas vatten som en pigg nisse"),
+ ("Nisse Polkagris","Varför blir snögubbar aldrig arga? De håller huvudet kallt!","Sjung en julsång högt"),
+ ("Nisse Kula","Vad kallas en snögubbe i juli? En vattenpöl!","Ge någon en ärlig komplimang"),
+ ("Nisse Frost","Varför gick granen till frisören? Den behövde en barrklippning!","Gå ut och få frisk luft i 15 minuter"),
+ ("Nisse Pepparkaka","Vilken är den bästa julklappen? En trasig trumma – den går inte att slå!","Läs en saga i 10 minuter"),
+ ("Nisse Ingefära","Varför åker tomten ner genom skorstenen? Han orkar inte ringa på dörren!","Bädda din säng helt själv"),
+ ("Nisse Gnista","Vilket är nissens favoritämne i skolan? Nisse-matik!","Dela en leksak eller lite godis med någon"),
+ ("Nisse Klubba","Varför har Rudolf röd nos? Han glömmer alltid näsduken!","Berätta för någon om en sak du är tacksam för"),
+ ("Nisse Kakao","Vad sa den ena snögubben till den andra? Känner du också lukten av morötter?","Ställ undan skor och jacka snyggt"),
+ ("Nisse Marsipan","Hur många paket får plats i en tom säck? Bara ett – sedan är den inte tom längre!","Gör en snäll tjänst utan att någon ber dig"),
+ ("Nisse Snöboll","Vad säger en snögubbe som är kär? Jag smälter för dig!","Bygg något av klossar, papper eller snö"),
+ ("Nisse Peppar","Vilken kaka gillar tomten mest? Ho-ho-hallongrottor!","Ring eller skriv till en mor- eller farförälder eller en kompis"),
+ ("Nisse Våffla","Varför är tomten så bra på trädgårdsarbete? Han älskar att ho-ho-hacka!","Hjälp till att slå in en julklapp"),
+ ("Nisse Saffran","Varför gick pepparkaksgubben till doktorn? Han kände sig lite smulig!","Rita ditt bästa julminne"),
+ ("Nisse Knäck","Varför gömmer man en mandel i risgrynsgröten? Så att någon får en överraskning – och kanske gifter sig nästa år!","Välj en leksak som du vill ge vidare"),
+ ("Nisse Lakrits","Vad står i vardagsrummet, är grönt och har massor av kulor? Julgranen!","Berätta ett skämt så att någon skrattar"),
+ ("Nisse Istapp","Vad kallas en nisse utan luva? En nisse med kall skalle!","Gör 10 hampelmän som nisselärlingarna"),
+ ("Nisse Kola","Varför har nissen bjällror på skorna? Så att han inte går vilse i snön!","Borsta tänderna extra noga – nissarna kollar!"),
+ ("Nisse Vante","Varför kan renar inte leka kurragömma? Hornen sticker alltid upp!","Hjälp någon att bära något"),
+ ("Nisse Lingon","Varför luktar renar alltid så gott? De är ju rena!","Säg tack och varsågod hela dagen"),
+ ("Nisse Pepparmint","Varför är tomten så glad hela tiden? Han jobbar bara en dag om året!","Ha en skärmfri timme"),
+ ("Nisse Mandel","Varför är det så mörkt i december? Solen har också jullov!","Dansa till din favoritlåt"),
+]
+assert len(EN)==len(DA)==len(FR)==len(DE)==len(ES)==len(SV)==30
+for lang_list in (EN, DA, FR, DE, ES, SV):
     for name, joke, task in lang_list:
         k = joke.index("?")
         assert 0 < k < len(joke) - 1, f"Expected 'Question? Answer' in: {joke}"

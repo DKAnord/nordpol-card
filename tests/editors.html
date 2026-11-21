@@ -67,8 +67,8 @@
         try { form.assertConfig([]); } catch (e) { threwArr = true; }
         assert(threwArr, `${tag}.assertConfig throws on array`);
 
-        // Localized labels & helpers across all 5 languages
-        for (const lg of ["en", "da", "fr", "de", "es"]) {
+        // Localized labels & helpers across all 6 languages
+        for (const lg of ["en", "da", "fr", "de", "es", "sv"]) {
           document.documentElement.lang = lg;
           for (const f of fields) {
             const lbl = form.computeLabel(f, () => {});
