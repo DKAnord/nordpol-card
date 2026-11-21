@@ -1206,6 +1206,7 @@ class NordpolNice extends HTMLElement {
     return this._hass && this._hass.states["todo.nordpol_nice_list"] ? "todo.nordpol_nice_list" : null;
   }
   set hass(h){ const old=this._hass; this._hass=h; this._sub();
+    if(this._logMem && this._c.log_entity){ const st=h.states[this._c.log_entity]; if(st && st.state===this._logMem.lines.join(" • ")) this._logMem=null; }
     if(!old) this._render(); else if(this._c.log_entity && old.states[this._c.log_entity]!==h.states[this._c.log_entity]) this._renderLog(); }
   getCardSize(){ return 5; }
   getGridOptions(){ return {columns:"full", rows:"auto"}; }
@@ -1237,27 +1238,47 @@ class NordpolNice extends HTMLElement {
     this._fbBusy=false; if(gen!==this._gen) return; this._subbed=false; this._nextTry=Date.now()+30000;
     if(!this._items) this._fail(F(this._tr.load_err,{store:st, err:String((err&&(err.message||err.code))||err||"timeout")}));
   }
-  _gotItems(items){ clearTimeout(this._lt); this._nextTry=0; this._items=Array.isArray(items)?items:[]; this._err=null; this._render(); }
+  _gotItems(items){ clearTimeout(this._lt); this._nextTry=0; this._items=Array.isArray(items)?items:[]; this._err=null;
+    /* drop local (optimistic) values once Home Assistant has caught up with them */
+    const P=this._pend||{}; for(const uid of Object.keys(P)){ const it=this._items.find(i=>i.uid===uid); let sc=null; try{ sc=JSON.parse((it&&it.description)||"{}").score; }catch(e){}
+      if(!it || sc===P[uid].score) delete P[uid]; }
+    const lg=this._items.find(i=>i.summary===LOG_ITEM); if(this._logMem && !this._c.log_entity && lg && lg.description===this._logMem.lines.slice(0,30).join("\n")) this._logMem=null;
+    if(lg) this._logMade=false;
+    this._render(); }
   _fail(msg){ clearTimeout(this._lt); this._err=msg; this._render(); }
   _retry(){ this._gen=(this._gen||0)+1; const u=this._unsub; this._unsub=null; if(typeof u==="function") try{u()}catch(e){}
     this._subbed=false; this._fbBusy=false; this._nextTry=0; this._items=null; this._err=null; this._render(); this._sub(); }
   _kids(){ return (this._items||[]).filter(i=>i && i.status!=="completed" && i.summary && i.summary!==LOG_ITEM).map(i=>{ let d={}; try{ d=JSON.parse(i.description||"{}")||{}; if(typeof d!=="object") d={}; }catch(e){}
-    const start=clamp100(d.start!=null?d.start:this._c.default_start); return {uid:i.uid, name:i.summary, emoji:d.emoji||"🧒", start, score:clamp100(d.score!=null?d.score:start), d}; }); }
+    const start=clamp100(d.start!=null?d.start:this._c.default_start); return {uid:i.uid, name:i.summary, emoji:d.emoji||"🧒", start, score:this._pendScore(i.uid, clamp100(d.score!=null?d.score:start)), d}; }); }
+  /* taps are applied locally first, so quick taps never compute from a stale score */
+  _pendScore(uid, v){ const p=this._pend&&this._pend[uid]; return p && Date.now()-p.t<10000 ? p.score : v; }
+  _setScore(k, score){ const P=this._pend=this._pend||{}; P[k.uid]={score, t:Date.now()}; this._render();
+    return this._saveKid(k,{score}).catch(err=>{ if(P[k.uid]&&P[k.uid].score===score) delete P[k.uid]; this._fail(String((err&&err.message)||err)); }); }
   _svc(s,data){ const p=this._hass.callService("todo", s, data, {entity_id:this._store()});
     // Without a live subscription (fallback mode) re-read the list after every change so the card stays current.
     p.then(()=>{ if(!this._unsub){ this._subbed=false; this._nextTry=0; const g=this._gen=(this._gen||0)+1; this._subbed=true; this._fallback(g); } }).catch(()=>{});
     return p; }
   _saveKid(k,patch){ const d=Object.assign({}, k.d, {emoji:k.emoji, score:k.score, start:k.start}, patch||{}); return this._svc("update_item", {item:k.uid, description:JSON.stringify(d)}); }
   _logLines(){
+    if(this._logMem && Date.now()-this._logMem.t<10000) return this._logMem.lines.slice();
     if(this._c.log_entity){ const s=this._hass&&this._hass.states[this._c.log_entity]; const v=s&&s.state; return v&&!["unknown","unavailable",""].includes(v)?v.split(" • "):[]; }
     const it=(this._items||[]).find(i=>i.summary===LOG_ITEM); return it&&it.description?it.description.split("\n").filter(Boolean):[]; }
-  async _log(line, replace){
-    const lines = replace ? [line] : [line, ...this._logLines()];
+  /* Log lines are kept locally and written one at a time (each write sends the newest text), so quick taps never
+     overwrite each other and the "📜 log" to-do item is created only once. */
+  _log(line, replace){
+    const lines = (replace ? [line] : [line, ...this._logLines()]).slice(0,60);
+    this._logMem={lines, t:Date.now()}; this._renderLog();
+    this._logQ=(this._logQ||Promise.resolve()).then(()=>this._writeLog()).catch(err=>this._fail(String((err&&err.message)||err)));
+    return this._logQ; }
+  async _writeLog(){
+    const lines=(this._logMem&&this._logMem.lines)||this._logLines();
     if(this._c.log_entity){ const s=this._hass.states[this._c.log_entity]; const max=(s&&s.attributes&&s.attributes.max)||255;
       const v=Array.from(lines.join(" • ")).slice(0,max).join(""); return this._hass.callService("input_text","set_value",{value:v},{entity_id:this._c.log_entity}); }
     const desc=lines.slice(0,30).join("\n"); const it=(this._items||[]).find(i=>i.summary===LOG_ITEM);
     if(it) return this._svc("update_item",{item:it.uid, description:desc});
-    await this._svc("add_item",{item:LOG_ITEM, description:desc}); return this._svc("update_item",{item:LOG_ITEM, status:"completed"}); }
+    if(this._logMade) return this._svc("update_item",{item:LOG_ITEM, description:desc});
+    await this._svc("add_item",{item:LOG_ITEM, description:desc}); this._logMade=true;
+    return this._svc("update_item",{item:LOG_ITEM, status:"completed"}); }
   _level(v){ const L=this._t.lv; return v>=90?[L[4],"#7ef0a8"]:v>=70?[L[3],"#b6f07e"]:v>=45?[L[2],"#ffd878"]:v>=25?[L[1],"#ffad5a"]:[L[0],"#ff5a64"]; }
   _av(e){ return /^(\/|https?:)/.test(e) ? `<img src="${esc(e)}" alt="">` : esc(e); }
   _render(){
@@ -1324,10 +1345,10 @@ class NordpolNice extends HTMLElement {
       longPress($("hd"), 900, ()=>this._toggleParent());
       $("kids").addEventListener("click",e=>{ const b=e.target.closest("button[data-d]"); if(!b) return; const row=b.closest(".kid");
         const k=this._kids().find(x=>x.uid===row.dataset.uid); if(!k) return; const why=$("why"); const d=+b.dataset.d; const w=(why.value||"").trim();
-        const ns=clamp100(k.score+d); this._saveKid(k,{score:ns}); this._log(`${k.name} ${d>0?"+":""}${d}${w?": "+w:""}`); why.value=""; this._armTimer(); });
+        const ns=clamp100(k.score+d); this._setScore(k,ns); this._log(`${k.name} ${d>0?"+":""}${d}${w?": "+w:""}`); why.value=""; this._armTimer(); });
       $("ed").addEventListener("click",()=>{ this._edit=!this._edit; $("edit").classList.toggle("on",this._edit); $("bd").classList.toggle("editing",this._edit); $("ed").textContent=this._edit?this._tr.edit_done:this._tr.edit; this._renderEdit(true); this._armTimer(); });
       $("rst").addEventListener("click",()=>{ this._confirm(`<b>${t.reset_q}</b><br>${t.reset_txt}`, this._tr.yes_reset, async ()=>{
-        for(const k of this._kids()) await this._saveKid(k,{score:k.start}); this._log(this._tr.new_start, true); }); });
+        for(const k of this._kids()) await this._setScore(k,k.start); this._log(this._tr.new_start, true); }); });
       $("no").addEventListener("click",()=>$("dlg").classList.remove("on"));
       $("yes").addEventListener("click",()=>{ $("dlg").classList.remove("on"); const f=this._onYes; this._onYes=null; f&&f(); this._armTimer(); });
       $("edit").addEventListener("click",e=>this._editClick(e));

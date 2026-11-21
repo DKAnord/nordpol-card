@@ -319,6 +319,15 @@ test("nice", "two rapid +1 taps → 82, two log lines, exactly one log item", as
   eq(logItems(ha)[0].status, "completed", "log item is completed (hidden from the kids list)");
   eq(el.shadowRoot.querySelector('.kid[data-uid="a"] .bar .fill').style.width, "82%", "card shows 82%");
 });
+test("nice", "slow Home Assistant (200 ms round trip): 3 taps 60 ms apart all count", async ({ eq }) => {
+  const ha = mkHA({ delay: 200, lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)] } });
+  const el = await niceCard(ha); await sleep(300);
+  tap(el, "a", 1); await sleep(60); tap(el, "a", 1); await sleep(60); tap(el, "a", 5);
+  await sleep(2000);
+  eq(scoreOf(ha, "a"), 87, "backend score 87");
+  eq(logItems(ha).length, 1, "one log item");
+  eq(logItems(ha)[0].description.split("\n"), ["Anna +5", "Anna +1", "Anna +1"], "three lines, newest first");
+});
 test("nice", "five taps mixed +5/−1 with an existing log keep every point and line", async ({ eq }) => {
   const log = { uid: "L", summary: "📜 log", status: "completed", description: "old line" };
   const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 50), kid("b", "Bo", 50), log] } });
