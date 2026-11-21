@@ -1,4 +1,5 @@
 {
   "name": "Nordpol Card – Christmas Dashboard",
-  "filename": "nordpol-card.js"
+  "filename": "nordpol-card.js",
+  "render_readme": true
 }
