@@ -244,6 +244,7 @@ test("dst", "countdown equals the real remaining time across DST mismatches", as
     const [mo, d, h] = lg === "nl" ? [11, 25, 0] : [11, 24, 18];
     const y = new RealDate(now).getUTCMonth() < 6 ? 2027 : 2026;
     const truth = Math.floor((instant(c.tz, y, mo, d, h, 0) - now) / 1000);
+    if (truth <= 0) { ok(!!el.shadowRoot.querySelector(".party"), `${lg} cfg=${c.cfg} now=${iso}: target passed → party`); cleanup(); continue; }
     const v = heroVals(el), shown = ((v.d * 24 + v.h) * 60 + v.m) * 60 + v.s;
     ok(Math.abs(shown - truth) <= 1, `${lg} cfg=${c.cfg} ha=${c.haTz} browser=${Intl.DateTimeFormat().resolvedOptions().timeZone} now=${iso}: shown ${shown}s vs real ${truth}s (Δ ${(shown - truth) / 3600}h)`);
     cleanup();

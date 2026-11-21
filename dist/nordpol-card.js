@@ -798,13 +798,25 @@ const mkHelper = cfg => (s, d) => { const k=ED_HKEY[s&&s.name]; return (k && edH
 function F(s,o){ return String(s).replace(/\{(\w+)\}/g,(_,k)=>o&&o[k]!=null?o[k]:""); }
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 
+const tzFmts = new Map();
+function tzParts(tz, d){
+  let f=tzFmts.get(tz);
+  if(!f){ f=new Intl.DateTimeFormat("en-US",{timeZone:tz,hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"}); tzFmts.set(tz,f); }
+  return f.formatToParts(d).reduce((a,x)=>(a[x.type]=x.value,a),{});
+}
+/* wall-clock time in `tz` as a browser-local Date (for showing dates/clocks only – never subtract two of these) */
 function nowInTz(tz, d = new Date()){
   if(!tz) return d;
-  try{
-    const p=new Intl.DateTimeFormat("en-US",{timeZone:tz,hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"})
-      .formatToParts(d).reduce((a,x)=>(a[x.type]=x.value,a),{});
-    return new Date(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second,d.getMilliseconds());
-  }catch(e){ return d; }
+  try{ const p=tzParts(tz,d); return new Date(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second,d.getMilliseconds()); }
+  catch(e){ return d; }
+}
+/* absolute instant (ms) of a wall-clock time in `tz` (browser local time when tz is empty/invalid) – DST-safe */
+function zonedMs(tz, y, mo, d, h=0, mi=0){
+  const local=()=>new Date(y,mo,d,h,mi).getTime();
+  if(!tz) return local();
+  try{ const want=Date.UTC(y,mo,d,h,mi); let g=want;
+    for(let i=0;i<3;i++){ const t=Math.floor(g/1000)*1000, p=tzParts(tz,new Date(t)); g=want-(Date.UTC(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second)-t); }
+    return g; }catch(e){ return local(); }
 }
 function defaultTarget(c){
   const d=c&&c.date;
@@ -813,14 +825,15 @@ function defaultTarget(c){
 }
 /* `date: "MM-DD"` (default 12-24) moves the whole card to another celebration day, e.g. "12-25" or "01-07".
    Countdown target: config `target: "MM-DD HH:MM"` or `"HH:MM"` in HA/configured time zone (default 12-24 18:00 for da/en/de/sv/nb/fi/pl/cs, 12-25 00:00 for fr/es/nl/it/pt). */
-function xmasTarget(now = new Date(), c) {
+/* returns {ms: absolute instant, wall: target as wall-clock Date} for wall-clock `now` in zone `tz` */
+function xmasTarget(now = new Date(), c, tz) {
   let raw=c&&c.target?String(c.target).trim():"";
   if(/^\d{1,2}:\d{2}$/.test(raw)) raw=((c&&c.date)||"12-24")+" "+raw;
   if(!raw) raw=defaultTarget(c);
   const m=raw.match(/(\d+)-(\d+)\s+(\d+):(\d+)/)||[0,12,24,18,0];
-  const mk=y=>new Date(y,+m[1]-1,+m[2],+m[3],+m[4]); let t=mk(now.getFullYear());
-  if (now - t > 2*86400000) t = mk(now.getFullYear()+1);
-  return t;
+  const mk=y=>new Date(y,+m[1]-1,+m[2],+m[3],+m[4]); let y=now.getFullYear(), t=mk(y);
+  if (now - t > 2*86400000) t = mk(++y);
+  return {ms:zonedMs(tz,y,+m[1]-1,+m[2],+m[3],+m[4]), wall:t};
 }
 /* [month0, day] from config `date: "MM-DD"` */
 function dateMD(c){ const m=String((c&&c.date)||"12-24").match(/(\d+)-(\d+)/)||[0,12,24]; return [+m[1]-1,+m[2]]; }
@@ -941,7 +954,8 @@ class NordpolHero extends HTMLElement {
     this._body = r.getElementById("body"); this._tick();
   }
   _tick(){
-    const now = nowInTz(this._c.time_zone||(this._hass&&this._hass.config&&this._hass.config.time_zone)), t = xmasTarget(now,this._c), L=this._t; let ms = t - now;
+    const tz=this._c.time_zone||(this._hass&&this._hass.config&&this._hass.config.time_zone), nowMs=Date.now(), now=nowInTz(tz,new Date(nowMs));
+    const T=xmasTarget(now,this._c,tz), t=T.wall, L=this._t; let ms = T.ms - nowMs;
     if (ms <= 0) {
       this._body.innerHTML = `<div class="party">${L.party}</div><div class="lbl">${L.party_sub}</div>`; this._built=false;
       return;
@@ -1576,7 +1590,8 @@ class NordpolSleigh extends HTMLElement {
     const sr=this.shadowRoot, info=sr.getElementById("info"), mode=sr.getElementById("mode"), sl=sr.getElementById("sl"); if(!sl) return;
     if(min===undefined){
       mode.textContent=this._tr.sl_status;
-      const end=xmasTarget(now,this._c), start=new Date(end.getTime()-53*86400000); let q=(now-start)/(end-start); q=Math.max(0.03,Math.min(0.995,q));
+      const tz=this._c.time_zone||(this._hass&&this._hass.config&&this._hass.config.time_zone);
+      const end=new Date(xmasTarget(nowInTz(tz,now),this._c,tz).ms), start=new Date(end.getTime()-53*86400000); let q=(now-start)/(end-start); q=Math.max(0.03,Math.min(0.995,q));
       const after = real>R[R.length-1].t+30 && real<R[R.length-1].t+30+7*1440;
       const V=[Math.round(20+79*q),Math.round(35+64*Math.min(1,q*1.2)),Math.round(50+49*q),Math.round(10+88*q*q),Math.round(5+94*q)];
       const rows=after?t.sl_after_rows.map(k=>[k,100]):t.sl_rows.map((k,i)=>[k,V[i]]);
