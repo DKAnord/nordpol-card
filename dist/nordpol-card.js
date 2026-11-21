@@ -903,7 +903,10 @@ class NordpolHero extends HTMLElement {
       computeHelper: mkHelper()
     };
   }
-  setConfig(c){ this._t=T(c); const tr=TRaw(c); this._c = Object.assign({title:tr.hero_title, subtitle:tr.hero_sub, snow:true}, c||{}); this._build(); }
+  setConfig(c){ this._t=T(c); const tr=TRaw(c); this._c = Object.assign({title:tr.hero_title, subtitle:tr.hero_sub, snow:true}, c||{}); this._build(); this._applySnow(); }
+  /* the page-wide snow layer follows the config live (also when the editor changes it on a mounted card) */
+  _applySnow(){ const want=this.isConnected && !!this._c && this._c.snow!==false;
+    if(want && !this._snow){ Snow.start(); this._snow=true; } else if(!want && this._snow){ Snow.stop(); this._snow=false; } }
   set hass(h){ const first=!this._hass; this._hass=h; if(first) this._tick(); }
   getCardSize(){ return 4; }
   getGridOptions(){ return {columns:"full", rows:"auto"}; }
@@ -982,8 +985,8 @@ class NordpolHero extends HTMLElement {
     g("d").textContent=d; g("h").textContent=pad(h); g("m").textContent=pad(m); g("s").textContent=pad(s);
     g("sl").innerHTML = `${moons} <span>${nightTxt}</span>`;
   }
-  connectedCallback(){ this._iv=setInterval(()=>this._tick(),1000); if(this._c&&this._c.snow!==false) {Snow.start(); this._snow=true;} }
-  disconnectedCallback(){ clearInterval(this._iv); if(this._snow){Snow.stop(); this._snow=false;} }
+  connectedCallback(){ clearInterval(this._iv); this._iv=setInterval(()=>this._tick(),1000); this._applySnow(); }
+  disconnectedCallback(){ clearInterval(this._iv); this._applySnow(); }
 }
 
 /* ---------- SURVEILLANCE CAM WALL ---------- */
@@ -1208,8 +1211,12 @@ class NordpolNice extends HTMLElement {
       computeHelper: mkHelper()
     };
   }
-  setConfig(c){ this._c=Object.assign({store:null, log_entity:null, default_start:75, log_lines:4}, c||{}); this._t=T(this._c); this._tr=TRaw(this._c);
-    this._parent=false; this._built=false; this._edit=false; if(this._hass) this._render(); }
+  setConfig(c){ const prev=this._c ? this._store() : undefined;
+    this._c=Object.assign({store:null, log_entity:null, default_start:75, log_lines:4}, c||{}); this._t=T(this._c); this._tr=TRaw(this._c);
+    this._parent=false; this._built=false; this._edit=false;
+    /* a different to-do list (e.g. picked in the editor) → drop the old subscription and load the new one */
+    if(prev!==undefined && prev!==this._store()){ this._pend={}; this._logMem=null; this._logMade=false; this._retry(); return; }
+    if(this._hass) this._render(); }
   _store(){
     if(this._c.store) return this._c.store;
     return this._hass && this._hass.states["todo.nordpol_nice_list"] ? "todo.nordpol_nice_list" : null;
@@ -1429,7 +1436,7 @@ class NordpolElf extends HTMLElement {
       computeHelper: mkHelper()
     };
   }
-  setConfig(c){ this._t=T(c); this._tr=TRaw(c); this._c=Object.assign({title:this._tr.elf_title, entity:null},c||{}); this._last=null; if(!this._c.entity) this._render(this._builtin()); }
+  setConfig(c){ this._t=T(c); this._tr=TRaw(c); this._c=Object.assign({title:this._tr.elf_title, entity:null},c||{}); this._last=null; if(this._hass) this.hass=this._hass; else if(!this._c.entity) this._render(this._builtin()); }
   _now(){ return nowInTz(this._c.time_zone||(this._hass&&this._hass.config&&this._hass.config.time_zone)); }
   _list(){ const u=this._c&&this._c.elves; return (u&&u.length)?u.map(e=>Array.isArray(e)?e:[e.name,e.joke,e.task]):this._tr.elves; }
   /* advent day = days until the celebration date counted back from 24 (24 on the day itself, so Dec 1 = 1 with the default date) */
