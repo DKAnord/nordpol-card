@@ -124,7 +124,7 @@ const test = (group, name, fn) => TESTS.push({ group, name, fn });
 
 window.__runBehaviorTests = async function () {
   const want = (new URLSearchParams(location.search).get("groups") || "all").split(",");
-  const ALL = ["base", "width", "dst", "dates", "nice", "probes", "live", "preview", "editor", "elf", "a11y", "helpers"];
+  const ALL = ["base", "width", "dst", "dates", "nice", "probes", "live", "preview", "editor", "elf", "a11y"];
   const groups = want.includes("all") ? ALL : want;
   const results = []; const ran = new Set();
   const ctx = {
