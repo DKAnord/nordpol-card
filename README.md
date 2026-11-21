@@ -26,6 +26,7 @@ Click below to open Nordpol Card in the Home Assistant Marketplace, install it, 
 <summary>Other install methods (HACS / Manual)</summary>
 
 * **Home Assistant Marketplace (2026.11+):** *Settings → Marketplace* → search **Nordpol Card** → install and reload the browser.
+* **Requirements:** Home Assistant 2024.8 or newer (HACS enforces this). The nice list needs the built-in *Local To-do* integration.
 * **HACS (older Home Assistant):** *HACS* → search **Nordpol Card** (or *⋮ → Custom repositories* → `https://github.com/DKAnord/nordpol-card`, type **Dashboard**) → install and reload the browser.
 * **Manual:** Copy `dist/nordpol-card.js` to `<config>/www/` and add `/local/nordpol-card.js` (JavaScript module) under *Settings → Dashboards → ⋮ → Resources*.
 
@@ -91,7 +92,7 @@ sleigh: { eta: "23:59" }
 <details>
 <summary>Offline cam videos, HA automations, custom location & custom elves</summary>
 
-* **Offline / custom cam videos:** All 12 clips stream automatically, so you don't need to download anything. If you want local/offline copies in `<config>/www/nordpol/`, run this in the HA **Terminal & SSH** add-on (or download from [Release v2.1.0](https://github.com/DKAnord/nordpol-card/releases/tag/v2.1.0)):
+* **Offline / custom cam videos:** All 12 clips stream automatically, so you don't need to download anything. If you want local/offline copies in `<config>/www/nordpol/`, set `cams.prefer_files: true` (or `cams.remote: false` for fully offline), then run this in the HA **Terminal & SSH** add-on (or download from [Release v2.1.0](https://github.com/DKAnord/nordpol-card/releases/tag/v2.1.0)):
   ```bash
   mkdir -p /config/www/nordpol && cd /config/www/nordpol && \
   curl -LO https://github.com/DKAnord/nordpol-card/releases/download/v2.1.0/nordpol-videos-cam1-2.zip && \
@@ -99,11 +100,24 @@ sleigh: { eta: "23:59" }
   unzip -o nordpol-videos-cam1-2.zip && unzip -o nordpol-videos-cam3-4.zip && rm -f nordpol-videos-cam*.zip
   ```
   See [docs/VIDEOS.md](docs/VIDEOS.md) for customising periods or generating your own clips.
-* **Automations:** Add [`helpers/nordpol_package.yaml`](helpers/nordpol_package.yaml) if you want to award nice points from HA scripts or automations.
+* **Automations:** Add [`helpers/nordpol_package.yaml`](helpers/nordpol_package.yaml) (Home Assistant 2024.8 or newer) if you want to award nice points from HA scripts or automations: `script.nordpol_give_points` (`child`, `points`, optional `reason`) and `script.nordpol_reset_nice_list` (optional `start`). They write the elf log to the same place the card reads it: the completed `📜 log` item in the nice list. If your card uses `log_entity: input_text.nordpol_elf_log`, pass `log_entity: input_text.nordpol_elf_log` to the scripts as well.
 * **Sleigh home:** Defaults to your Home Assistant location and time zone. Override with `sleigh.home`.
 * **Advanced YAML keys preserved:** Keys like `cams.cams`, `strings`, `sleigh.home`, `extra_stops`, and custom `elves` are preserved untouched when using the visual editor.
 
 </details>
+
+## Privacy: hosted cam clips
+
+By default the cam card streams its 12 clips from `https://dkanord.github.io/nordpol-card/media/` (GitHub Pages). Each viewer's browser then contacts GitHub, which can see the viewer's IP address and user agent, like any website. Nothing from Home Assistant is sent, and the card has no tracking or analytics.
+
+To opt out, download the clips (see *Advanced & Offline Options*) and set:
+
+```yaml
+cams:
+  remote: false        # never contact github.io; play only /local/nordpol clips (shows "signal lost" if one is missing)
+```
+
+Use `prefer_files: true` instead if you want local clips first with the hosted clips as a fallback. You can also point `remote_dir` at your own server.
 
 ## Individual Cards
 
@@ -130,17 +144,26 @@ sleigh: { eta: "23:59" }
 | `time_zone` | HA `time_zone` | IANA time zone (e.g. `Europe/Paris`) used for the countdown, cam clock, and elf calendar (falls back to HA server time zone, then browser local time) |
 | `hero.title/subtitle/target/snow` | – | header; `hero.target` (`MM-DD HH:MM` or `HH:MM`) sets the exact countdown target (defaults to `12-24 18:00` for `en`/`da`/`de`/`sv`/`nb`/`fi`/`pl`/`cs`, `12-25 00:00` for `fr`/`es`/`nl`/`it`/`pt`, or `00:00` when `date` is changed) |
 | `cams.cams[]` | 4 built-in | `label`, optional `file`, optional fallback `src` |
-| `cams.file_dir` / `cams.periods` | `/local/nordpol` / morning, day, evening | see [docs/VIDEOS.md](docs/VIDEOS.md) |
+| `cams.file_dir` / `cams.periods` | `/local/nordpol` / morning, day, evening | see [docs/VIDEOS.md](docs/VIDEOS.md). Setting `file_dir` also turns on local clips |
+| `cams.remote` | `true` | `false` = never stream the hosted clips from github.io (see *Privacy*); only local files are played |
+| `cams.remote_dir` | `https://dkanord.github.io/nordpol-card/media` | where hosted clips are streamed from (`cam1_morning.mp4` … `cam4_evening.mp4`) |
+| `cams.prefer_files` | off | `true` = look for your own clips in `file_dir` first (one quick check per clip, rechecked every 10 minutes), hosted clips are the fallback. Off by default, so a normal install makes no requests to `/local/nordpol`. `false` = never look for local files |
+| `cams.fill_lost` / `cams.lost_label` | `true` / `CAM 01 – SANTA'S OFFICE` (translated) | with an odd number of cams, add a "signal lost" tile to fill the grid, and its label |
+| `cams.period_labels` | translated | override the period names shown in the header, e.g. `{morning: "AM", day: "Day", evening: "PM"}` |
 | `cams.overlay` | `minimal` | `minimal` = REC dot, live date/clock and camera label · `true` / `cctv` = also scanlines, vignette and muted colours · `false` / `off` = clip only |
 | `cams.cctv_style` | `color` | only with `overlay: true` / `cctv`: `color` (muted) or `mono` (black & white) |
 | `cams.date_format` | `DD-MM-YYYY HH:mm:ss` | tokens `YYYY MM DD HH mm ss` – e.g. `MM/DD/YYYY HH:mm:ss` for US |
 | `sleigh.eta` | `23:59` | local time Santa reaches *you* on Dec 24; all other stops shift with it |
 | `sleigh.home` | HA location + time zone | `{name, lat, lon, tz}` override |
 | `sleigh.extra_stops` / `sleigh.skip_stops` | – | add `{name, lat, lon, utc_offset, local}` or hide named stops |
-| `nice.store` / `nice.log_entity` / `nice.default_start` / `nice.log_lines` | `todo.nordpol_nice_list` (if present) / – / `75` / `4` | dedicated to-do list backing the nice list (set explicitly in YAML or the visual editor, or name the list `Nordpol nice list`; the Elf Log is stored inside the same list automatically if `log_entity` is omitted; `log_lines` sets how many log entries show; the Emoji field also accepts image URLs like `/local/kids/emma.jpg`) |
+| `nice.store` / `nice.log_entity` / `nice.default_start` / `nice.log_lines` | `todo.nordpol_nice_list` (if present) / – / `75` / `4` | dedicated to-do list backing the nice list (set explicitly in YAML or the visual editor, or name the list `Nordpol nice list`; `log_lines` sets how many log entries show; the Emoji field also accepts image URLs like `/local/kids/emma.jpg`) |
+| `nice.log_entity` | – | where the Elf Log lives. Omitted: a completed to-do item called `📜 log` in the same list (up to 30 lines, no extra helper needed). Set to an `input_text` (e.g. `input_text.nordpol_elf_log` from the helper package) to keep the log there instead, as `line • line • …` up to the helper's `max` length (255) |
 | `elf.elves` | 30 built-in | your own list: `[{name, joke, task}, …]`. Day 1…30 of the advent calendar picks entry 1…30 (Dec 1 = entry 1). Jokes are written as `question? answer` |
 | `elf.entity` | built-in | optional sensor whose state (`name\|joke\|task`) overrides the elf of the day |
 | `home_button` | none | `{label, icon, path}` extra tab that navigates to another dashboard |
+| `min_version` | – | board only: if the browser has loaded an older card than this (e.g. `2.5.0`), show a banner and reload (at most twice), so wall tablets pick up an update |
+
+Accessibility: the countdown is exposed as a timer, the board tabs as a tab list, and the nice-list title (parent mode), sleigh title (demo flight), elf joke and task, and cam tiles work with Enter/Space. Fullscreen cams close with Esc. With *reduce motion* turned on in the OS or browser, snow, twinkling, glitches and other animations are switched off.
 
 </details>
 

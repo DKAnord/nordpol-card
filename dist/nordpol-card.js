@@ -1,6 +1,7 @@
 /* Nordpol Card – a Christmas dashboard for Home Assistant (countdown, elf cams, nice list, elf of the day, sleigh tracker).
    https://github.com/DKAnord/nordpol-card · MIT License.
-   Optional hosted cam clips stream from CAM_REMOTE_DIR when no local file is found; local /local/nordpol files win. */
+   Cam clips stream from CAM_REMOTE_DIR (GitHub Pages) by default. Your own /local/nordpol clips are used with
+   cams.prefer_files: true (local first) or cams.remote: false (local only, never contacts github.io). */
 (() => {
 const VER = "2.5.0";
 const REPO_URL = "https://github.com/DKAnord/nordpol-card";
