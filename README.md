@@ -1,6 +1,6 @@
 # 🎅 Nordpol Card
 
-**🇬🇧 English · 🇩🇰 Dansk (Jul / Nisse) · 🇫🇷 Français (Noël / Lutin) · 🇩🇪 Deutsch (Weihnachten / Wichtel) · 🇪🇸 Español (Navidad / Elfo) · 🇸🇪 Svenska (Jul / Tomte)**
+**🇬🇧 English · 🇩🇰 Dansk (Jul / Nisse) · 🇫🇷 Français (Noël / Lutin) · 🇩🇪 Deutsch (Weihnachten / Wichtel) · 🇪🇸 Español (Navidad / Elfo) · 🇸🇪 Svenska (Jul / Tomte) · 🇳🇴 Norsk bokmål (Jul / Nisse) · 🇳🇱 Nederlands (Kerstmis / Kerstelf) · 🇫🇮 Suomi (Joulu / Tonttu) · 🇵🇱 Polski (Wigilia / Elf) · 🇮🇹 Italiano (Natale / Elfo) · 🇵🇹 Português (Natal / Elfo) · 🇨🇿 Čeština (Štědrý den / Elf)**
 
 A self-contained Christmas dashboard for Home Assistant — **no YAML required**:
 
@@ -69,11 +69,11 @@ All 12 North Pole cam videos and your Home Assistant location & time zone work a
 ## YAML Setup & Example Dashboards
 
 Prefer YAML? Paste one of the ready-made dashboards into **Raw configuration editor**:
-[English](examples/dashboard.yaml) · [Danish](examples/dashboard.da.yaml) · [French](examples/dashboard.fr.yaml) · [German](examples/dashboard.de.yaml) · [Spanish](examples/dashboard.es.yaml) · [Swedish](examples/dashboard.sv.yaml)
+[English](examples/dashboard.yaml) · [Danish](examples/dashboard.da.yaml) · [French](examples/dashboard.fr.yaml) · [German](examples/dashboard.de.yaml) · [Spanish](examples/dashboard.es.yaml) · [Swedish](examples/dashboard.sv.yaml) · [Norwegian](examples/dashboard.nb.yaml) · [Dutch](examples/dashboard.nl.yaml) · [Finnish](examples/dashboard.fi.yaml) · [Polish](examples/dashboard.pl.yaml) · [Italian](examples/dashboard.it.yaml) · [Portuguese](examples/dashboard.pt.yaml) · [Czech](examples/dashboard.cs.yaml)
 
 ```yaml
 type: custom:nordpol-board-card   # best inside a Panel view
-language: en                      # en | da | fr | de | es | sv
+language: en                      # en | da | fr | de | es | sv | nb | nl | fi | pl | it | pt | cs
 cams:
   cams:
     - label: "CAM 01 – REINDEER PADDOCK"
@@ -123,12 +123,12 @@ sleigh: { eta: "23:59" }
 
 | Key | Default | Description |
 |---|---|---|
-| `language` | browser/HA | `en`, `da`, `fr`, `de`, `es`, or `sv` |
+| `language` | browser/HA | `en`, `da`, `fr`, `de`, `es`, `sv`, `nb`, `nl`, `fi`, `pl`, `it`, `pt`, or `cs` |
 | `strings` | – | override any text |
 | `default_tab` / `return_after_min` | `sleigh` / `3` | tab shown, and auto-return time |
 | `date` | `12-24` | celebration day as `MM-DD` – e.g. `12-25`, or `01-07` for Orthodox Christmas. Moves the countdown, sleigh flight and elf calendar. Also set `sleigh.eta`, and `hero.until` for the countdown label |
 | `time_zone` | HA `time_zone` | IANA time zone (e.g. `Europe/Paris`) used for the countdown, cam clock, and elf calendar (falls back to HA server time zone, then browser local time) |
-| `hero.title/subtitle/target/snow` | – | header; `hero.target` (`MM-DD HH:MM` or `HH:MM`) sets the exact countdown target (defaults to `12-24 18:00` for `en`/`da`/`de`/`sv`, `12-25 00:00` for `fr`/`es`, or `00:00` when `date` is changed) |
+| `hero.title/subtitle/target/snow` | – | header; `hero.target` (`MM-DD HH:MM` or `HH:MM`) sets the exact countdown target (defaults to `12-24 18:00` for `en`/`da`/`de`/`sv`/`nb`/`fi`/`pl`/`cs`, `12-25 00:00` for `fr`/`es`/`nl`/`it`/`pt`, or `00:00` when `date` is changed) |
 | `cams.cams[]` | 4 built-in | `label`, optional `file`, optional fallback `src` |
 | `cams.file_dir` / `cams.periods` | `/local/nordpol` / morning, day, evening | see [docs/VIDEOS.md](docs/VIDEOS.md) |
 | `cams.overlay` | `minimal` | `minimal` = REC dot, live date/clock and camera label · `true` / `cctv` = also scanlines, vignette and muted colours · `false` / `off` = clip only |

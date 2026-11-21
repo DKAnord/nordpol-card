@@ -67,8 +67,8 @@
         try { form.assertConfig([]); } catch (e) { threwArr = true; }
         assert(threwArr, `${tag}.assertConfig throws on array`);
 
-        // Localized labels & helpers across all 6 languages
-        for (const lg of ["en", "da", "fr", "de", "es", "sv"]) {
+        // Localized labels & helpers across all 13 languages
+        for (const lg of ["en", "da", "fr", "de", "es", "sv", "nb", "nl", "fi", "pl", "it", "pt", "cs"]) {
           document.documentElement.lang = lg;
           for (const f of fields) {
             const lbl = form.computeLabel(f, () => {});
@@ -249,6 +249,105 @@
       assert(!("language" in last), "empty language deletes language key");
       assert(!("home_button" in last), "empty home_button_path deletes home_button key");
       eq(last.strings, { tab_sleigh: "Santa's Sled & Co" }, "strings preserved across ha-form edits");
+
+
+      // 7. I18N / ED_T / ED_H completeness, placeholders, HTML, elves, langOf, defaultTarget, ovOpts
+      const src = await fetch("/nordpol-card.js").then(r => r.text());
+      const i18nM = src.match(/const I18N = (\{[\s\S]*?\n\});\nfunction langOf/);
+      assert(!!i18nM, "extracted I18N object from card source");
+      const I18N = new Function("return (" + i18nM[1] + ")")();
+      const edtM = src.match(/const ED_T = (\{[\s\S]*?\n\});/);
+      const edhM = src.match(/const ED_H = (\{[\s\S]*?\n\});/);
+      const stopsM = src.match(/const STOP_NAMES = (\{[\s\S]*?\n\});/);
+      const ED_T = new Function("return (" + edtM[1] + ")")();
+      const ED_H = new Function("return (" + edhM[1] + ")")();
+      const STOP_NAMES = new Function("return (" + stopsM[1] + ")")();
+      const langOfSrc = src.match(/function langOf\(c\)\{[^}]+\}/)[0];
+      const defaultTargetSrc = src.match(/function defaultTarget\(c\)\{[\s\S]*?\n\}/)[0];
+      const langOf = new Function(langOfSrc + "; return langOf;")();
+      const defaultTarget = new Function(langOfSrc + "\n" + defaultTargetSrc + "; return defaultTarget;")();
+
+      const ALL = ["en","da","fr","de","es","sv","nb","nl","fi","pl","it","pt","cs"];
+      const NEW = ["nb","nl","fi","pl","it","pt","cs"];
+      const enKeys = Object.keys(I18N.en);
+      const phRe = /\{[A-Za-z]+\}/g;
+      const htmlRe = /<\/?(?:b|code)>/g;
+      const stop16 = ["New Zealand","Australia","Japan","China","India","Dubai","Kenya","Greece","Italy","Germany","England","Iceland","Brazil","Mexico","Hawaii","Fiji"];
+      function phList(s){ return (String(s).match(phRe) || []); }
+      function htmlList(s){ return (String(s).match(htmlRe) || []); }
+      function walkCmp(en, got, path, lg){
+        if (path.startsWith("elves")) return;
+        if (typeof en === "string") {
+          eq(phList(got).join(), phList(en).join(), `${lg} placeholders at ${path}`);
+          eq(htmlList(got).join(), htmlList(en).join(), `${lg} HTML tags at ${path}`);
+        } else if (Array.isArray(en) && en.length && typeof en[0] === "string") {
+          eq(got.length, en.length, `${lg} list length at ${path}`);
+          en.forEach((x,i) => walkCmp(x, got[i], path+"["+i+"]", lg));
+        } else if (en && typeof en === "object" && !Array.isArray(en)) {
+          Object.keys(en).forEach(k => walkCmp(en[k], got[k], path ? path+"."+k : k, lg));
+        }
+      }
+      for (const lg of ALL) {
+        assert(!!I18N[lg], `I18N.${lg} exists`);
+        eq(Object.keys(I18N[lg]).sort().join(), enKeys.slice().sort().join(), `I18N.${lg} key set matches en`);
+        eq(Object.keys(ED_T[lg]).sort().join(), Object.keys(ED_T.en).sort().join(), `ED_T.${lg} key set matches en`);
+        eq(Object.keys(ED_H[lg]).sort().join(), Object.keys(ED_H.en).sort().join(), `ED_H.${lg} key set matches en`);
+        eq(Object.keys(I18N[lg].periods).sort().join(), Object.keys(I18N.en.periods).sort().join(), `I18N.${lg}.periods has all 6 keys`);
+        eq(I18N[lg].lv.length, 5, `${lg} lv length 5`);
+        eq(I18N[lg].sl_rows.length, 5, `${lg} sl_rows length 5`);
+        eq(I18N[lg].sl_after_rows.length, 3, `${lg} sl_after_rows length 3`);
+        eq(I18N[lg].sl_news.length, 10, `${lg} sl_news length 10`);
+        eq(I18N[lg].elves.length, 30, `${lg} elves length 30`);
+        const names = I18N[lg].elves.map(e => e[0]);
+        eq(new Set(names).size, 30, `${lg} elf names unique`);
+        I18N[lg].elves.forEach((e,i) => {
+          assert(Array.isArray(e) && e.length === 3, `${lg} elf ${i} is [name,joke,task]`);
+          const q = e[1].indexOf("?");
+          assert(q > 0 && q < e[1].length - 1, `${lg} elf ${i} joke has mid-string ?`);
+        });
+        walkCmp(I18N.en, I18N[lg], "", lg);
+      }
+      for (const lg of NEW) {
+        const keys = Object.keys(STOP_NAMES[lg] || {});
+        stop16.forEach(k => assert(keys.includes(k), `${lg} STOP_NAMES has ${k}`));
+        eq(keys.length, 16, `${lg} STOP_NAMES has 16 keys`);
+      }
+      eq(langOf({ language: "nb" }), "nb", "langOf nb");
+      eq(langOf({ language: "no" }), "nb", "langOf no → nb");
+      eq(langOf({ language: "nn-NO" }), "nb", "langOf nn-NO → nb");
+      eq(langOf({ language: "nl-NL" }), "nl", "langOf nl");
+      eq(langOf({ language: "fi" }), "fi", "langOf fi");
+      eq(langOf({ language: "pl-PL" }), "pl", "langOf pl");
+      eq(langOf({ language: "it" }), "it", "langOf it");
+      eq(langOf({ language: "pt-PT" }), "pt", "langOf pt");
+      eq(langOf({ language: "cs-CZ" }), "cs", "langOf cs");
+      eq(defaultTarget({ language: "nl" }), "12-25 00:00", "defaultTarget nl is 12-25 00:00");
+      eq(defaultTarget({ language: "it" }), "12-25 00:00", "defaultTarget it is 12-25 00:00");
+      eq(defaultTarget({ language: "pt" }), "12-25 00:00", "defaultTarget pt is 12-25 00:00");
+      eq(defaultTarget({ language: "nb" }), "12-24 18:00", "defaultTarget nb is 12-24 18:00");
+      eq(defaultTarget({ language: "fi" }), "12-24 18:00", "defaultTarget fi is 12-24 18:00");
+      eq(defaultTarget({ language: "pl" }), "12-24 18:00", "defaultTarget pl is 12-24 18:00");
+      eq(defaultTarget({ language: "cs" }), "12-24 18:00", "defaultTarget cs is 12-24 18:00");
+      eq(defaultTarget({ language: "fr" }), "12-25 00:00", "defaultTarget fr unchanged");
+      eq(defaultTarget({ language: "en" }), "12-24 18:00", "defaultTarget en unchanged");
+      eq(defaultTarget({ language: "nl", date: "01-07" }), "01-07 00:00", "custom date still wins over language default");
+      assert(src.includes('getGridOptions(){ return {columns:"full", rows:"auto"}'), "NordpolBoard has getGridOptions");
+      const ovM = src.match(/const ovOpts = c =>[^;]+;/);
+      assert(!!ovM, "ovOpts helper exists");
+      const ovOpts = new Function("langOf", "OV_OPTS_L", ovM[0].replace("const ovOpts = ", "return ") + ";")(
+        (c) => langOf(c),
+        new Function("return (" + src.match(/const OV_OPTS_L = (\{[\s\S]*?\n\});/)[1] + ")")()
+      );
+      eq(ovOpts({ language: "nl" })[0].value, "minimal", "ovOpts nl has minimal");
+      assert(ovOpts({ language: "nl" })[0].label !== ovOpts({ language: "en" })[0].label, "ovOpts labels differ by language");
+      eq(ED_H.nb.target.includes("12-24 18:00"), true, "ed_h.nb.target states 12-24 18:00");
+      eq(ED_H.fi.target.includes("12-24 18:00"), true, "ed_h.fi.target states 12-24 18:00");
+      eq(ED_H.pl.target.includes("12-24 18:00"), true, "ed_h.pl.target states 12-24 18:00");
+      eq(ED_H.cs.target.includes("12-24 18:00"), true, "ed_h.cs.target states 12-24 18:00");
+      eq(ED_H.nl.target.includes("12-25 00:00"), true, "ed_h.nl.target states 12-25 00:00");
+      eq(ED_H.it.target.includes("12-25 00:00"), true, "ed_h.it.target states 12-25 00:00");
+      eq(ED_H.pt.target.includes("12-25 00:00"), true, "ed_h.pt.target states 12-25 00:00");
+
 
       return { count: results.length, checks: results };
     };

@@ -1,0 +1,21 @@
+# Polski przykład – ta sama karta, język ustawiony na polski
+views:
+  - title: Biegun Północny
+    path: biegun-polnocny
+    icon: mdi:pine-tree
+    type: panel
+    background: radial-gradient(ellipse at 50% -10%, #1f3b78 0%, #0b1a3a 45%, #050b1f 100%) fixed
+    cards:
+      - type: custom:nordpol-board-card
+        language: pl
+        cams:
+          cams:
+            - label: "CAM 01 – STAJNIA RENIFERÓW"
+            - label: "CAM 02 – WARSZTAT ZABAWEK"
+            - label: "CAM 03 – POCZTA"
+            - label: "CAM 04 – PIEKARNIA"
+        sleigh: { eta: "23:59" }
+        nice:
+          store: todo.nordpol_nice_list           # własna lista Local To-do (przechowuje też dziennik elfów)
+          # log_entity: input_text.nordpol_dziennik_elfow
+        elf: {}
