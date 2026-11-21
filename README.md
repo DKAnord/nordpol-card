@@ -1,6 +1,6 @@
 # 🎅 Nordpol Card
 
-**🇬🇧 English · 🇩🇰 Dansk (Jul / Nisse) · 🇫🇷 Français (Noël / Lutin) · 🇩🇪 Deutsch (Weihnachten / Wichtel) · 🇪🇸 Español (Navidad / Elfo) · 🇸🇪 Svenska (Jul / Tomte) · 🇳🇴 Norsk bokmål (Jul / Nisse) · 🇳🇱 Nederlands (Kerstmis / Kerstelf) · 🇫🇮 Suomi (Joulu / Tonttu) · 🇵🇱 Polski (Wigilia / Elf) · 🇮🇹 Italiano (Natale / Elfo) · 🇵🇹 Português (Natal / Elfo) · 🇨🇿 Čeština (Štědrý den / Elf)**
+🇬🇧 🇩🇰 🇫🇷 🇩🇪 🇪🇸 🇸🇪 🇳🇴 🇳🇱 🇫🇮 🇵🇱 🇮🇹 🇵🇹 🇨🇿 **13 built-in languages** — auto-detected from Home Assistant or selectable in the visual editor.
 
 A self-contained Christmas dashboard for Home Assistant — **no YAML required**:
 
@@ -70,7 +70,7 @@ All 12 North Pole cam videos and your Home Assistant location & time zone work a
 ## YAML Setup & Example Dashboards
 
 Prefer YAML? Paste one of the ready-made dashboards into **Raw configuration editor**:
-[English](examples/dashboard.yaml) · [Danish](examples/dashboard.da.yaml) · [French](examples/dashboard.fr.yaml) · [German](examples/dashboard.de.yaml) · [Spanish](examples/dashboard.es.yaml) · [Swedish](examples/dashboard.sv.yaml) · [Norwegian](examples/dashboard.nb.yaml) · [Dutch](examples/dashboard.nl.yaml) · [Finnish](examples/dashboard.fi.yaml) · [Polish](examples/dashboard.pl.yaml) · [Italian](examples/dashboard.it.yaml) · [Portuguese](examples/dashboard.pt.yaml) · [Czech](examples/dashboard.cs.yaml)
+🇬🇧 [English](examples/dashboard.yaml) · 🇩🇰 [Dansk](examples/dashboard.da.yaml) · 🇫🇷 [Français](examples/dashboard.fr.yaml) · 🇩🇪 [Deutsch](examples/dashboard.de.yaml) · 🇪🇸 [Español](examples/dashboard.es.yaml) · 🇸🇪 [Svenska](examples/dashboard.sv.yaml) · 🇳🇴 [Norsk](examples/dashboard.nb.yaml) · 🇳🇱 [Nederlands](examples/dashboard.nl.yaml) · 🇫🇮 [Suomi](examples/dashboard.fi.yaml) · 🇵🇱 [Polski](examples/dashboard.pl.yaml) · 🇮🇹 [Italiano](examples/dashboard.it.yaml) · 🇵🇹 [Português](examples/dashboard.pt.yaml) · 🇨🇿 [Čeština](examples/dashboard.cs.yaml)
 
 ```yaml
 type: custom:nordpol-board-card   # best inside a Panel view
@@ -148,7 +148,7 @@ Use `prefer_files: true` instead if you want local clips first with the hosted c
 | `cams.remote` | `true` | `false` = never stream the hosted clips from github.io (see *Privacy*); only local files are played |
 | `cams.remote_dir` | `https://dkanord.github.io/nordpol-card/media` | where hosted clips are streamed from (`cam1_morning.mp4` … `cam4_evening.mp4`) |
 | `cams.prefer_files` | off | `true` = look for your own clips in `file_dir` first (one quick check per clip, rechecked every 10 minutes), hosted clips are the fallback. Off by default, so a normal install makes no requests to `/local/nordpol`. `false` = never look for local files |
-| `cams.fill_lost` / `cams.lost_label` | `true` / `CAM 01 – SANTA'S OFFICE` (translated) | with an odd number of cams, add a "signal lost" tile to fill the grid, and its label |
+| `cams.fill_lost` / `cams.lost_label` | `true` / `CAM 01 – REINDEER PADDOCK` (translated) | with an odd number of cams, add a "signal lost" tile to fill the grid, and its label |
 | `cams.period_labels` | translated | override the period names shown in the header, e.g. `{morning: "AM", day: "Day", evening: "PM"}` |
 | `cams.overlay` | `minimal` | `minimal` = REC dot, live date/clock and camera label · `true` / `cctv` = also scanlines, vignette and muted colours · `false` / `off` = clip only |
 | `cams.cctv_style` | `color` | only with `overlay: true` / `cctv`: `color` (muted) or `mono` (black & white) |
@@ -171,3 +171,21 @@ Accessibility: the countdown is exposed as a timer, the board tabs as a tab list
 MIT – see [LICENSE](LICENSE). World outline: [Natural Earth](https://www.naturalearthdata.com/) (public domain). Videos (optional pack): AI-generated with Google Flow (Veo), shared for personal Home Assistant dashboard use.
 
 Maintainer: `DKAnord` (`12734694+DKAnord@users.noreply.github.com`)
+
+## Supported Languages
+
+Auto-detected from Home Assistant / browser settings, or set explicitly via `language:` (`en`, `da`, `fr`, `de`, `es`, `sv`, `nb`, `nl`, `fi`, `pl`, `it`, `pt`, `cs`):
+
+- 🇬🇧 **English (`en`):** Christmas, Santa Claus, North Pole, Elf, Reindeer, Countdown
+- 🇩🇰 **Dansk (`da`):** Jul, Juleaften, Julemanden, Nordpolen, Nisse, Artig-listen, Kane-tracker
+- 🇫🇷 **Français (`fr`):** Noël, Père Noël, Pôle Nord, Lutin, Traîneau, Liste des enfants sages
+- 🇩🇪 **Deutsch (`de`):** Weihnachten, Heiligabend, Weihnachtsmann, Nordpol, Wichtel, Artig-Liste, Schlitten
+- 🇪🇸 **Español (`es`):** Navidad, Nochebuena, Papá Noel, Polo Norte, Elfo, Trineo, Lista de niños buenos
+- 🇸🇪 **Svenska (`sv`):** Jul, Julafton, Tomten, Nordpolen, Nisse, Snällista, Släde
+- 🇳🇴 **Norsk bokmål (`nb`):** Jul, Julaften, Julenissen, Nordpolen, Nisse, Snill-liste, Slede (`no`/`nn` → `nb`)
+- 🇳🇱 **Nederlands (`nl`):** Kerstmis, Kerstavond, Kerstman, Noordpool, Kerstelf, Lieve kinderen, Arrenslee
+- 🇫🇮 **Suomi (`fi`):** Joulu, Jouluaatto, Joulupukki, Korvatunturi, Tonttu, Kiltit lapset, Reki
+- 🇵🇱 **Polski (`pl`):** Boże Narodzenie, Wigilia, Święty Mikołaj, Biegun Północny, Elf, Lista grzecznych dzieci, Sanie
+- 🇮🇹 **Italiano (`it`):** Natale, Vigilia, Babbo Natale, Polo Nord, Elfo, Lista dei buoni, Slitta
+- 🇵🇹 **Português (`pt`):** Natal, Pai Natal, Polo Norte, Elfo, Lista dos bem-comportados, Trenó
+- 🇨🇿 **Čeština (`cs`):** Vánoce, Štědrý den, Ježíšek, Severní pól, Skřítek, Seznam hodných dětí, Sáně
