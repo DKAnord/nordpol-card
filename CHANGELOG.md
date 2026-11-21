@@ -9,7 +9,28 @@ All notable changes to Nordpol Card are documented here. Dates are in Europe/Cop
 - Examples: `examples/dashboard.nb.yaml`, `.nl.yaml`, `.fi.yaml`, `.pl.yaml`, `.it.yaml`, `.pt.yaml`, `.cs.yaml`.
 - Translation review of the seven new language packs: tighter, more faithful wording where meaning had drifted; native jokes where English puns did not carry; local gift-bringer names in UI strings (Julenissen, Kerstman, Joulupukki, Święty Mikołaj, Babbo Natale, Pai Natal, and Czech **Ježíšek** in place of Santa); and a few local Christmas-tradition touches in elves, daily tasks and sleigh news.
 - Visual editor: camera overlay and CCTV filter dropdown labels are now translated per language. `nordpol-board-card` reports `getGridOptions()` like the other cards (`columns: "full"`, `rows: "auto"`).
-- Docs: added this changelog, refreshed the publishing checklist, documented optional hosted cam clips in the JS header (local files still win), and pinned `hacs/action` to a commit SHA. `hacs.json` now has `"render_readme": true`.
+- Docs: added this changelog, refreshed the publishing checklist, documented the hosted cam clips in the JS header, and pinned `hacs/action` to a commit SHA. `hacs.json` now has `"render_readme": true`.
+
+### Fixes (2.5.0)
+
+- **Countdown fits narrow columns and 320 px phones:** digits, labels and the nights pill scale with the card width (container query units), so nothing is clipped in 1/3 columns, Sections, or on small phones (all 13 languages, 3-digit day counts).
+- **Countdown is right when the browser and the configured time zone disagree on DST** (e.g. a tablet in New York or Sydney showing Copenhagen time in late October or March). It was off by 1–2 h; the target is now computed as an absolute instant in the configured zone. The sleigh progress uses the same instant.
+- **Nice list keeps every tap:** quick taps (or a slow Home Assistant) no longer lose points (+1 +1 now gives 82, not 81), every tap gets its log line, the `📜 log` item is created only once, and a failed write shows the error banner and rolls back instead of failing silently.
+- **No more 404s from the cam card:** a default install used to probe 24 missing `/local/nordpol/*.mp4` files on every load (console errors, slower start). The hosted clips are now used directly; local probes happen once per clip only when you opt in, with in-flight de-duplication and a bounded 10-minute recheck.
+- **Live config changes apply immediately** on a mounted card: switching the nice list `store` re-subscribes, `snow` follows setConfig, and the elf card shows its `entity` right away.
+- **Christmas week is consistent across cards:** hero, sleigh and elf now agree on when the celebration and the after-Christmas window start and end (24/25/26 December, New Year, a custom `date` such as `01-07`), in the configured time zone.
+- **Elf of the day date label** no longer switches format on 25 December (“December 25” stays “December 25”, not “25 December”).
+- **Visual editor:** the countdown hint in the fallback board editor shows the right default for `nl`/`it`/`pt` (`12-25 00:00`) and for custom dates.
+- **Card picker and editor previews are quiet:** no page-wide snow, no video downloads and no file probes from the preview tiles.
+- **Accessibility:** respects *reduce motion* (no snow, twinkle, wobble, glitch, blinking or noise animation); keyboard access with Enter/Space for the nice-list title (parent mode), sleigh title (demo), elf joke and task, and cam tiles; fullscreen cams are a focused dialog that closes with Esc; the countdown is a timer and the board tabs a tab list for screen readers.
+- **Helper package** (`helpers/nordpol_package.yaml`): `script.nordpol_give_points` was rejected by Home Assistant at startup (`selector: { text: {} }`), and both scripts wrote the log to `input_text.nordpol_elf_log`, which the card only reads with `log_entity`. They now write to the `📜 log` to-do item by default (optional `log_entity` field for the input_text variant). Tested in a real Home Assistant.
+
+### Changed (2.5.0)
+
+- **Your own cam clips need `cams.prefer_files: true`.** Local `/local/nordpol` clips are no longer looked for automatically (that caused the 404s above). Set `prefer_files: true` (local first, hosted fallback) or `remote: false` (local only, never contacts github.io). Setting `file_dir` or a cam `file` also turns local clips on.
+- `hacs.json` declares the minimum Home Assistant version: `2024.8.0`.
+- README: privacy note about the github.io clips and how to opt out, and documentation for `cams.remote`, `remote_dir`, `prefer_files`, `fill_lost`, `lost_label`, `period_labels`, board `min_version`, and `nice.log_entity`.
+- Tests: new behaviour suite (`tests/behavior.html`, run by `node tests/run.mjs`) with a fake Home Assistant and clock, run under Copenhagen, New York and Sydney time zones, at 320 px, and with reduced motion; `tools/check_elves.py` asserts the elf lists match `tools/elves_data.py`; `tests/ha/test_helpers.py` runs the helper package in a real Home Assistant. All three run in CI.
 
 ## 2.4.5 – 2026-11-21
 
