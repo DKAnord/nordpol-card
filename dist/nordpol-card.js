@@ -832,13 +832,18 @@ function xmasTarget(now = new Date(), c, tz) {
   if(!raw) raw=defaultTarget(c);
   const m=raw.match(/(\d+)-(\d+)\s+(\d+):(\d+)/)||[0,12,24,18,0];
   const mk=y=>new Date(y,+m[1]-1,+m[2],+m[3],+m[4]); let y=now.getFullYear(), t=mk(y);
-  if (now - t > 2*86400000) t = mk(++y);
+  /* after the target the party lasts until the season ends (celebration date + 7 days, same as sleigh/elf), at least 2 days */
+  const [cmo,cd]=dateMD(c); let seasonEnd=new Date(t.getFullYear()-1,cmo,cd+7);
+  while(seasonEnd < t) seasonEnd=new Date(seasonEnd.getFullYear()+1,cmo,cd+7);
+  const win = seasonEnd - t <= 31*86400000 ? Math.max(2*86400000, seasonEnd - t) : 2*86400000;
+  if (now - t > win) t = mk(++y);
   return {ms:zonedMs(tz,y,+m[1]-1,+m[2],+m[3],+m[4]), wall:t};
 }
 /* [month0, day] from config `date: "MM-DD"` */
 function dateMD(c){ const m=String((c&&c.date)||"12-24").match(/(\d+)-(\d+)/)||[0,12,24]; return [+m[1]-1,+m[2]]; }
 /* year of the celebration day this moment belongs to (stays on the current one for 7 days afterwards) */
-function eventYear(now,c){ const [mo,d]=dateMD(c); let y=now.getUTCFullYear(); if(Date.UTC(y,mo,d+7)<now.getTime()) y++; return y; }
+/* `now` is a wall-clock Date in the card's zone (nowInTz); the season rolls over at 00:00 on celebration date + 7 days */
+function eventYear(now,c){ const [mo,d]=dateMD(c); let y=now.getFullYear(); if(now>=new Date(y,mo,d+7)) y++; return y; }
 function css(el, s){ const st=document.createElement("style"); st.textContent=s; el.appendChild(st); }
 function longPress(el, ms, fn){
   let t=null; const start=e=>{t=setTimeout(()=>{t=null;fn(e);},ms)}; const stop=()=>{if(t){clearTimeout(t);t=null}};
@@ -1398,7 +1403,7 @@ class NordpolElf extends HTMLElement {
   _now(){ return nowInTz(this._c.time_zone||(this._hass&&this._hass.config&&this._hass.config.time_zone)); }
   _list(){ const u=this._c&&this._c.elves; return (u&&u.length)?u.map(e=>Array.isArray(e)?e:[e.name,e.joke,e.task]):this._tr.elves; }
   /* advent day = days until the celebration date counted back from 24 (24 on the day itself, so Dec 1 = 1 with the default date) */
-  _adv(n){ const [mo,d]=dateMD(this._c); const t=new Date(eventYear(new Date(),this._c),mo,d); const today=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  _adv(n){ const [mo,d]=dateMD(this._c); const t=new Date(eventYear(n,this._c),mo,d); const today=new Date(n.getFullYear(),n.getMonth(),n.getDate());
     return 24-Math.round((t-today)/86400000); }
   _builtin(){ const E=this._list(), n=this._now(), a=this._adv(n);
     const i=(a>=1&&a<=30)?(a-1)%E.length:(n.getFullYear()*372+n.getMonth()*31+n.getDate())%E.length; return E[i].join("|"); }
@@ -1497,7 +1502,7 @@ class NordpolSleigh extends HTMLElement {
   getCardSize(){ return 6; }
   getGridOptions(){ return {columns:"full", rows:"auto"}; }
   _home(){ const c=this._c, hc=(this._hass&&this._hass.config)||{}; const h=typeof c.home==="object"&&c.home?c.home:{name:c.home};
-    const y=eventYear(new Date(),c), [dmo,dday]=dateMD(c); const lat=+(h.lat??h.latitude??c.latitude??hc.latitude??51.5), lon=+(h.lon??h.longitude??c.longitude??hc.longitude??0);
+    const y=eventYear(this._wall(new Date()),c), [dmo,dday]=dateMD(c); const lat=+(h.lat??h.latitude??c.latitude??hc.latitude??51.5), lon=+(h.lon??h.longitude??c.longitude??hc.longitude??0);
     let off=h.utc_offset??c.utc_offset; if(off==null) off=tzOffsetH(h.tz||h.time_zone||c.time_zone||hc.time_zone, y, dmo, dday); if(off==null) off=-new Date(Date.UTC(y,dmo,dday)).getTimezoneOffset()/60;
     return {name:h.name||hc.location_name||this._tr.sl_home, lat, lon, off:+off}; }
   _makeRoute(){ const H=this._home(), lg=langOf(this._c), t0=hm(this._c.eta||"23:59")-H.off*60; this._homeName=H.name; this._homeT=t0; this._homeOff=H.off;
@@ -1573,7 +1578,8 @@ class NordpolSleigh extends HTMLElement {
     svg.innerHTML=s;
   }
   _dlabel(){ const [mo,d]=dateMD(this._c); return new Date(2000,mo,d).toLocaleDateString(this._tr.locale,{day:"numeric",month:"long"}); }
-  _base(now){ const [mo,d]=dateMD(this._c); return Date.UTC(eventYear(now,this._c),mo,d); }   // celebration day 00:00 UTC (default 24/12)
+  _wall(now){ return nowInTz(this._c.time_zone||(this._hass&&this._hass.config&&this._hass.config.time_zone), now); }
+  _base(now){ const [mo,d]=dateMD(this._c); return Date.UTC(eventYear(this._wall(now),this._c),mo,d); }   // celebration day 00:00 UTC (default 24/12)
   _pos(min){
     const R=this._route; if(min<=R[0].t) return {i:0,f:0,lat:R[0].lat,lon:R[0].lon,state:"pre"};
     for(let i=0;i<R.length-1;i++){ const a=R[i],b=R[i+1]; if(min<=b.t){ const f=(min-a.t)/(b.t-a.t);
@@ -1593,7 +1599,7 @@ class NordpolSleigh extends HTMLElement {
       mode.textContent=this._tr.sl_status;
       const tz=this._c.time_zone||(this._hass&&this._hass.config&&this._hass.config.time_zone);
       const end=new Date(xmasTarget(nowInTz(tz,now),this._c,tz).ms), start=new Date(end.getTime()-53*86400000); let q=(now-start)/(end-start); q=Math.max(0.03,Math.min(0.995,q));
-      const after = real>R[R.length-1].t+30 && real<R[R.length-1].t+30+7*1440;
+      const after = real>R[R.length-1].t+30;   /* until the season rolls over (eventYear) */
       const V=[Math.round(20+79*q),Math.round(35+64*Math.min(1,q*1.2)),Math.round(50+49*q),Math.round(10+88*q*q),Math.round(5+94*q)];
       const rows=after?t.sl_after_rows.map(k=>[k,100]):t.sl_rows.map((k,i)=>[k,V[i]]);
       const news=t.sl_news[(now.getDate()*24+now.getHours())%t.sl_news.length];

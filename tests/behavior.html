@@ -288,6 +288,12 @@ test("dates", "Christmas Eve, Christmas week and New Year are consistent across 
   ok(s.days >= 357 && s.days <= 358 && /Trial/.test(s.elfDate), "31 Dec countdown ~358 days and trial elf");
   at(0, 2, 12, 0);     s = seasonState(); eq([s.party, s.sleigh], [false, "workshop"], "2 Jan countdown + workshop"); ok(/Trial/.test(s.elfDate), "2 Jan trial elf");
   at(11, 1, 0, 30);    s = seasonState(); eq([s.party, s.elfDate, s.elfName], [false, "December 1", "Elf Pip"], "1 Dec 00:30 first elf");
+  /* custom celebration date / target outside December */
+  const heroAt = cfg => { const h = mount("nordpol-hero-card", Object.assign({ language: "en", snow: false }, cfg), { hass: mkHA().makeHass() }); h._tick(); const r = h.shadowRoot.querySelector(".party") ? "party" : heroVals(h).d; cleanup(); return r; };
+  at(11, 20, 12, 0); ok(typeof heroAt({ target: "01-06 00:00" }) === "number", "target 01-06 on 20 Dec counts down (no stale party)");
+  at(11, 20, 12, 0); eq(heroAt({ date: "01-07" }), 17, "Orthodox date 01-07: 17 days left on 20 Dec");
+  at(0, 10, 12, 0);  eq(heroAt({ date: "01-07" }), "party", "Orthodox date: party on 10 Jan (within the 7-day season)");
+  at(0, 15, 12, 0);  ok(heroAt({ date: "01-07" }) > 350, "Orthodox date: next year's countdown on 15 Jan");
   /* Dutch counts down to 25 Dec 00:00 */
   at(11, 24, 23, 59);  s = seasonState("nl"); eq(s.party, false, "nl 24 Dec 23:59 still counting");
   at(11, 25, 0, 1);    s = seasonState("nl"); eq(s.party, true, "nl 25 Dec 00:01 party");
