@@ -1096,19 +1096,28 @@ class NordpolCams extends HTMLElement {
     const tile=v.closest(".tile"); if(tile) tile.dataset.kind="none"; }
   _fileUrl(i,per){ const c=this._c.cams[i]; const dir=(this._c.file_dir||CAM_FILE_DIR).replace(/\/$/,"");
     const base=c.file||`${dir}/cam${i+1}`; return `${base}_${per}.mp4?v=${VER}`; }
+  /* Local clips are only looked for when you opt in (prefer_files: true, file_dir, cams[].file or remote: false), so the
+     default hosted-clip setup makes no /local requests and no 404s in the console. */
+  _localOn(){ const c=this._c; if(c.prefer_files===false) return false;
+    return c.prefer_files===true || !!c.file_dir || c.remote===false || (c.cams||[]).some(x=>x&&x.file); }
   async _probe(url){ const e=this._exists[url]; if(e && Date.now()-e.t < CAM_RECHECK_MIN*60000) return e.ok;
-    let ok=false; try{ const r=await fetch(url,{method:"HEAD",cache:"no-store"}); ok=r.ok && /^video\//i.test(r.headers.get("content-type")||""); }catch(err){ ok=false; }
-    this._exists[url]={ok,t:Date.now()}; return ok; }
+    const fl=this._inflight=this._inflight||{}; if(fl[url]) return fl[url];      /* never probe the same URL twice at once */
+    return fl[url]=(async()=>{ let ok=false; try{ const r=await fetch(url,{method:"HEAD",cache:"no-store"}); ok=r.ok && /^video\//i.test(r.headers.get("content-type")||""); }catch(err){ ok=false; }
+      this._exists[url]={ok,t:Date.now()}; delete fl[url]; return ok; })(); }
   _setSrc(i,src,kind,url){ const v=this._vids[i]; if(!v||!src||v.dataset.src===src) return;
     v.dataset.src=src; v.dataset.kind=kind; v.dataset.url=url||""; v.src=src; const p=v.play&&v.play(); p&&p.catch&&p.catch(()=>{});
     const tile=v.closest(".tile"); if(tile) tile.dataset.kind=kind; }
-  async _update(force){ if(!this._vids) return; const per=this._period();
+  /* one update at a time: calls that arrive meanwhile are merged into a single follow-up run */
+  _update(force){ if(!this._vids) return Promise.resolve();
+    if(this._busy){ this._again = this._again===true || force===true ? true : "soft"; return this._busy; }
+    return this._busy=this._doUpdate(force).finally(()=>{ this._busy=null; const a=this._again; this._again=false; if(a) this._update(a===true); }); }
+  async _doUpdate(force){ if(!this._vids) return; const per=this._period();
     if(!force && per===this._per && Date.now()-(this._lastProbe||0) < CAM_RECHECK_MIN*60000) return;
     this._per=per; this._lastProbe=Date.now();
     /* order: local file for the period → same cam's other periods → explicit src → hosted release clip (remote!==false) → "signal lost" */
     const order=[per,...this._periods().map(p=>p.name).filter(n=>n!==per)];
     await Promise.all(this._vids.map(async (v,i)=>{
-      if(this._c.prefer_files!==false) for(const n of order){ const url=this._fileUrl(i,n);
+      if(this._localOn()) for(const n of order){ const url=this._fileUrl(i,n);
         if(await this._probe(url)){ this._setSrc(i,url,"file",url); return; } }
       const fb=this._fallback(i); if(fb){ this._setSrc(i,fb,"embed"); return; }
       if(this._c.remote!==false && !this._c.cams[i]?.file){
