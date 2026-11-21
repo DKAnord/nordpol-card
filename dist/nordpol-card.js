@@ -1844,7 +1844,7 @@ class NordpolBoardEditor extends HTMLElement {
     const cctvVal=(c.cams&&c.cams.cctv_style)||"color";
     const snowOn=!c.hero||c.hero.snow!==false; const hb=(c.home_button&&c.home_button.path)||"";
     const tgt=(c.hero&&c.hero.target)||c.target||"";
-    const tgtPh=["fr","es"].includes(lg)?"12-25 00:00":"12-24 18:00";
+    const tgtPh=defaultTarget(c);   /* same default as the card: 12-25 00:00 for fr/es/nl/it/pt, custom date → 00:00 */
     r.innerHTML=`<style>
       .ed{display:grid;gap:12px;font-family:var(--paper-font-body1_-_font-family,system-ui,sans-serif);color:var(--primary-text-color,#222)}
       .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
