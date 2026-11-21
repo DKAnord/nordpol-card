@@ -1,13 +1,19 @@
 # Optional helpers for the Nice-list tab. Save as <config>/packages/nordpol.yaml
-# (needs `homeassistant: packages: !include_dir_named packages` in configuration.yaml)
+# (needs `homeassistant: packages: !include_dir_named packages` in configuration.yaml).
+# Requires Home Assistant 2024.8 or newer (`action:` syntax).
 #
 # ALSO REQUIRED (UI only, can't be YAML): Settings → Devices & services → Add integration →
 # "Local To-do" → name it "Nordpol nice list"  →  entity todo.nordpol_nice_list
+#
+# Where the elf log goes:
+#  * Default (same as the card without `log_entity`): the completed to-do item "📜 log" in the
+#    same list, newest line first (max 30 lines). The scripts create it if it is missing.
+#  * If your card uses `log_entity: input_text.nordpol_elf_log`, pass `log_entity` to the scripts
+#    (or change the default in the `le:` lines below). The input_text below is only needed then.
 input_text:
   nordpol_elf_log:
     name: Nordpol elf log
     max: 255
-    initial: ""
 
 script:
   nordpol_give_points:
@@ -17,47 +23,73 @@ script:
     mode: queued
     max: 10
     fields:
-      child: { name: Child, required: true, selector: { text: {} } }
+      child: { name: Child, required: true, selector: { text: null } }
       points: { name: Points, required: true, default: 5, selector: { number: { min: -25, max: 25, step: 1, mode: box } } }
-      reason: { name: Reason, required: false, selector: { text: {} } }
+      reason: { name: Reason, required: false, selector: { text: null } }
+      log_entity: { name: Log input_text (optional), description: "Only if the card uses log_entity", required: false, selector: { entity: { filter: { domain: input_text } } } }
     sequence:
       - action: todo.get_items
         target: { entity_id: todo.nordpol_nice_list }
-        data: { status: needs_action }
         response_variable: list
       - variables:
-          it: "{{ list['todo.nordpol_nice_list']['items'] | selectattr('summary','eq',child) | first | default(none) }}"
+          items: "{{ list['todo.nordpol_nice_list']['items'] }}"
+          it: "{{ items | selectattr('summary','eq',child) | rejectattr('status','eq','completed') | first | default(none) }}"
+          logit: "{{ items | selectattr('summary','eq','📜 log') | first | default(none) }}"
+          le: "{{ log_entity if log_entity is defined and log_entity else '' }}"
       - condition: template
         value_template: "{{ it is not none }}"
       - variables:
           d: "{{ (it.description if it.description else '{}') | from_json }}"
           new: "{{ [0, [100, (d.score | default(d.start | default(75)) | int(75)) + (points | int(0))] | min] | max }}"
           line: "{{ child }} {{ '+' if (points | int(0)) > 0 else '' }}{{ points | int(0) }}{{ (': ' ~ reason) if reason is defined and reason else '' }}"
-          old: "{{ states('input_text.nordpol_elf_log') if states('input_text.nordpol_elf_log') not in ['unknown','unavailable',''] else '' }}"
       - action: todo.update_item
         target: { entity_id: todo.nordpol_nice_list }
         data:
           item: "{{ it.uid }}"
           description: " {{ dict(d, score=new | int) | to_json }}"
-      - action: input_text.set_value
-        target: { entity_id: input_text.nordpol_elf_log }
-        data:
-          value: "{{ (line ~ ((' • ' ~ old) if old else ''))[:255] }}"
+      - choose:
+          - conditions: "{{ le != '' }}"
+            sequence:
+              - variables:
+                  old: "{{ states(le) if states(le) not in ['unknown','unavailable',''] else '' }}"
+              - action: input_text.set_value
+                target: { entity_id: "{{ le }}" }
+                data:
+                  value: "{{ (line ~ ((' • ' ~ old) if old else ''))[:(state_attr(le,'max') | int(255))] }}"
+          - conditions: "{{ logit is not none }}"
+            sequence:
+              - action: todo.update_item
+                target: { entity_id: todo.nordpol_nice_list }
+                data:
+                  item: "{{ logit.uid }}"
+                  description: "{{ ([line] + ((logit.description or '').split('\n') | reject('eq','') | list))[:30] | join('\n') }}"
+        default:
+          - action: todo.add_item
+            target: { entity_id: todo.nordpol_nice_list }
+            data: { item: "📜 log", description: "{{ line }}" }
+          - action: todo.update_item
+            target: { entity_id: todo.nordpol_nice_list }
+            data: { item: "📜 log", status: completed }
 
   nordpol_reset_nice_list:
     alias: "Nordpol: reset nice list"
-    description: Resets every child to their own start score (or `start`) and clears the elf log.
+    description: Resets every child to their own start score (or `start`) and starts a fresh elf log.
     icon: mdi:restart
     mode: single
     fields:
       start: { name: Start value (optional), required: false, selector: { number: { min: 0, max: 100, step: 5 } } }
+      log_entity: { name: Log input_text (optional), description: "Only if the card uses log_entity", required: false, selector: { entity: { filter: { domain: input_text } } } }
     sequence:
       - action: todo.get_items
         target: { entity_id: todo.nordpol_nice_list }
-        data: { status: needs_action }
         response_variable: list
+      - variables:
+          items: "{{ list['todo.nordpol_nice_list']['items'] }}"
+          logit: "{{ items | selectattr('summary','eq','📜 log') | first | default(none) }}"
+          le: "{{ log_entity if log_entity is defined and log_entity else '' }}"
+          line: "Fresh start – the elves are watching! 👀"
       - repeat:
-          for_each: "{{ list['todo.nordpol_nice_list']['items'] | rejectattr('summary','eq','📜 log') | list }}"
+          for_each: "{{ items | rejectattr('summary','eq','📜 log') | rejectattr('status','eq','completed') | list }}"
           sequence:
             - variables:
                 d: "{{ (repeat.item.description if repeat.item.description else '{}') | from_json }}"
@@ -66,6 +98,21 @@ script:
               data:
                 item: "{{ repeat.item.uid }}"
                 description: " {{ dict(d, score=((start if start is defined and start not in [none,''] else d.start | default(75)) | int(75))) | to_json }}"
-      - action: input_text.set_value
-        target: { entity_id: input_text.nordpol_elf_log }
-        data: { value: "Fresh start – the elves are watching! 👀" }
+      - choose:
+          - conditions: "{{ le != '' }}"
+            sequence:
+              - action: input_text.set_value
+                target: { entity_id: "{{ le }}" }
+                data: { value: "{{ line }}" }
+          - conditions: "{{ logit is not none }}"
+            sequence:
+              - action: todo.update_item
+                target: { entity_id: todo.nordpol_nice_list }
+                data: { item: "{{ logit.uid }}", description: "{{ line }}" }
+        default:
+          - action: todo.add_item
+            target: { entity_id: todo.nordpol_nice_list }
+            data: { item: "📜 log", description: "{{ line }}" }
+          - action: todo.update_item
+            target: { entity_id: todo.nordpol_nice_list }
+            data: { item: "📜 log", status: completed }
