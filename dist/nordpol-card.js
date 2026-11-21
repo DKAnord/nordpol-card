@@ -892,21 +892,24 @@ class NordpolHero extends HTMLElement {
   _build(){
     const r = this.shadowRoot || this.attachShadow({mode:"open"}); r.innerHTML=""; this._built=false;
     css(r, BASE_CSS + `
+    /* sizes follow the card's own width (container query units), not the screen width */
+    .np{container-type:inline-size}
     .hero{padding:26px 16px 22px;text-align:center}
-    .t{font-family:${FONT_X};font-size:clamp(34px,7vw,64px);font-weight:700;color:#ffd878;line-height:1.05;
+    .t{font-family:${FONT_X};font-size:clamp(28px,11cqi,64px);font-weight:700;color:#ffd878;line-height:1.05;
        text-shadow:0 0 18px rgba(255,205,90,.7),0 3px 0 #8d0f19,0 6px 18px rgba(0,0,0,.6)}
-    .st{margin-top:4px;color:#d9f3e3;font-size:clamp(13px,2.4vw,17px);letter-spacing:2px;text-transform:uppercase;opacity:.9}
-    .lbl{margin:18px 0 8px;font-size:clamp(15px,3vw,20px);color:#fff;font-weight:600}
-    .cd{display:flex;justify-content:center;gap:clamp(6px,2vw,16px);flex-wrap:nowrap}
-    .u{min-width:clamp(62px,15vw,112px);padding:10px 6px 8px;border-radius:16px;
+    .st{margin-top:4px;color:#d9f3e3;font-size:clamp(11px,3.6cqi,17px);letter-spacing:clamp(1px,.4cqi,2px);text-transform:uppercase;opacity:.9}
+    .lbl{margin:18px 0 8px;font-size:clamp(14px,4.4cqi,20px);color:#fff;font-weight:600}
+    .cd{display:flex;justify-content:center;gap:clamp(4px,2cqi,16px);flex-wrap:nowrap}
+    .u{flex:0 1 112px;min-width:0;box-sizing:border-box;padding:10px 4px 8px;border-radius:16px;
        background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.04));border:1px solid rgba(255,214,120,.45);
        box-shadow:inset 0 -3px 0 rgba(214,32,47,.7),0 6px 16px rgba(0,0,0,.35)}
-    .v{font-size:clamp(30px,8vw,64px);font-weight:800;font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 0 14px rgba(255,255,255,.45)}
-    .k{font-size:clamp(10px,2vw,13px);text-transform:uppercase;letter-spacing:1.5px;color:#ffd878}
-    .sl{margin-top:16px;display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;
-       background:rgba(14,110,58,.55);border:1px solid rgba(126,240,168,.55);font-size:clamp(15px,3.2vw,22px);font-weight:700}
+    .v{font-size:clamp(22px,9cqi,64px);font-weight:800;font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 0 14px rgba(255,255,255,.45)}
+    .k{font-size:clamp(8px,2.6cqi,13px);text-transform:uppercase;letter-spacing:clamp(.3px,.3cqi,1.5px);color:#ffd878;overflow-wrap:anywhere;line-height:1.2}
+    .sl{margin-top:16px;display:inline-flex;align-items:center;gap:10px;padding:8px clamp(10px,3cqi,18px);border-radius:999px;max-width:100%;box-sizing:border-box;
+       background:rgba(14,110,58,.55);border:1px solid rgba(126,240,168,.55);font-size:clamp(13px,4.2cqi,22px);font-weight:700}
     .moons{letter-spacing:2px}
-    .tree{position:absolute;bottom:-6px;font-size:clamp(40px,9vw,76px);opacity:.9;filter:drop-shadow(0 0 10px rgba(255,220,120,.5))}
+    .tree{position:absolute;bottom:-6px;font-size:clamp(40px,9cqi,76px);opacity:.9;filter:drop-shadow(0 0 10px rgba(255,220,120,.5))}
+    @container (max-width: 560px){.tree{display:none}}
     .tl{left:6px}.tr{right:6px}
     .lights{position:absolute;top:7px;left:0;right:0;display:flex;justify-content:space-around;pointer-events:none}
     .lights i{width:10px;height:14px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;margin-top:6px;animation:tw 1.6s infinite alternate}
@@ -927,7 +930,8 @@ class NordpolHero extends HTMLElement {
     :host(.compact) .k{font-size:clamp(9px,1vw,12px);letter-spacing:1px}
     :host(.compact) .sl{margin-top:8px;padding:6px 14px;font-size:clamp(12px,1.35vw,17px);line-height:1.2;text-align:center;max-width:100%;box-sizing:border-box}
     :host(.compact) .tree{display:none}
-    @media (max-width: 600px){:host(.compact) .hero{flex-direction:column;text-align:center;gap:10px;padding:18px 14px 14px}}
+    @media (max-width: 600px){:host(.compact) .hero{flex-direction:column;text-align:center;gap:10px;padding:18px 14px 14px}
+      :host(.compact) #body{align-self:stretch} :host(.compact) .u{min-width:0;flex:0 1 98px} :host(.compact) .v{font-size:clamp(22px,9cqi,52px)} :host(.compact) .k{font-size:clamp(8px,2.6cqi,12px)}}
     .party{font-size:clamp(28px,6vw,52px);font-family:${FONT_X};color:#ffd878;margin-top:14px}
     `);
     const lights = Array.from({length:18},()=>"<i></i>").join("");
