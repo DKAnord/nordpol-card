@@ -1428,7 +1428,8 @@ class NordpolElf extends HTMLElement {
     const L=this._t; const [name,joke,task]=(s||this._builtin()).split("|");
     let q=joke||"", a=""; const k=q.indexOf("?"); if(k>0){a=q.slice(k+1).trim(); q=q.slice(0,k+1);}
     const n=this._now(); const adv=this._adv(n);
-    const dd=(adv>=1&&adv<=30)?(adv<=24&&dateMD(this._c)[0]===11&&dateMD(this._c)[1]===24?F(L.elf_date,{d:n.getDate()}):n.toLocaleDateString(this._tr.locale,{day:"numeric",month:"long"})):L.elf_trial;
+    /* one label format for every December day (elf_date), the locale's own format for other months (e.g. date: 01-07) */
+    const dd=(adv>=1&&adv<=30)?(n.getMonth()===11?F(L.elf_date,{d:n.getDate()}):n.toLocaleDateString(this._tr.locale,{day:"numeric",month:"long"})):L.elf_trial;
     const key="nordpol-task-"+n.toDateString();
     const done=localStorage.getItem(key)==="1";
     r.innerHTML+=`<ha-card class="np"><div class="hd">${esc(this._c.title)}<small>${dd}</small></div><div class="bd"><div class="scroll">
