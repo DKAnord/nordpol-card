@@ -1,7 +1,7 @@
 /* Nordpol Card – a Christmas dashboard for Home Assistant (countdown, elf cams, nice list, elf of the day, sleigh tracker).
    https://github.com/DKAnord/nordpol-card · MIT License · self-contained, no external assets. */
 (() => {
-const VER = "2.4.4";
+const VER = "2.4.5";
 const REPO_URL = "https://github.com/DKAnord/nordpol-card";
 /* === Camera periods (override in card config: periods / file_dir). Each period starts at "from" (local time). === */
 const CAM_PERIODS = [
