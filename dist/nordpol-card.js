@@ -30,6 +30,8 @@ ha-card{display:block}
 .hd small{font-family:system-ui,sans-serif;font-size:12px;color:#cfe8d8;font-weight:500;margin-left:auto;text-shadow:none;letter-spacing:0}
 .bd{padding:6px 18px 18px}
 .gold{color:#ffd878}.red{color:#ff5a64}.green{color:#7ef0a8}
+:focus-visible{outline:2px solid #ffd878;outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 `;
 const pad = n => String(n).padStart(2,"0");
 /* ===== Sprog / language (config: language: da|en|fr|de|es|sv|nb|nl|fi|pl|it|pt|cs, strings: {...} to override) ===== */
@@ -847,6 +849,12 @@ function eventYear(now,c){ const [mo,d]=dateMD(c); let y=now.getFullYear(); if(n
 function css(el, s){ const st=document.createElement("style"); st.textContent=s; el.appendChild(st); }
 /* true inside Home Assistant's card picker (its previews sit in an inert container in <hui-card-picker>) */
 function inPicker(el){ let n=el; while(n){ if(n.nodeType===1 && (n.localName==="hui-card-picker" || n.hasAttribute("inert"))) return true; n=n.parentNode||n.host||null; } return false; }
+const reducedMotion=()=>!!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+/* keyboard + screen-reader access for click / long-press targets */
+function keyAct(el, label, fn, role){
+  if(!el) return; el.tabIndex=0; el.setAttribute("role",role||"button"); if(label) el.setAttribute("aria-label",label);
+  el.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); fn(e); } });
+}
 function longPress(el, ms, fn){
   let t=null; const start=e=>{t=setTimeout(()=>{t=null;fn(e);},ms)}; const stop=()=>{if(t){clearTimeout(t);t=null}};
   el.addEventListener("pointerdown",start); ["pointerup","pointerleave","pointercancel"].forEach(ev=>el.addEventListener(ev,stop));
@@ -866,7 +874,7 @@ function dataToBlobUrl(uri){
 /* ---------- global snow layer (shared, ref-counted) ---------- */
 const Snow = { n:0, cv:null, raf:null, flakes:[],
   start(){ if(this.n++>0) return; const cv=this.cv=document.createElement("canvas");
-    Object.assign(cv.style,{position:"fixed",inset:"0",width:"100vw",height:"100vh",pointerEvents:"none",zIndex:"5",opacity:".85"});
+    Object.assign(cv.style,{position:"fixed",inset:"0",width:"100vw",height:"100vh",pointerEvents:"none",zIndex:"5",opacity:".85"}); cv.setAttribute("aria-hidden","true");
     document.body.appendChild(cv); const ctx=cv.getContext("2d");
     const resize=()=>{cv.width=innerWidth;cv.height=innerHeight}; resize(); this._r=resize; addEventListener("resize",resize);
     const N = Math.min(90, Math.round(innerWidth*innerHeight/14000));
@@ -910,7 +918,7 @@ class NordpolHero extends HTMLElement {
   /* HA sets preview=true in the card editor; the picker is detected from the DOM. Neither starts the page-wide snow. */
   set preview(v){ this._preview=!!v; this._applySnow(); }
   get preview(){ return !!this._preview; }
-  _applySnow(){ const want=this.isConnected && !!this._c && this._c.snow!==false && !this._preview && !inPicker(this);
+  _applySnow(){ const want=this.isConnected && !!this._c && this._c.snow!==false && !this._preview && !inPicker(this) && !reducedMotion();
     if(want && !this._snow){ Snow.start(); this._snow=true; } else if(!want && this._snow){ Snow.stop(); this._snow=false; } }
   set hass(h){ const first=!this._hass; this._hass=h; if(first) this._tick(); }
   getCardSize(){ return 4; }
@@ -961,9 +969,9 @@ class NordpolHero extends HTMLElement {
     .party{font-size:clamp(28px,6vw,52px);font-family:${FONT_X};color:#ffd878;margin-top:14px}
     `);
     const lights = Array.from({length:18},()=>"<i></i>").join("");
-    r.innerHTML += `<ha-card class="np"><div class="lights">${lights}</div>
+    r.innerHTML += `<ha-card class="np"><div class="lights" aria-hidden="true">${lights}</div>
       <div class="hero"><div><div class="t">${esc(this._c.title)}</div><div class="st">${esc(this._c.subtitle)}</div></div>
-      <div id="body"></div></div><div class="tree tl">🎄</div><div class="tree tr">🎁</div></ha-card>`;
+      <div id="body"></div></div><div class="tree tl" aria-hidden="true">🎄</div><div class="tree tr" aria-hidden="true">🎁</div></ha-card>`;
     this._body = r.getElementById("body"); this._tick();
   }
   _tick(){
@@ -980,7 +988,7 @@ class NordpolHero extends HTMLElement {
     const nightTxt = nights<=0 ? L.n_zero : nights===1 ? L.n_one : F(L.n_many,{n:nights});
     const moons = nights>0 && nights<=10 ? `<span class="moons" title="${F(L.n_title,{n:nights})}">${"🌙".repeat(nights)}</span>` : nights<=0 ? "" : "🌙";
     if(!this._built){
-      this._body.innerHTML = `<div class="lbl">${this._c.until?esc(this._c.until):L.until}</div><div class="cd">
+      this._body.innerHTML = `<div class="lbl">${this._c.until?esc(this._c.until):L.until}</div><div class="cd" role="timer" aria-live="off">
         <div class="u"><div class="v" id="d"></div><div class="k">${L.u_d}</div></div>
         <div class="u"><div class="v" id="h"></div><div class="k">${L.u_h}</div></div>
         <div class="u"><div class="v" id="m"></div><div class="k">${L.u_m}</div></div>
@@ -988,6 +996,7 @@ class NordpolHero extends HTMLElement {
         <div class="sl" id="sl"></div>`; this._built=true; }
     const g=id=>this.shadowRoot.getElementById(id);
     g("d").textContent=d; g("h").textContent=pad(h); g("m").textContent=pad(m); g("s").textContent=pad(s);
+    const al=`${d} ${L.u_d}, ${h} ${L.u_h}, ${m} ${L.u_m}`; const cdEl=this.shadowRoot.querySelector(".cd"); if(cdEl && cdEl.getAttribute("aria-label")!==al) cdEl.setAttribute("aria-label",al);
     g("sl").innerHTML = `${moons} <span>${nightTxt}</span>`;
   }
   connectedCallback(){ clearInterval(this._iv); this._iv=setInterval(()=>this._tick(),1000); this._applySnow(); }
@@ -1090,7 +1099,8 @@ class NordpolCams extends HTMLElement {
       v.addEventListener("error",()=>{ if(v.dataset.kind==="file"){ this._exists[v.dataset.url]={ok:false,t:Date.now()}; this._update(true); } }); });
     this._exists = this._exists || {};
     this._update(true);
-    r.querySelectorAll(".tile[data-i]").forEach(t=>t.addEventListener("click",()=>this._full(+t.dataset.i)));
+    r.querySelectorAll(".tile[data-i]").forEach(t=>{ t.addEventListener("click",()=>this._full(+t.dataset.i));
+      const cc=(this._c.cams||[])[+t.dataset.i]||{}; keyAct(t, cc.label||`Cam ${+t.dataset.i+1}`, ()=>this._full(+t.dataset.i)); });
     this._canv=[...r.querySelectorAll("canvas")];
   }
   /* overlay: "minimal" (default: REC, clock, label only) | true/"cctv" (+ scanlines, vignette, muted colours) | false/"off" */
@@ -1141,6 +1151,7 @@ class NordpolCams extends HTMLElement {
   _showPreview(){ for(const t of this.shadowRoot.querySelectorAll(".tile[data-i]")) t.dataset.kind="preview"; this._noise(true); }
   _noise(once){
     if (document.hidden) return;
+    if (!once && reducedMotion()){ if(this._noiseDone) return; this._noiseDone=true; }   /* reduced motion: one static frame */
     for (const cv of this._canv){
       if (cv.classList.contains("gl")){ const tl=cv.closest(".tile"); if(!(tl.classList.contains("glitch")||tl.classList.contains("blip")||tl.dataset.kind==="none"||(once&&tl.dataset.kind==="preview"))) continue; }
       const ctx=cv.getContext("2d"); const id=ctx.createImageData(cv.width,cv.height); const d=id.data;
@@ -1155,7 +1166,7 @@ class NordpolCams extends HTMLElement {
     if(this._fsClk) this._fsClk.textContent=s;
   }
   _glitch(){
-    if(!this._c.glitch) return; const tiles=[...this.shadowRoot.querySelectorAll(".tile[data-i][data-kind=embed]")];
+    if(!this._c.glitch || reducedMotion()) return; const tiles=[...this.shadowRoot.querySelectorAll(".tile[data-i][data-kind=embed]")];
     if(tiles.length){ const t=tiles[Math.random()*tiles.length|0]; t.classList.add("glitch"); setTimeout(()=>t.classList.remove("glitch"), 900+Math.random()*900); }
     /* real files: only a short, faint flicker (~every 30–45 s) */
     const real=[...this.shadowRoot.querySelectorAll(".tile[data-i][data-kind=file]")];
@@ -1179,8 +1190,12 @@ class NordpolCams extends HTMLElement {
     Object.assign(m.style,{position:"fixed",inset:"0",zIndex:"10000",background:"rgba(0,0,0,.88)",display:"flex",alignItems:"center",justifyContent:"center"});
     if(minimal){ const sc=m.querySelector(".npscan"); if(sc) sc.remove(); }
     document.body.appendChild(m); const fv=m.querySelector("video"); fv.muted=true; fv.src=v.src; fv.play&&fv.play().catch(()=>{});
-    this._fsClk=m.querySelector(".npc")||null; const dot=m.querySelector(".npd"); const bl=setInterval(()=>{dot.style.opacity=dot.style.opacity==="0"?"1":"0"},500);
-    m.addEventListener("click",()=>{clearInterval(bl); this._fsClk=null; m.remove();});
+    this._fsClk=m.querySelector(".npc")||null; const dot=m.querySelector(".npd"); const bl=reducedMotion()?0:setInterval(()=>{dot.style.opacity=dot.style.opacity==="0"?"1":"0"},500);
+    m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label",c.label||"Cam"); m.tabIndex=-1;
+    const back=this.shadowRoot.querySelector(`.tile[data-i="${i}"]`);
+    const close=()=>{ clearInterval(bl); this._fsClk=null; m.remove(); document.removeEventListener("keydown",onKey,true); back&&back.focus&&back.focus(); };
+    const onKey=e=>{ if(e.key==="Escape"||e.key==="Enter"||e.key===" "){ e.preventDefault(); e.stopPropagation(); close(); } else if(e.key==="Tab"){ e.preventDefault(); m.focus(); } };
+    m.addEventListener("click",close); document.addEventListener("keydown",onKey,true); m.focus&&m.focus();
     this._clock();
   }
   connectedCallback(){
@@ -1368,7 +1383,7 @@ class NordpolNice extends HTMLElement {
         <div class="log"><b>${t.log_title}</b><div id="log"></div></div><div class="hint">${t.hold}</div></div>
         <div class="dlg" id="dlg"><div><p id="dq"></p><button class="yes" id="yes"></button><button class="no" id="no">${t.cancel}</button></div></div></ha-card>`;
       const $=id=>r.getElementById(id);
-      longPress($("hd"), 900, ()=>this._toggleParent());
+      longPress($("hd"), 900, ()=>this._toggleParent()); keyAct($("hd"), String(t.parent||"").replace(/<[^>]*>/g,""), ()=>this._toggleParent());
       $("kids").addEventListener("click",e=>{ const b=e.target.closest("button[data-d]"); if(!b) return; const row=b.closest(".kid");
         const k=this._kids().find(x=>x.uid===row.dataset.uid); if(!k) return; const why=$("why"); const d=+b.dataset.d; const w=(why.value||"").trim();
         const ns=clamp100(k.score+d); this._setScore(k,ns); this._log(`${k.name} ${d>0?"+":""}${d}${w?": "+w:""}`); why.value=""; this._armTimer(); });
@@ -1489,8 +1504,9 @@ class NordpolElf extends HTMLElement {
       ${q?`<div class="j"><b>${L.elf_joke}</b><br>${esc(q)}<br><span class="ans" id="ans">${esc(a||"…")}</span> <small style="opacity:.6">${L.elf_tap}</small></div>`:""}
       ${task?`<div class="task ${done?"done":""}" id="task">${done?"✅":"🎯"} <span>${L.elf_task} ${esc(task)}</span></div>`:""}
     </div></div></ha-card>`;
-    const an=r.getElementById("ans"); an&&an.addEventListener("click",()=>an.classList.add("show"));
-    const t=r.getElementById("task"); t&&t.addEventListener("click",()=>{ const d=localStorage.getItem(key)==="1"; localStorage.setItem(key,d?"0":"1"); this._render(s); });
+    const an=r.getElementById("ans"); an&&an.addEventListener("click",()=>an.classList.add("show")); keyAct(an, L.elf_tap, ()=>an.classList.add("show"));
+    const t=r.getElementById("task"); const tog=()=>{ const d=localStorage.getItem(key)==="1"; localStorage.setItem(key,d?"0":"1"); this._render(s); const nt=r.getElementById("task"); nt&&nt.focus(); };
+    t&&t.addEventListener("click",tog); if(t){ keyAct(t, null, tog); t.setAttribute("aria-pressed", done?"true":"false"); }
   }
 }
 
@@ -1600,7 +1616,8 @@ class NordpolSleigh extends HTMLElement {
     r.innerHTML+=`<ha-card class="np"><div class="hd" id="hd">${this._c.title?esc(this._c.title):t.sl_title}<small id="mode">${t.sl_radar}</small></div><div class="bd">
       <div class="map"><svg id="svg" viewBox="0 0 360 180" preserveAspectRatio="none"></svg></div><div id="info"></div>
       <div class="demo">${t.sl_hint}</div></div></ha-card>`;
-    longPress(r.getElementById("hd"),900,()=>{ this._demo=!this._demo; this._demoStart=Date.now(); this._tick(); });
+    const demo=()=>{ this._demo=!this._demo; this._demoStart=Date.now(); this._tick(); };
+    longPress(r.getElementById("hd"),900,demo); keyAct(r.getElementById("hd"), null, demo);
     if(this._hass||this._c.home&&typeof this._c.home==="object"){ this._makeRoute(); this._drawBase(); }
   }
   _xy(lat,lon){ return [lon+180, 90-lat]; }
@@ -1621,7 +1638,7 @@ class NordpolSleigh extends HTMLElement {
     this._route.forEach((p,i)=>{ const [x,y]=this._xy(p.lat,p.lon); const home=!!p.home;
       s+=`<circle cx="${x}" cy="${y}" r="${home?2.6:1.4}" fill="${home?"#ff3b4a":"#fff"}" ${home?'stroke="#ffd878" stroke-width=".8"':''}/>`;
       if(home) s+=`<text x="${x+3}" y="${y-3}" font-size="7" fill="#ffd878" font-weight="700">${esc(this._homeName)}</text>`; });
-    s+=`<g id="sl"><circle r="6" fill="rgba(255,60,74,.35)"><animate attributeName="r" values="3;8;3" dur="1.6s" repeatCount="indefinite"/></circle><text font-size="12" text-anchor="middle" dy="4">🛷</text></g>`;
+    s+=`<g id="sl"><circle r="6" fill="rgba(255,60,74,.35)">${reducedMotion()?"":`<animate attributeName="r" values="3;8;3" dur="1.6s" repeatCount="indefinite"/>`}</circle><text font-size="12" text-anchor="middle" dy="4">🛷</text></g>`;
     svg.innerHTML=s;
   }
   _dlabel(){ const [mo,d]=dateMD(this._c); return new Date(2000,mo,d).toLocaleDateString(this._tr.locale,{day:"numeric",month:"long"}); }
@@ -1727,10 +1744,10 @@ class NordpolBoard extends HTMLElement {
     hero.appendChild(this._mk("nordpol-hero-card",this._c.hero,"compact"));
     cams.appendChild(this._mk("nordpol-cam-card",this._c.cams,"fill"));
     const L=T(this._c); const tabs=[["sleigh","🛷",L.tab_sleigh,"nordpol-sleigh-card"],["nice","⭐",L.tab_nice,"nordpol-nice-card"],["elf","🧝",L.tab_elf,"nordpol-elf-card"]];
-    const bar=document.createElement("div"); bar.className="tabs"; const pane=document.createElement("div"); pane.className="pane";
+    const bar=document.createElement("div"); bar.className="tabs"; bar.setAttribute("role","tablist"); const pane=document.createElement("div"); pane.className="pane";
     side.append(bar,pane);
     this._tabEls={}; this._btns={};
-    for(const [k,ic,lbl,tag] of tabs){ const btn=document.createElement("button"); btn.innerHTML=`<span>${ic}</span>${lbl}`;
+    for(const [k,ic,lbl,tag] of tabs){ const btn=document.createElement("button"); btn.innerHTML=`<span aria-hidden="true">${ic}</span>${lbl}`; btn.setAttribute("role","tab");
       btn.addEventListener("click",()=>this._show(k,true)); bar.appendChild(btn); this._btns[k]=btn;
       const el=this._mk(tag,this._c[k],"tab"); pane.appendChild(el); this._tabEls[k]=el; }
     /* Optional extra button, e.g. home_button: {label: "Home", icon: "🏠", path: "/lovelace/0"} */
@@ -1740,7 +1757,7 @@ class NordpolBoard extends HTMLElement {
       bar.appendChild(homeBtn); }
     this._show(this._c.default_tab||"sleigh");
   }
-  _show(k,user){ for(const t in this._tabEls){ this._tabEls[t].classList.toggle("show",t===k); this._btns[t].classList.toggle("on",t===k); }
+  _show(k,user){ for(const t in this._tabEls){ this._tabEls[t].classList.toggle("show",t===k); this._btns[t].classList.toggle("on",t===k); this._btns[t].setAttribute("aria-selected",t===k?"true":"false"); }
     clearTimeout(this._back); if(user && k!==(this._c.default_tab||"sleigh")) this._back=setTimeout(()=>this._show(this._c.default_tab||"sleigh"),(this._c.return_after_min||3)*60000); }
   disconnectedCallback(){ clearTimeout(this._back); }
 }
