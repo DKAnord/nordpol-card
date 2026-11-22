@@ -29,7 +29,7 @@
 <script>
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const root = document.getElementById("root");
-const LANGS = ["en","da","fr","de","es","sv","nb","nl","fi","pl","it","pt","cs"];
+const LANGS = ["en","da","fr","de","es","sv","nb","nl","fi","pl","it","pt","cs","hu"];
 
 /* ---------- time helpers (independent of the card's implementation) ---------- */
 function wallMs(tz, ms) {
@@ -145,7 +145,7 @@ window.__runBehaviorTests = async function () {
 
 /* ===================================================================== */
 /* base: every card renders in every language, no exceptions, no timer leaks */
-test("base", "all cards render in all 13 languages and clean up their timers", async ({ ok, eq }) => {
+test("base", `all cards render in all ${LANGS.length} languages and clean up their timers`, async ({ ok, eq }) => {
   __setNow(RealDate.parse("2026-12-10T10:00:00Z"));
   const errors = []; const onErr = e => errors.push(e.message || String(e.reason)); window.addEventListener("error", onErr); window.addEventListener("unhandledrejection", onErr);
   const before = __iv.size;
@@ -157,7 +157,7 @@ test("base", "all cards render in all 13 languages and clean up their timers", a
   await sleep(400);
   ok(root.querySelectorAll("*").length > 0, "cards mounted");
   cleanup(); await sleep(50);
-  eq(__iv.size, before, "no intervals left after removing 78 cards");
+  eq(__iv.size, before, `no intervals left after removing ${LANGS.length * 6} cards`);
   window.removeEventListener("error", onErr); window.removeEventListener("unhandledrejection", onErr);
   eq(errors, [], "no uncaught errors / rejections");
 });
@@ -200,7 +200,7 @@ test("width", "cam, nice, elf and sleigh cards stay inside the card", async ({ o
   const vw = document.documentElement.clientWidth;
   for (const w of [320, 380, 430, 600]) {
     const cw = Math.min(w, vw) - 16;
-    for (const lg of ["en", "da", "nl", "fi", "de", "pt", "cs"]) {
+    for (const lg of ["en", "da", "nl", "fi", "de", "pt", "cs", "hu"]) {
       const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Maximilian-Alexander", 95), kid("b", "Bo", 10)] } });
       const els = ["cam", "nice", "elf", "sleigh"].map(t => mount(`nordpol-${t}-card`, { language: lg, store: "todo.nordpol_nice_list", remote_dir: "/remote" }, { width: cw, ha }));
       await sleep(80);
@@ -212,7 +212,7 @@ test("width", "cam, nice, elf and sleigh cards stay inside the card", async ({ o
 test("width", "tablet board fits the viewport (stacked on phones)", async ({ ok }) => {
   __setNow(RealDate.parse("2026-12-10T10:00:00Z"));
   const vw = document.documentElement.clientWidth;
-  for (const lg of ["en", "da", "nl"]) {
+  for (const lg of ["en", "da", "nl", "hu"]) {
     const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)] } });
     const b = mount("nordpol-board-card", { language: lg, hero: { snow: false }, cams: { remote_dir: "/remote" }, nice: { store: "todo.nordpol_nice_list" } }, { ha });
     await sleep(100);
@@ -479,12 +479,76 @@ test("editor", "fallback editor countdown placeholder follows the language defau
 /* ===================================================================== */
 /* elf date label is one format through the whole season */
 test("elf", "elf date label keeps the elf_date format from 1 to 30 December", async ({ ok }) => {
-  for (const lg of ["en", "da", "de", "nl", "cs"]) {
+  for (const lg of ["en", "da", "de", "nl", "cs", "hu"]) {
     const labels = [];
     for (const d of [1, 24, 25, 26, 30]) { __setNow(instant("Europe/Copenhagen", 2026, 11, d, 12, 0)); const el = mount("nordpol-elf-card", { language: lg }, { hass: mkHA().makeHass() }); labels.push(el.shadowRoot.querySelector(".hd small").textContent); cleanup(); }
     const shape = labels.map(s => s.replace(/\d+/, "#"));
     ok(new Set(shape).size === 1, `${lg} same date format: ${labels.join(" | ")}`);
   }
+});
+
+/* ===================================================================== */
+/* Hungarian (hu): hu-HU dates/numbers, 12-24 18:00 default, long words at 320 px */
+test("dates", "hu: countdown targets Szenteste 12-24 18:00 in the configured zone", async ({ ok }) => {
+  __setNow(instant("Europe/Budapest", 2026, 11, 24, 17, 0));
+  const el = mount("nordpol-hero-card", { language: "hu", snow: false, time_zone: "Europe/Budapest" }, { hass: mkHA({ config: { time_zone: "Europe/Budapest" } }).makeHass() });
+  el._tick();
+  const v = heroVals(el), shown = ((v.d * 24 + v.h) * 60 + v.m) * 60 + v.s;
+  ok(Math.abs(shown - 3600) <= 1, `1 hour before 18:00 Budapest time (shown ${shown}s)`);
+  ok(cardText(el).includes("Szentestéig még"), "hu countdown heading");
+  ok(cardText(el).includes("Ma este jön a Jézuska"), "hu n_zero on the day");
+  cleanup();
+  __setNow(instant("Europe/Budapest", 2026, 11, 24, 18, 30));
+  const p = mount("nordpol-hero-card", { language: "hu", snow: false, time_zone: "Europe/Budapest" }, { hass: mkHA({ config: { time_zone: "Europe/Budapest" } }).makeHass() });
+  await sleep(30);
+  ok(cardText(p).includes("Boldog karácsonyt"), "hu party after 18:00");
+});
+test("dates", "hu: elf and sleigh dates use the hu-HU format", async ({ eq, ok }) => {
+  for (const [d, nm] of [[1, "Pötyi manó"], [6, "Virgács manó"], [13, "Búzaszem manó"], [24, "Szaloncukor manó"]]) {
+    __setNow(instant("Europe/Copenhagen", 2026, 11, d, 12, 0));
+    const el = mount("nordpol-elf-card", { language: "hu" }, { hass: mkHA().makeHass() });
+    eq(el.shadowRoot.querySelector(".hd small").textContent, `december ${d}.`, `hu elf date label on ${d} Dec`);
+    ok(cardText(el).includes(nm), `hu elf of ${d} Dec is ${nm}`);
+    cleanup();
+  }
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 12, 0));
+  const s = mount("nordpol-sleigh-card", { language: "hu" }, { hass: mkHA().makeHass() });
+  await sleep(50);
+  ok(cardText(s).includes("december 24."), "hu sleigh parked text uses the hu-HU date: " + cardText(s).slice(0, 160));
+  ok(cardText(s).includes("Északi-sarkon parkol"), "hu parked text");
+});
+test("width", "hu: long Hungarian words stay inside every card at 320 px", async ({ ok }) => {
+  const vw = document.documentElement.clientWidth;
+  const cw = Math.min(320, vw) - 16;
+  const kids = [kid("a", "Szentgyörgyi-Szerecsendió", 95, 75, "🧒"), kid("b", "Bo", 3)];
+  /* 8 Dec = longest elf name (Szerecsendió manó), 24 Dec = sleigh loading and in flight (Új-Zéland → … Görögország, Olaszország, Németország → home), 26 Dec = after Christmas */
+  for (const iso of ["2026-12-08T10:00:00Z", "2026-12-24T08:00:00Z", "2026-12-24T12:00:00Z", "2026-12-24T16:00:00Z", "2026-12-24T20:30:00Z", "2026-12-24T21:30:00Z", "2026-12-24T22:50:00Z", "2026-12-25T10:00:00Z", "2026-12-26T10:00:00Z"]) {
+    __setNow(RealDate.parse(iso));
+    const ha = mkHA({ lists: { "todo.nordpol_nice_list": kids } });
+    const els = ["hero", "cam", "nice", "elf", "sleigh"].map(t => mount(`nordpol-${t}-card`, { language: "hu", snow: false, store: "todo.nordpol_nice_list", remote_dir: "/remote" }, { width: cw, ha }));
+    await sleep(120);
+    const nice = els[2]; nice._toggleParent && nice._toggleParent(); await sleep(30);
+    for (const el of els) {
+      const bad = outside(el, ".u,.v,.k,.sl,.lbl,.t,.st,.tile,.kid,.nm,.bar,.log,.scroll,.task,.j,.n,.map,.row,.big,.eta,.foot,button,.hd,h2,small,b");
+      ok(!bad.length, `${el.localName} hu @320px (${iso}) inside card ${bad.join("; ")}`);
+      const card = el.shadowRoot.querySelector("ha-card");
+      if (card) ok(card.scrollWidth <= card.clientWidth + 1, `${el.localName} hu @320px (${iso}) no horizontal scroll (${card.scrollWidth} > ${card.clientWidth})`);
+    }
+    cleanup();
+  }
+});
+test("width", "hu: board tabs and hero fit a 320 px phone", async ({ ok }) => {
+  __setNow(RealDate.parse("2026-12-10T10:00:00Z"));
+  const vw = document.documentElement.clientWidth;
+  const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)] } });
+  const b = mount("nordpol-board-card", { language: "hu", hero: { snow: false }, cams: { remote_dir: "/remote" }, nice: { store: "todo.nordpol_nice_list" } }, { ha });
+  await sleep(150);
+  const br = b.getBoundingClientRect(); ok(br.right <= vw + 1, `hu board @${vw}px within viewport`);
+  const tabs = [...b.shadowRoot.querySelectorAll("[role=tab], .tabs button, .tab")];
+  ok(tabs.length >= 3, "hu board tabs rendered (" + tabs.length + ")");
+  for (const t of tabs) { const r = t.getBoundingClientRect(); if (!r.width) continue; ok(r.left >= -1 && r.right <= vw + 1, `hu tab "${t.textContent.trim()}" inside the viewport [${Math.round(r.left)}–${Math.round(r.right)}]`); }
+  const txt = b.shadowRoot.textContent;
+  ok(txt.includes("Szán") && txt.includes("Jók") && txt.includes("Manó"), "hu tab labels");
 });
 
 /* ===================================================================== */

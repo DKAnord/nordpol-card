@@ -67,8 +67,8 @@
         try { form.assertConfig([]); } catch (e) { threwArr = true; }
         assert(threwArr, `${tag}.assertConfig throws on array`);
 
-        // Localized labels & helpers across all 13 languages
-        for (const lg of ["en", "da", "fr", "de", "es", "sv", "nb", "nl", "fi", "pl", "it", "pt", "cs"]) {
+        // Localized labels & helpers across all 14 languages
+        for (const lg of ["en", "da", "fr", "de", "es", "sv", "nb", "nl", "fi", "pl", "it", "pt", "cs", "hu"]) {
           document.documentElement.lang = lg;
           for (const f of fields) {
             const lbl = form.computeLabel(f, () => {});
@@ -267,8 +267,8 @@
       const langOf = new Function(langOfSrc + "; return langOf;")();
       const defaultTarget = new Function(langOfSrc + "\n" + defaultTargetSrc + "; return defaultTarget;")();
 
-      const ALL = ["en","da","fr","de","es","sv","nb","nl","fi","pl","it","pt","cs"];
-      const NEW = ["nb","nl","fi","pl","it","pt","cs"];
+      const ALL = ["en","da","fr","de","es","sv","nb","nl","fi","pl","it","pt","cs","hu"];
+      const NEW = ["nb","nl","fi","pl","it","pt","cs","hu"];
       const enKeys = Object.keys(I18N.en);
       const phRe = /\{[A-Za-z]+\}/g;
       const htmlRe = /<\/?(?:b|code)>/g;
@@ -321,6 +321,26 @@
       eq(langOf({ language: "it" }), "it", "langOf it");
       eq(langOf({ language: "pt-PT" }), "pt", "langOf pt");
       eq(langOf({ language: "cs-CZ" }), "cs", "langOf cs");
+      eq(langOf({ language: "hu" }), "hu", "langOf hu");
+      eq(langOf({ language: "hu-HU" }), "hu", "langOf hu-HU");
+      eq(langOf({ language: "HU-hu" }), "hu", "langOf is case-insensitive for hu");
+      {
+        /* auto-detect: config → <html lang> → navigator.language */
+        const htmlLang = document.documentElement.lang;
+        document.documentElement.lang = "hu-HU";
+        eq(langOf({}), "hu", "langOf picks hu-HU from <html lang>");
+        eq(langOf(null), "hu", "langOf(null) picks hu-HU from <html lang>");
+        eq(langOf({ language: "de" }), "de", "config.language wins over <html lang> hu");
+        document.documentElement.lang = "";
+        const navDesc = Object.getOwnPropertyDescriptor(Navigator.prototype, "language");
+        Object.defineProperty(navigator, "language", { configurable: true, get: () => "hu-HU" });
+        eq(langOf({}), "hu", "langOf picks hu-HU from navigator.language");
+        Object.defineProperty(navigator, "language", { configurable: true, get: () => "hu" });
+        eq(langOf({}), "hu", "langOf picks hu from navigator.language");
+        delete navigator.language;
+        eq(Object.getOwnPropertyDescriptor(Navigator.prototype, "language").get, navDesc.get, "navigator.language restored");
+        document.documentElement.lang = htmlLang;
+      }
       eq(defaultTarget({ language: "nl" }), "12-25 00:00", "defaultTarget nl is 12-25 00:00");
       eq(defaultTarget({ language: "it" }), "12-25 00:00", "defaultTarget it is 12-25 00:00");
       eq(defaultTarget({ language: "pt" }), "12-25 00:00", "defaultTarget pt is 12-25 00:00");
@@ -328,6 +348,9 @@
       eq(defaultTarget({ language: "fi" }), "12-24 18:00", "defaultTarget fi is 12-24 18:00");
       eq(defaultTarget({ language: "pl" }), "12-24 18:00", "defaultTarget pl is 12-24 18:00");
       eq(defaultTarget({ language: "cs" }), "12-24 18:00", "defaultTarget cs is 12-24 18:00");
+      eq(defaultTarget({ language: "hu" }), "12-24 18:00", "defaultTarget hu is 12-24 18:00");
+      eq(defaultTarget({ language: "hu-HU" }), "12-24 18:00", "defaultTarget hu-HU is 12-24 18:00");
+      eq(defaultTarget({ language: "hu", date: "12-25" }), "12-25 00:00", "custom date wins over the hu default");
       eq(defaultTarget({ language: "fr" }), "12-25 00:00", "defaultTarget fr unchanged");
       eq(defaultTarget({ language: "en" }), "12-24 18:00", "defaultTarget en unchanged");
       eq(defaultTarget({ language: "nl", date: "01-07" }), "01-07 00:00", "custom date still wins over language default");
@@ -344,6 +367,20 @@
       eq(ED_H.fi.target.includes("12-24 18:00"), true, "ed_h.fi.target states 12-24 18:00");
       eq(ED_H.pl.target.includes("12-24 18:00"), true, "ed_h.pl.target states 12-24 18:00");
       eq(ED_H.cs.target.includes("12-24 18:00"), true, "ed_h.cs.target states 12-24 18:00");
+      eq(ED_H.hu.target.includes("12-24 18:00"), true, "ed_h.hu.target states 12-24 18:00");
+      eq(I18N.hu.locale, "hu-HU", "I18N.hu.locale is hu-HU");
+      eq(I18N.hu.elf_date.replace("{d}", "24"), new Date(2026, 11, 24).toLocaleDateString("hu-HU", { month: "long", day: "numeric" }), "hu elf_date matches the hu-HU long date format");
+      const langOptsM = src.match(/const LANG_OPTS = (\[[^\n]*\]);/);
+      const LANG_OPTS = new Function("return (" + langOptsM[1] + ")")();
+      eq(LANG_OPTS.filter(o => o.value).map(o => o.value).sort().join(), ALL.slice().sort().join(), "LANG_OPTS lists every language");
+      eq(LANG_OPTS.find(o => o.value === "hu").label, "Magyar", "LANG_OPTS hu label is Magyar");
+      const OVL = new Function("return (" + src.match(/const OV_OPTS_L = (\{[\s\S]*?\n\});/)[1] + ")")();
+      const CCL = new Function("return (" + src.match(/const CCTV_OPTS_L = (\{[\s\S]*?\n\});/)[1] + ")")();
+      for (const lg of ALL) {
+        eq((OVL[lg] || []).map(o => o.value).join(), "minimal,cctv,off", `OV_OPTS_L.${lg} has minimal/cctv/off`);
+        eq((CCL[lg] || []).map(o => o.value).join(), "color,mono", `CCTV_OPTS_L.${lg} has color/mono`);
+      }
+      eq(ovOpts({ language: "hu" })[2].label, "Ki (csak videó)", "ovOpts hu translated");
       eq(ED_H.nl.target.includes("12-25 00:00"), true, "ed_h.nl.target states 12-25 00:00");
       eq(ED_H.it.target.includes("12-25 00:00"), true, "ed_h.it.target states 12-25 00:00");
       eq(ED_H.pt.target.includes("12-25 00:00"), true, "ed_h.pt.target states 12-25 00:00");
