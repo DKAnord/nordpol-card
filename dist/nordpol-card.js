@@ -35,7 +35,7 @@ ha-card{display:block}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 `;
 const pad = n => String(n).padStart(2,"0");
-/* ===== Sprog / language (config: language: da|en|fr|de|es|sv|nb|nl|fi|pl|it|pt|cs, strings: {...} to override) ===== */
+/* ===== Sprog / language (config: language: da|en|fr|de|es|sv|nb|nl|fi|pl|it|pt|cs|hu, strings: {...} to override) ===== */
 const I18N = {
  da: {
   hero_title:"🎅 Nordpolen", hero_sub:"Julemandens hemmelige kontrolrum", until:"⏳ Juleaften om",
@@ -692,9 +692,47 @@ const I18N = {
   sl_hint:"podržte titulek pro zkušební let ✈️", sl_np:"Severní pól", sl_home:"Domov",
   sl_news:["Elfové natírají poslední houpací koníky 🐴","Rudolf cvičí přistání na střechy 🏠","Peče se poslední várka vánočního cukroví 🍪","Kapr už plave ve vaně 🐟","Elfové třídí seznamy přání 📜","Balicí papír: 4 812 km rozvinuto 🎁","Ježíšek chystá dárky pod stromeček 🎁","Sobi dostávají extra oves 🌾","Formičky na lití olova jsou nachystané ✨","GPS saní stahuje nové mapy 🗺️"],
   tab_sleigh:"Saně", tab_nice:"Hodní", tab_elf:"Elf", locale:"cs-CZ"
+ },
+ hu: {
+  hero_title:"🎅 Északi-sark", hero_sub:"A Mikulás titkos irányítóterme", until:"⏳ Szentestéig még",
+  u_d:"nap", u_h:"óra", u_m:"perc", u_s:"mp",
+  n_many:"még {n} éjszaka", n_one:"Már csak 1 éjszaka! 😴", n_zero:"Ma este jön a Jézuska! 🎄", n_title:"{n} éjszaka",
+  party:"🎉 Boldog karácsonyt! 🎉", party_sub:"Itt járt a Jézuska – nézz a fa alá! 🎁",
+  cam_title:"📹 Északi-sarki kamerák", cam_live:"● ÉLŐ", cam_tap:"koppints a teljes képernyőhöz", cam_lost:"⚠ NINCS JEL", cam_restore:"újracsatlakozás…",
+  cam_lost_label:"CAM 01 – RÉNSZARVAS-KIFUTÓ", cam_foot:"🔒 Titkos manókamera · csak jó gyerekeknek", cam_close:"koppints a bezáráshoz ✕",
+  periods:{morning:"🌅 reggel",day:"☀️ nappal",evening:"🌙 este",morgen:"🌅 reggel",dag:"☀️ nappal",aften:"🌙 este"},
+  nice_title:"⭐ Jók listája", nice_sub:"A Mikulás aranykönyve", parent:"🔓 Szülői mód (2 perc után bezárul)",
+  why:"Mi történt? (pl. segített megteríteni)", log_title:"📜 Manónapló", no_log:"Még nincs bejegyzés…", hold:"🔒 tartsd lenyomva a címet 1 mp-ig.",
+  lv:["Jaj… virgács a csizmában? 🪵","A manók figyelnek 👀","Majdnem jó 🙂","Jó ⭐","SZUPER jó 🌟"],
+  reset:"🔄 Lista visszaállítása", reset_q:"Visszaállítod a jók listáját?",
+  reset_txt:"Minden gyerek visszakapja a kezdő pontszámát, és a manónapló elölről kezdődik.",
+  yes_reset:"Igen, visszaállítom", cancel:"Mégse", new_start:"Tiszta lap – a manók figyelnek! 👀",
+  edit:"✏️ Gyerekek szerkesztése", edit_done:"✔ Kész", e_emoji:"Emoji", e_name:"Név", e_start:"Kezdő", add:"➕ Hozzáadás", save:"💾", del:"🗑",
+  del_q:"{name} törlése?", del_txt:"{name} lekerül a jók listájáról. Ez nem vonható vissza.", yes_del:"Igen, törlöm", new_name:"Új gyerek",
+  no_kids:"Még nincs gyerek a listán.", add_kid:"➕ Gyerek hozzáadása", loading:"A gyerekek betöltése a Mikulás aranykönyvéből…",
+  load_err:"Nem sikerült betölteni a gyerekeket ({store}): {err}",
+  no_entity:"nem létezik a Home Assistantban", retry:"🔄 Újrapróbálás",
+  stale:"🔄 Új Nordpol-verzió – az oldal újratöltődik…",
+  no_store:"Hozz létre egy <b>Local To-do</b> listát <code>Nordpol nice list</code> néven, vagy válassz egy teendőlistát a kártya vizuális szerkesztőjében.",
+  elf_title:"🧝 A nap manója", elf_date:"december {d}.",
+  elf_trial:"Próbamanó (az igazi december 1-jén érkezik)",
+  elf_duty:"ma ő az ügyeletes manó", elf_joke:"A nap manóvicce:", elf_tap:"(koppints a válaszért)", elf_task:"A nap manófeladata:",
+  elves:[["Pötyi manó","Mit tanulnak a manók az iskolában? A manó-ábécét!","Rajzolj egy karácsonyi csillagot"],["Szipogó manó","Mit mond a rénszarvas, mielőtt viccet mesél? Ettől leszánkózol a székről!","Segíts megteríteni"],["Ragacs manó","Mit esznek reggelire a hóemberek? Hópelyhet!","Rakj rendet a szobádban"],["Kása manó","Mi a manók kedvenc zenéje? A csomagolós rap!","Ölelj meg valakit, akit szeretsz"],["Csilingel manó","Miért ment a Mikulás orvoshoz? Berekedt a sok ho-ho-hótól!","Pucold ki a csizmádat, és tedd az ablakba – jön a Mikulás!"],["Virgács manó","Mit kap a Mikulástól, aki rossz volt? Virgácsot – de abban is lóg egy kis csoki!","Köszönd meg a Mikulásnak a csomagot egy rajzzal"],["Csillám manó","Mikor pihen a Mikulás? Amikor már minden ajándék a helyén van!","Írj vagy rajzolj valakinek egy karácsonyi képeslapot"],["Szerecsendió manó","Miért ment orvoshoz a mézeskalács-emberke? Mert egész nap morzsásnak érezte magát!","Segíts sütni vagy főzni valamit a konyhában"],["Magyal manó","Hogy hívják a hóembert júliusban? Tócsának!","Igyál meg egy plusz pohár vizet, mint egy egészséges manó"],["Girland manó","Miért jár a krampusz a Mikulással? Mert valakinek a virgácsot is cipelnie kell!","Énekelj hangosan egy karácsonyi dalt"],["Gömböc manó","Miért olyan hideg karácsonykor? Mert decembrrr van!","Mondj valakinek egy őszinte bókot"],["Dérke manó","Mivel közlekednek a hóemberek? Jégbicajjal!","Menj ki 15 percre friss levegőre"],["Búzaszem manó","Hol tartják a hóemberek a pénzüket? A hóbankban!","Luca-napon ültess búzát egy tálkába – karácsonyra kizöldül!"],["Gyömbér manó","Hogy hívják a szem nélküli rénszarvast? Fogalmam sincs!","Vesd be egyedül az ágyadat"],["Szikra manó","Mi a manók kedvenc tantárgya? A manótematika!","Ossz meg egy játékot vagy egy finomságot valakivel"],["Fenyőke manó","Miért ment a karácsonyfa a fodrászhoz? Mert ráfért egy kis igazítás!","Mondd el valakinek, miért vagy hálás"],["Kakaó manó","Mi az: piros-fehér, piros-fehér, piros-fehér? A Mikulás, ahogy legurul a dombról!","Tedd szépen a helyére a cipődet és a kabátodat"],["Marcipán manó","Hány gyertya ég az adventi koszorún a harmadik vasárnapon? Három – a negyedik még izgul!","Tegyél valakinek egy szívességet kérés nélkül"],["Hógolyó manó","Mi lesz, ha megeszed a karácsonyfadíszeket? Girlandgyulladás!","Építs valamit kockából, papírból vagy hóból"],["Bors manó","Mit csinál a Mikulás a kertben? Ho-ho-hólapátol!","Hívd fel vagy írj a nagyszüleidnek vagy egy barátodnak"],["Kürtös manó","Melyik sütemény tud trombitálni? A kürtőskalács!","Sétálj egyet a karácsonyi fények között vagy egy adventi vásárban"],["Juhar manó","Mit mondott az egyik hóember a másiknak? Te is répaszagot érzel?","Segíts becsomagolni egy ajándékot"],["Mákos manó","Miért szeretik a manók a mákos bejglit? Mert akinek mákja van, az szerencsés!","Segíts elkészíteni a bejglit – vagy legalább kóstold meg!"],["Szaloncukor manó","Kik ünneplik a névnapjukat szenteste? Ádám és Éva – nekik dupla ünnep!","Figyeld, mikor szól a csengő – itt járt a Jézuska!"],["Gumicukor manó","Mi lesz, ha összekeresztezed a Mikulást egy kacsával? Ho-ho-háp!","Mondj valakinek egy viccet, hogy nevessen"],["Karamell manó","Miért volt szomorú a Mikulás kis segítője? Mert alacsony volt az önmanóbecsülése!","Mosd meg a fogad extra alaposan – a manók ellenőrzik!"],["Kesztyű manó","Hogy hívják a fülvédős rénszarvast? Ahogy akarod – úgysem hallja!","Segíts valakinek cipelni valamit"],["Áfonya manó","Hány ajándék fér a Mikulás üres zsákjába? Csak egy – utána már nem üres!","Mondd egész nap, hogy kérem és köszönöm"],["Jégcsap manó","Melyik rénszarvas sértődik meg a legkönnyebben? Rudolf – mert mindig orrol!","Tölts el egy órát képernyő nélkül"],["Borsmenta manó","Mit hordanak a hóemberek a fejükön? Jégsapkát!","Táncolj a kedvenc dalodra"]],
+  sl_title:"🛷 Szánkövető", sl_radar:"Manóradar", sl_status:"A műhely állapota", sl_demo_mode:"PRÓBAREPÜLÉS (szimuláció)", sl_live:"ÉLŐ · {date}",
+  sl_rows:["🎁 Becsomagolt ajándékok","📜 Elolvasott levelek","🦌 Rénszarvasok erőnléte","✨ Varázspor a tankban","🍬 Szaloncukor-kóstolás"],
+  sl_after_rows:["🎁 Kiszállított ajándékok","😴 Mikulás","🦌 Rénszarvasok az istállóban"],
+  sl_after:"🎅 A Mikulás hazaért, és most jól kialussza magát. Köszönjük ezt az évet! 💤",
+  sl_parked:"🛷 A szán az Északi-sarkon parkol. Élőben itt követheted: {date} – várható érkezés ide: {home}, kb. {eta}.",
+  sl_pre:"🛷 Rakodják a szánt az Északi-sarkon… indulás: {t}", sl_done:"🏁 A Mikulás újra leszállt az Északi-sarkon. Jó éjszakát! 💤",
+  sl_land:"📍 A Mikulás leszáll: <b>{a}</b>", sl_fly:"✈️ Repülés: <b>{a}</b> → <b>{b}</b>", sl_here:"🎅🏠 A Mikulás most itt van: <b>{home}</b>! Nézz ki az ablakon ✨",
+  sl_in_h:"{h} ó {m} perc múlva", sl_in_m:"{m} perc múlva!", sl_now:"MOST! 👀 Nézz ki az ablakon!", sl_been:"Már itt járt ✔",
+  sl_gifts:"🎁 Kiszállított ajándék: {n} millió", sl_speed:"⚡ Sebesség: {s} km/s", sl_rudolf:"🦌 Rudolf: fényesen ragyog", sl_eta:"🏠 Érkezés: {home}",
+  sl_hint:"tartsd lenyomva a címet egy próbarepüléshez ✈️", sl_np:"Északi-sark", sl_home:"Otthon",
+  sl_news:["A manók festik az utolsó hintalovakat 🐴","Rudolf a háztetőkre szállást gyakorolja 🏠","Sül a bejgli – mákos és diós is 🥮","Szaloncukrot kötöznek a fenyőágakra 🍬","A manók válogatják a kívánságlistákat 📜","Csomagolópapír: 4 812 km legöngyölítve 🎁","Fő a halászlé a szentesti vacsorához 🐟","A rénszarvasok extra zabot kapnak 🌾","A manók kürtőskalácsot kóstolnak a budapesti adventi vásárban 🎪","A szán GPS-e új térképeket tölt le 🗺️"],
+  tab_sleigh:"Szán", tab_nice:"Jók", tab_elf:"Manó", locale:"hu-HU"
  }
 };
-function langOf(c){ const l=String((c&&c.language)||document.documentElement.lang||navigator.language||"en").toLowerCase(); if(l.startsWith("nb")||l.startsWith("no")||l.startsWith("nn")) return "nb"; for(const k of ["da","fr","de","es","sv","nl","fi","pl","it","pt","cs"]) if(l.startsWith(k)) return k; return "en"; }
+function langOf(c){ const l=String((c&&c.language)||document.documentElement.lang||navigator.language||"en").toLowerCase(); if(l.startsWith("nb")||l.startsWith("no")||l.startsWith("nn")) return "nb"; for(const k of ["da","fr","de","es","sv","nl","fi","pl","it","pt","cs","hu"]) if(l.startsWith(k)) return k; return "en"; }
 function escVal(v){
   if(Array.isArray(v)) return v.map(escVal);
   if(v && typeof v==="object"){ const o={}; for(const k of Object.keys(v)) o[k]=escVal(v[k]); return o; }
@@ -719,7 +757,7 @@ function hasDefaultTodo(hass, entities){
   return (Array.isArray(entities)&&entities.includes(id)) || Boolean(hass&&hass.states&&hass.states[id]);
 }
 function assertObj(c){ if(!c || typeof c!=="object" || Array.isArray(c)) throw new Error("Invalid card configuration"); }
-const LANG_OPTS = [{value:"",label:"Auto"},{value:"en",label:"English"},{value:"da",label:"Dansk"},{value:"fr",label:"Français"},{value:"de",label:"Deutsch"},{value:"es",label:"Español"},{value:"sv",label:"Svenska"},{value:"nb",label:"Norsk bokmål"},{value:"nl",label:"Nederlands"},{value:"fi",label:"Suomi"},{value:"pl",label:"Polski"},{value:"it",label:"Italiano"},{value:"pt",label:"Português"},{value:"cs",label:"Čeština"}];
+const LANG_OPTS = [{value:"",label:"Auto"},{value:"en",label:"English"},{value:"da",label:"Dansk"},{value:"fr",label:"Français"},{value:"de",label:"Deutsch"},{value:"es",label:"Español"},{value:"sv",label:"Svenska"},{value:"nb",label:"Norsk bokmål"},{value:"nl",label:"Nederlands"},{value:"fi",label:"Suomi"},{value:"pl",label:"Polski"},{value:"it",label:"Italiano"},{value:"pt",label:"Português"},{value:"cs",label:"Čeština"},{value:"hu",label:"Magyar"}];
 const OV_OPTS_L = {
  en:[{value:"minimal",label:"Minimal (REC + clock + label)"},{value:"cctv",label:"CCTV (scanlines + vignette)"},{value:"off",label:"Off (video only)"}],
  da:[{value:"minimal",label:"Minimal (REC + ur + navn)"},{value:"cctv",label:"CCTV (scanlinjer + vignet)"},{value:"off",label:"Fra (kun video)"}],
@@ -733,7 +771,8 @@ const OV_OPTS_L = {
  pl:[{value:"minimal",label:"Minimalny (REC + zegar + nazwa)"},{value:"cctv",label:"CCTV (linie + winieta)"},{value:"off",label:"Wyłączony (tylko wideo)"}],
  it:[{value:"minimal",label:"Minimale (REC + orologio + nome)"},{value:"cctv",label:"CCTV (linee + vignettatura)"},{value:"off",label:"Disattivo (solo video)"}],
  pt:[{value:"minimal",label:"Mínimo (REC + relógio + nome)"},{value:"cctv",label:"CCTV (linhas + vinheta)"},{value:"off",label:"Desligado (só vídeo)"}],
- cs:[{value:"minimal",label:"Minimální (REC + hodiny + název)"},{value:"cctv",label:"CCTV (linky + viněta)"},{value:"off",label:"Vypnuto (jen video)"}]
+ cs:[{value:"minimal",label:"Minimální (REC + hodiny + název)"},{value:"cctv",label:"CCTV (linky + viněta)"},{value:"off",label:"Vypnuto (jen video)"}],
+ hu:[{value:"minimal",label:"Minimális (REC + óra + név)"},{value:"cctv",label:"CCTV (sorok + vignetta)"},{value:"off",label:"Ki (csak videó)"}]
 };
 const CCTV_OPTS_L = {
  en:[{value:"color",label:"Color"},{value:"mono",label:"Monochrome"}],
@@ -748,7 +787,8 @@ const CCTV_OPTS_L = {
  pl:[{value:"color",label:"Kolor"},{value:"mono",label:"Czarno-biały"}],
  it:[{value:"color",label:"Colore"},{value:"mono",label:"Monocromatico"}],
  pt:[{value:"color",label:"Cor"},{value:"mono",label:"Monocromático"}],
- cs:[{value:"color",label:"Barva"},{value:"mono",label:"Černobílá"}]
+ cs:[{value:"color",label:"Barva"},{value:"mono",label:"Černobílá"}],
+ hu:[{value:"color",label:"Színes"},{value:"mono",label:"Fekete-fehér"}]
 };
 const ovOpts = c => OV_OPTS_L[langOf(c)] || OV_OPTS_L.en;
 const cctvOpts = c => CCTV_OPTS_L[langOf(c)] || CCTV_OPTS_L.en;
@@ -767,7 +807,8 @@ const ED_T = {
  pl: {lang:"Język",tab:"Domyślna karta",date:"Data święta (MM-DD)",target:"Cel odliczania (MM-DD GG:MM)",until:"Nagłówek odliczania",eta:"Przyjazd sań (GG:MM)",store:"Lista grzecznych (encja Local To-do)",sel:"Wybierz listę zadań",log:"Encja dziennika elfów (opcjonalnie)",dstart:"Domyślna punktacja początkowa",llines:"Widoczne wiersze dziennika",ov:"Nakładka kamery",cctv:"Styl filtra CCTV",df:"Format zegara kamery",foot:"Stopka kamery",gl:"Efekt zakłócenia sygnału kamery",hb:"Ścieżka przycisku Strona główna (opcjonalnie)",snow:"Padający śnieg u góry",tz:"Strefa czasowa (opcjonalnie)",title:"Tytuł karty",sub:"Podtytuł",elf_ent:"Własna encja elfa (opcjonalnie)",tip:"Wskazówka: opcje zaawansowane (kamery, teksty, dodatkowe przystanki) zostają w YAML."},
  it: {lang:"Lingua",tab:"Scheda predefinita",date:"Data della festa (MM-GG)",target:"Obiettivo conto alla rovescia (MM-GG HH:MM)",until:"Titolo del conto alla rovescia",eta:"Arrivo della slitta (HH:MM)",store:"Lista dei buoni (entità Local To-do)",sel:"Seleziona elenco attività",log:"Entità diario degli elfi (facoltativa)",dstart:"Punteggio iniziale predefinito",llines:"Righe visibili del diario",ov:"Sovrapposizione telecamera",cctv:"Stile filtro CCTV",df:"Formato orologio telecamera",foot:"Piè di pagina della telecamera",gl:"Effetto disturbo del segnale",hb:"Percorso del pulsante Home (facoltativo)",snow:"Neve che cade in alto",tz:"Fuso orario (facoltativo)",title:"Titolo della scheda",sub:"Sottotitolo",elf_ent:"Entità elfo personalizzata (facoltativa)",tip:"Suggerimento: le opzioni avanzate (telecamere, testi, tappe extra) restano nel YAML."},
  pt: {lang:"Idioma",tab:"Separador predefinido",date:"Data da festa (MM-DD)",target:"Alvo da contagem (MM-DD HH:MM)",until:"Título da contagem",eta:"Chegada do trenó (HH:MM)",store:"Lista dos bem-comportados (entidade Local To-do)",sel:"Escolher lista de tarefas",log:"Entidade do diário dos elfos (opcional)",dstart:"Pontuação inicial predefinida",llines:"Linhas visíveis do diário",ov:"Sobreposição da câmara",cctv:"Estilo do filtro CCTV",df:"Formato do relógio da câmara",foot:"Rodapé da câmara",gl:"Efeito de interferência do sinal",hb:"Caminho do botão Início (opcional)",snow:"Neve a cair no topo",tz:"Fuso horário (opcional)",title:"Título do cartão",sub:"Subtítulo",elf_ent:"Entidade de elfo personalizada (opcional)",tip:"Dica: as opções avançadas (câmaras, textos, paragens extra) mantêm-se no YAML."},
- cs: {lang:"Jazyk",tab:"Výchozí karta",date:"Datum svátku (MM-DD)",target:"Cíl odpočtu (MM-DD HH:MM)",until:"Nadpis odpočtu",eta:"Příjezd saní (HH:MM)",store:"Seznam hodných (entita Local To-do)",sel:"Vybrat seznam úkolů",log:"Entita elfího deníku (volitelné)",dstart:"Výchozí startovní skóre",llines:"Viditelné řádky deníku",ov:"Překryv kamery",cctv:"Styl filtru CCTV",df:"Formát hodin kamery",foot:"Zápatí kamery",gl:"Efekt rušení kamerového signálu",hb:"Cesta tlačítka Domů (volitelné)",snow:"Padající sníh nahoře",tz:"Časové pásmo (volitelné)",title:"Název karty",sub:"Podtitul",elf_ent:"Vlastní entita elfa (volitelné)",tip:"Tip: pokročilé volby (kamery, texty, další zastávky) zůstanou v YAML."}
+ cs: {lang:"Jazyk",tab:"Výchozí karta",date:"Datum svátku (MM-DD)",target:"Cíl odpočtu (MM-DD HH:MM)",until:"Nadpis odpočtu",eta:"Příjezd saní (HH:MM)",store:"Seznam hodných (entita Local To-do)",sel:"Vybrat seznam úkolů",log:"Entita elfího deníku (volitelné)",dstart:"Výchozí startovní skóre",llines:"Viditelné řádky deníku",ov:"Překryv kamery",cctv:"Styl filtru CCTV",df:"Formát hodin kamery",foot:"Zápatí kamery",gl:"Efekt rušení kamerového signálu",hb:"Cesta tlačítka Domů (volitelné)",snow:"Padající sníh nahoře",tz:"Časové pásmo (volitelné)",title:"Název karty",sub:"Podtitul",elf_ent:"Vlastní entita elfa (volitelné)",tip:"Tip: pokročilé volby (kamery, texty, další zastávky) zůstanou v YAML."},
+ hu: {lang:"Nyelv",tab:"Kezdő lap",date:"Ünnepnap (HH-NN)",target:"Visszaszámlálás célja (HH-NN ÓÓ:PP)",until:"Visszaszámlálás címe",eta:"Szán érkezése (ÓÓ:PP)",store:"Jók listája (Local To-do entitás)",sel:"Teendőlista kiválasztása",log:"Manónapló entitás (opcionális)",dstart:"Alapértelmezett kezdő pontszám",llines:"Látható naplósorok",ov:"Kamera-átfedés",cctv:"CCTV-szűrő stílusa",df:"Kameraóra formátuma",foot:"Kamera lábléc szövege",gl:"Kamerajel-zavar effekt",hb:"Kezdőlap gomb útvonala (opcionális)",snow:"Hóesés a fejlécben",tz:"Időzóna (opcionális)",title:"Kártya címe",sub:"Alcím",elf_ent:"Saját manó entitás (opcionális)",tip:"Tipp: a haladó beállítások (saját kamerák, szövegek, extra szánmegállók) YAML-ben megmaradnak."}
 };
 const ED_H = {
  en: {date:"Default 12-24 (or e.g. 12-25, 01-07).",target:"MM-DD HH:MM or HH:MM (uses celebration date). Default 12-24 18:00 (fr/es/nl/it/pt 12-25 00:00).",eta:"Local 24-hour arrival time (default 23:59).",tz:"IANA zone, e.g. Europe/Copenhagen (defaults to Home Assistant time zone).",df:"Tokens: YYYY, MM, DD, HH, mm, ss.",hb:"Lovelace path, e.g. /lovelace/0 (adds a Home tab button).",store:"Stores children & scores; defaults to todo.nordpol_nice_list if present.",log:"Optional input_text entity; otherwise logs are saved inside the To-do list.",elf_ent:"State formatted as Name|Joke? Answer|Task."},
@@ -782,7 +823,8 @@ const ED_H = {
  pl: {date:"Domyślnie 12-24 (lub np. 12-25, 01-07).",target:"MM-DD GG:MM lub GG:MM (używa daty święta). Domyślnie 12-24 18:00.",eta:"Lokalna godzina przylotu w formacie 24-godzinnym (domyślnie 23:59).",tz:"Strefa IANA, np. Europe/Warsaw (w przeciwnym razie strefa HA).",df:"Kody: YYYY, MM, DD, HH, mm, ss.",hb:"Ścieżka Lovelace, np. /lovelace/0 (dodaje kartę Strona główna).",store:"Przechowuje dzieci i punkty; używa todo.nordpol_nice_list, jeśli istnieje.",log:"Opcjonalna encja input_text; w przeciwnym razie dziennik jest w liście zadań.",elf_ent:"Stan w formacie Imię|Żart? Odpowiedź|Zadanie."},
  it: {date:"Predefinito 12-24 (o ad es. 12-25, 01-07).",target:"MM-GG HH:MM o HH:MM (usa la data della festa). Predefinito 12-25 00:00.",eta:"Orario locale di arrivo in formato 24 ore (predefinito 23:59).",tz:"Fuso IANA, ad es. Europe/Rome (altrimenti quello di Home Assistant).",df:"Codici: YYYY, MM, DD, HH, mm, ss.",hb:"Percorso Lovelace, ad es. /lovelace/0 (aggiunge una scheda Home).",store:"Salva bambini e punteggi; usa todo.nordpol_nice_list se presente.",log:"Entità input_text facoltativa; altrimenti il diario resta nell'elenco attività.",elf_ent:"Stato nel formato Nome|Barzelletta? Risposta|Compito."},
  pt: {date:"Predefinido 12-24 (ou p. ex. 12-25, 01-07).",target:"MM-DD HH:MM ou HH:MM (usa a data da festa). Predefinido 12-25 00:00.",eta:"Hora local de chegada no formato de 24 horas (predefinido 23:59).",tz:"Fuso IANA, p. ex. Europe/Lisbon (caso contrário, o do Home Assistant).",df:"Códigos: YYYY, MM, DD, HH, mm, ss.",hb:"Caminho Lovelace, p. ex. /lovelace/0 (adiciona um separador Início).",store:"Guarda crianças e pontuações; usa todo.nordpol_nice_list se existir.",log:"Entidade input_text opcional; caso contrário, o diário fica na lista de tarefas.",elf_ent:"Estado no formato Nome|Piada? Resposta|Tarefa."},
- cs: {date:"Výchozí 12-24 (nebo např. 12-25, 01-07).",target:"MM-DD HH:MM nebo HH:MM (použije datum svátku). Výchozí 12-24 18:00.",eta:"Místní čas příletu ve 24hodinovém formátu (výchozí 23:59).",tz:"IANA pásmo, např. Europe/Prague (jinak se použije pásmo HA).",df:"Kódy: YYYY, MM, DD, HH, mm, ss.",hb:"Cesta Lovelace, např. /lovelace/0 (přidá kartu Domů).",store:"Ukládá děti a body; použije todo.nordpol_nice_list, pokud existuje.",log:"Volitelná entita input_text; jinak se deník ukládá do seznamu úkolů.",elf_ent:"Stav ve formátu Jméno|Vtip? Odpověď|Úkol."}
+ cs: {date:"Výchozí 12-24 (nebo např. 12-25, 01-07).",target:"MM-DD HH:MM nebo HH:MM (použije datum svátku). Výchozí 12-24 18:00.",eta:"Místní čas příletu ve 24hodinovém formátu (výchozí 23:59).",tz:"IANA pásmo, např. Europe/Prague (jinak se použije pásmo HA).",df:"Kódy: YYYY, MM, DD, HH, mm, ss.",hb:"Cesta Lovelace, např. /lovelace/0 (přidá kartu Domů).",store:"Ukládá děti a body; použije todo.nordpol_nice_list, pokud existuje.",log:"Volitelná entita input_text; jinak se deník ukládá do seznamu úkolů.",elf_ent:"Stav ve formátu Jméno|Vtip? Odpověď|Úkol."},
+ hu: {date:"Alapértelmezés: 12-24 (vagy pl. 12-25, 01-07).",target:"HH-NN ÓÓ:PP vagy ÓÓ:PP (az ünnepnapot használja). Alapértelmezés: 12-24 18:00.",eta:"Helyi érkezési idő 24 órás formátumban (alapértelmezés: 23:59).",tz:"IANA-zóna, pl. Europe/Budapest (egyébként a Home Assistant időzónája).",df:"Kódok: YYYY, MM, DD, HH, mm, ss.",hb:"Lovelace-útvonal, pl. /lovelace/0 (Kezdőlap gombot ad hozzá).",store:"A gyerekeket és a pontokat tárolja; ha létezik, a todo.nordpol_nice_list az alapértelmezett.",log:"Opcionális input_text entitás; egyébként a napló a teendőlistában marad.",elf_ent:"Állapot formátuma: Név|Vicc? Válasz|Feladat."}
 };
 const ED_KEY = {
   language:"lang", default_tab:"tab", date:"date", target:"target", until:"until", eta:"eta",
@@ -827,7 +869,7 @@ function defaultTarget(c){
   return ["fr","es","nl","it","pt"].includes(langOf(c))?"12-25 00:00":"12-24 18:00";
 }
 /* `date: "MM-DD"` (default 12-24) moves the whole card to another celebration day, e.g. "12-25" or "01-07".
-   Countdown target: config `target: "MM-DD HH:MM"` or `"HH:MM"` in HA/configured time zone (default 12-24 18:00 for da/en/de/sv/nb/fi/pl/cs, 12-25 00:00 for fr/es/nl/it/pt). */
+   Countdown target: config `target: "MM-DD HH:MM"` or `"HH:MM"` in HA/configured time zone (default 12-24 18:00 for da/en/de/sv/nb/fi/pl/cs/hu, 12-25 00:00 for fr/es/nl/it/pt). */
 /* returns {ms: absolute instant, wall: target as wall-clock Date} for wall-clock `now` in zone `tz` */
 function xmasTarget(now = new Date(), c, tz) {
   let raw=c&&c.target?String(c.target).trim():"";
@@ -1535,7 +1577,8 @@ const STOP_NAMES = {
  pl: {"New Zealand":"Nowa Zelandia","Australia":"Australia","Japan":"Japonia","China":"Chiny","India":"Indie","Dubai":"Dubaj","Kenya":"Kenia","Greece":"Grecja","Italy":"Włochy","Germany":"Niemcy","England":"Anglia","Iceland":"Islandia","Brazil":"Brazylia","Mexico":"Meksyk","Hawaii":"Hawaje","Fiji":"Fidżi"},
  it: {"New Zealand":"Nuova Zelanda","Australia":"Australia","Japan":"Giappone","China":"Cina","India":"India","Dubai":"Dubai","Kenya":"Kenya","Greece":"Grecia","Italy":"Italia","Germany":"Germania","England":"Inghilterra","Iceland":"Islanda","Brazil":"Brasile","Mexico":"Messico","Hawaii":"Hawaii","Fiji":"Figi"},
  pt: {"New Zealand":"Nova Zelândia","Australia":"Austrália","Japan":"Japão","China":"China","India":"Índia","Dubai":"Dubai","Kenya":"Quénia","Greece":"Grécia","Italy":"Itália","Germany":"Alemanha","England":"Inglaterra","Iceland":"Islândia","Brazil":"Brasil","Mexico":"México","Hawaii":"Havai","Fiji":"Fiji"},
- cs: {"New Zealand":"Nový Zéland","Australia":"Austrálie","Japan":"Japonsko","China":"Čína","India":"Indie","Dubai":"Dubaj","Kenya":"Keňa","Greece":"Řecko","Italy":"Itálie","Germany":"Německo","England":"Anglie","Iceland":"Island","Brazil":"Brazílie","Mexico":"Mexiko","Hawaii":"Havaj","Fiji":"Fidži"}
+ cs: {"New Zealand":"Nový Zéland","Australia":"Austrálie","Japan":"Japonsko","China":"Čína","India":"Indie","Dubai":"Dubaj","Kenya":"Keňa","Greece":"Řecko","Italy":"Itálie","Germany":"Německo","England":"Anglie","Iceland":"Island","Brazil":"Brazílie","Mexico":"Mexiko","Hawaii":"Havaj","Fiji":"Fidži"},
+ hu: {"New Zealand":"Új-Zéland","Australia":"Ausztrália","Japan":"Japán","China":"Kína","India":"India","Dubai":"Dubaj","Kenya":"Kenya","Greece":"Görögország","Italy":"Olaszország","Germany":"Németország","England":"Anglia","Iceland":"Izland","Brazil":"Brazília","Mexico":"Mexikó","Hawaii":"Hawaii","Fiji":"Fidzsi-szigetek"}
 };
 const hm = s => { const plus=/\+$/.test(s); const [h,m]=String(s).replace("+","").split(":").map(Number); return h*60+(m||0)+(plus?1440:0); };
 function tzOffsetH(tz, y, mo=11, dd=24){ if(!tz) return null; try{ const d=new Date(Date.UTC(y,mo,dd,12));

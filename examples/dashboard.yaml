@@ -7,7 +7,7 @@ views:
     background: radial-gradient(ellipse at 50% -10%, #1f3b78 0%, #0b1a3a 45%, #050b1f 100%) fixed
     cards:
       - type: custom:nordpol-board-card
-        language: en                 # en | da | fr | de | es | sv | nb | nl | fi | pl | it | pt | cs  (or override any text with `strings:`)
+        language: en                 # en | da | fr | de | es | sv | nb | nl | fi | pl | it | pt | cs | hu  (or override any text with `strings:`)
         default_tab: sleigh          # sleigh | nice | elf
         # date: "12-25"               # celebration day MM-DD (default 12-24); then also set sleigh.eta and hero.until
         # time_zone: Europe/Paris     # optional – defaults to your Home Assistant time zone

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Asserts that the elf-of-the-day lists in dist/nordpol-card.js match tools/elves_data.py (13 languages x 30)."""
+"""Asserts that the elf-of-the-day lists in dist/nordpol-card.js match tools/elves_data.py (14 languages x 30)."""
 import json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
@@ -19,4 +19,4 @@ for lang in sorted(blocks):
         i = next((i for i, (a, b) in enumerate(zip(want, dist)) if tuple(a) != b), min(len(want), len(dist)))
         bad.append(f"{lang}: differs from elves_data.py at #{i + 1}")
 print(("FAIL " + "; ".join(bad)) if bad else f"PASS elves_data.py matches dist for {len(blocks)} languages x 30")
-sys.exit(1 if bad or len(blocks) != 13 else 0)
+sys.exit(1 if bad or len(blocks) != 14 else 0)

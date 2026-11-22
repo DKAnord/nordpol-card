@@ -415,8 +415,40 @@ CS = [
  ("Elf Máta","Který Ježíškův sob má nejhorší vychování? Drzoudolf!","Stráv hodinu bez obrazovky"),
  ("Elf Mandlík","Co nosí sněhuláci na hlavě? Ledové čepice!","Zatanči si na svou oblíbenou písničku"),
 ]
-assert len(EN)==len(DA)==len(FR)==len(DE)==len(ES)==len(SV)==len(NB)==len(NL)==len(FI)==len(PL)==len(IT)==len(PT)==len(CS)==30
-for lang_list in (EN, DA, FR, DE, ES, SV, NB, NL, FI, PL, IT, PT, CS):
+HU = [
+ ("Pötyi manó","Mit tanulnak a manók az iskolában? A manó-ábécét!","Rajzolj egy karácsonyi csillagot"),
+ ("Szipogó manó","Mit mond a rénszarvas, mielőtt viccet mesél? Ettől leszánkózol a székről!","Segíts megteríteni"),
+ ("Ragacs manó","Mit esznek reggelire a hóemberek? Hópelyhet!","Rakj rendet a szobádban"),
+ ("Kása manó","Mi a manók kedvenc zenéje? A csomagolós rap!","Ölelj meg valakit, akit szeretsz"),
+ ("Csilingel manó","Miért ment a Mikulás orvoshoz? Berekedt a sok ho-ho-hótól!","Pucold ki a csizmádat, és tedd az ablakba – jön a Mikulás!"),
+ ("Virgács manó","Mit kap a Mikulástól, aki rossz volt? Virgácsot – de abban is lóg egy kis csoki!","Köszönd meg a Mikulásnak a csomagot egy rajzzal"),
+ ("Csillám manó","Mikor pihen a Mikulás? Amikor már minden ajándék a helyén van!","Írj vagy rajzolj valakinek egy karácsonyi képeslapot"),
+ ("Szerecsendió manó","Miért ment orvoshoz a mézeskalács-emberke? Mert egész nap morzsásnak érezte magát!","Segíts sütni vagy főzni valamit a konyhában"),
+ ("Magyal manó","Hogy hívják a hóembert júliusban? Tócsának!","Igyál meg egy plusz pohár vizet, mint egy egészséges manó"),
+ ("Girland manó","Miért jár a krampusz a Mikulással? Mert valakinek a virgácsot is cipelnie kell!","Énekelj hangosan egy karácsonyi dalt"),
+ ("Gömböc manó","Miért olyan hideg karácsonykor? Mert decembrrr van!","Mondj valakinek egy őszinte bókot"),
+ ("Dérke manó","Mivel közlekednek a hóemberek? Jégbicajjal!","Menj ki 15 percre friss levegőre"),
+ ("Búzaszem manó","Hol tartják a hóemberek a pénzüket? A hóbankban!","Luca-napon ültess búzát egy tálkába – karácsonyra kizöldül!"),
+ ("Gyömbér manó","Hogy hívják a szem nélküli rénszarvast? Fogalmam sincs!","Vesd be egyedül az ágyadat"),
+ ("Szikra manó","Mi a manók kedvenc tantárgya? A manótematika!","Ossz meg egy játékot vagy egy finomságot valakivel"),
+ ("Fenyőke manó","Miért ment a karácsonyfa a fodrászhoz? Mert ráfért egy kis igazítás!","Mondd el valakinek, miért vagy hálás"),
+ ("Kakaó manó","Mi az: piros-fehér, piros-fehér, piros-fehér? A Mikulás, ahogy legurul a dombról!","Tedd szépen a helyére a cipődet és a kabátodat"),
+ ("Marcipán manó","Hány gyertya ég az adventi koszorún a harmadik vasárnapon? Három – a negyedik még izgul!","Tegyél valakinek egy szívességet kérés nélkül"),
+ ("Hógolyó manó","Mi lesz, ha megeszed a karácsonyfadíszeket? Girlandgyulladás!","Építs valamit kockából, papírból vagy hóból"),
+ ("Bors manó","Mit csinál a Mikulás a kertben? Ho-ho-hólapátol!","Hívd fel vagy írj a nagyszüleidnek vagy egy barátodnak"),
+ ("Kürtös manó","Melyik sütemény tud trombitálni? A kürtőskalács!","Sétálj egyet a karácsonyi fények között vagy egy adventi vásárban"),
+ ("Juhar manó","Mit mondott az egyik hóember a másiknak? Te is répaszagot érzel?","Segíts becsomagolni egy ajándékot"),
+ ("Mákos manó","Miért szeretik a manók a mákos bejglit? Mert akinek mákja van, az szerencsés!","Segíts elkészíteni a bejglit – vagy legalább kóstold meg!"),
+ ("Szaloncukor manó","Kik ünneplik a névnapjukat szenteste? Ádám és Éva – nekik dupla ünnep!","Figyeld, mikor szól a csengő – itt járt a Jézuska!"),
+ ("Gumicukor manó","Mi lesz, ha összekeresztezed a Mikulást egy kacsával? Ho-ho-háp!","Mondj valakinek egy viccet, hogy nevessen"),
+ ("Karamell manó","Miért volt szomorú a Mikulás kis segítője? Mert alacsony volt az önmanóbecsülése!","Mosd meg a fogad extra alaposan – a manók ellenőrzik!"),
+ ("Kesztyű manó","Hogy hívják a fülvédős rénszarvast? Ahogy akarod – úgysem hallja!","Segíts valakinek cipelni valamit"),
+ ("Áfonya manó","Hány ajándék fér a Mikulás üres zsákjába? Csak egy – utána már nem üres!","Mondd egész nap, hogy kérem és köszönöm"),
+ ("Jégcsap manó","Melyik rénszarvas sértődik meg a legkönnyebben? Rudolf – mert mindig orrol!","Tölts el egy órát képernyő nélkül"),
+ ("Borsmenta manó","Mit hordanak a hóemberek a fejükön? Jégsapkát!","Táncolj a kedvenc dalodra"),
+]
+assert len(EN)==len(DA)==len(FR)==len(DE)==len(ES)==len(SV)==len(NB)==len(NL)==len(FI)==len(PL)==len(IT)==len(PT)==len(CS)==len(HU)==30
+for lang_list in (EN, DA, FR, DE, ES, SV, NB, NL, FI, PL, IT, PT, CS, HU):
     for name, joke, task in lang_list:
         k = joke.index("?")
         assert 0 < k < len(joke) - 1, f"Expected 'Question? Answer' in: {joke}"
