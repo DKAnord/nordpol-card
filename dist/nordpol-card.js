@@ -3,7 +3,7 @@
    Cam clips stream from CAM_REMOTE_DIR (GitHub Pages) by default. Your own /local/nordpol clips are used with
    cams.prefer_files: true (local first) or cams.remote: false (local only, never contacts github.io). */
 (() => {
-const VER = "2.5.0";
+const VER = "2.5.1";
 const REPO_URL = "https://github.com/DKAnord/nordpol-card";
 /* === Camera periods (override in card config: periods / file_dir). Each period starts at "from" (local time). === */
 const CAM_PERIODS = [

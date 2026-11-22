@@ -1,6 +1,6 @@
 # 🎅 Nordpol Card
 
-🇬🇧 🇩🇰 🇫🇷 🇩🇪 🇪🇸 🇸🇪 🇳🇴 🇳🇱 🇫🇮 🇵🇱 🇮🇹 🇵🇹 🇨🇿 **13 built-in languages** — auto-detected from Home Assistant or selectable in the visual editor.
+🇬🇧 🇩🇰 🇫🇷 🇩🇪 🇪🇸 🇸🇪 🇳🇴 🇳🇱 🇫🇮 🇵🇱 🇮🇹 🇵🇹 🇨🇿 🇭🇺 **14 built-in languages** — auto-detected from Home Assistant or selectable in the visual editor.
 
 A self-contained Christmas dashboard for Home Assistant — **no YAML required**:
 
@@ -70,11 +70,11 @@ All 12 North Pole cam videos and your Home Assistant location & time zone work a
 ## YAML Setup & Example Dashboards
 
 Prefer YAML? Paste one of the ready-made dashboards into **Raw configuration editor**:
-🇬🇧 [English](examples/dashboard.yaml) · 🇩🇰 [Dansk](examples/dashboard.da.yaml) · 🇫🇷 [Français](examples/dashboard.fr.yaml) · 🇩🇪 [Deutsch](examples/dashboard.de.yaml) · 🇪🇸 [Español](examples/dashboard.es.yaml) · 🇸🇪 [Svenska](examples/dashboard.sv.yaml) · 🇳🇴 [Norsk](examples/dashboard.nb.yaml) · 🇳🇱 [Nederlands](examples/dashboard.nl.yaml) · 🇫🇮 [Suomi](examples/dashboard.fi.yaml) · 🇵🇱 [Polski](examples/dashboard.pl.yaml) · 🇮🇹 [Italiano](examples/dashboard.it.yaml) · 🇵🇹 [Português](examples/dashboard.pt.yaml) · 🇨🇿 [Čeština](examples/dashboard.cs.yaml)
+🇬🇧 [English](examples/dashboard.yaml) · 🇩🇰 [Dansk](examples/dashboard.da.yaml) · 🇫🇷 [Français](examples/dashboard.fr.yaml) · 🇩🇪 [Deutsch](examples/dashboard.de.yaml) · 🇪🇸 [Español](examples/dashboard.es.yaml) · 🇸🇪 [Svenska](examples/dashboard.sv.yaml) · 🇳🇴 [Norsk](examples/dashboard.nb.yaml) · 🇳🇱 [Nederlands](examples/dashboard.nl.yaml) · 🇫🇮 [Suomi](examples/dashboard.fi.yaml) · 🇵🇱 [Polski](examples/dashboard.pl.yaml) · 🇮🇹 [Italiano](examples/dashboard.it.yaml) · 🇵🇹 [Português](examples/dashboard.pt.yaml) · 🇨🇿 [Čeština](examples/dashboard.cs.yaml) · 🇭🇺 [Magyar](examples/dashboard.hu.yaml)
 
 ```yaml
 type: custom:nordpol-board-card   # best inside a Panel view
-language: en                      # en | da | fr | de | es | sv | nb | nl | fi | pl | it | pt | cs
+language: en                      # en | da | fr | de | es | sv | nb | nl | fi | pl | it | pt | cs | hu
 cams:
   cams:
     - label: "CAM 01 – REINDEER PADDOCK"
@@ -137,12 +137,12 @@ Use `prefer_files: true` instead if you want local clips first with the hosted c
 
 | Key | Default | Description |
 |---|---|---|
-| `language` | browser/HA | `en`, `da`, `fr`, `de`, `es`, `sv`, `nb`, `nl`, `fi`, `pl`, `it`, `pt`, or `cs` |
+| `language` | browser/HA | `en`, `da`, `fr`, `de`, `es`, `sv`, `nb`, `nl`, `fi`, `pl`, `it`, `pt`, `cs`, or `hu` |
 | `strings` | – | override any text |
 | `default_tab` / `return_after_min` | `sleigh` / `3` | tab shown, and auto-return time |
 | `date` | `12-24` | celebration day as `MM-DD` – e.g. `12-25`, or `01-07` for Orthodox Christmas. Moves the countdown, sleigh flight and elf calendar. Also set `sleigh.eta`, and `hero.until` for the countdown label |
 | `time_zone` | HA `time_zone` | IANA time zone (e.g. `Europe/Paris`) used for the countdown, cam clock, and elf calendar (falls back to HA server time zone, then browser local time) |
-| `hero.title/subtitle/target/snow` | – | header; `hero.target` (`MM-DD HH:MM` or `HH:MM`) sets the exact countdown target (defaults to `12-24 18:00` for `en`/`da`/`de`/`sv`/`nb`/`fi`/`pl`/`cs`, `12-25 00:00` for `fr`/`es`/`nl`/`it`/`pt`, or `00:00` when `date` is changed) |
+| `hero.title/subtitle/target/snow` | – | header; `hero.target` (`MM-DD HH:MM` or `HH:MM`) sets the exact countdown target (defaults to `12-24 18:00` for `en`/`da`/`de`/`sv`/`nb`/`fi`/`pl`/`cs`/`hu`, `12-25 00:00` for `fr`/`es`/`nl`/`it`/`pt`, or `00:00` when `date` is changed) |
 | `cams.cams[]` | 4 built-in | `label`, optional `file`, optional fallback `src` |
 | `cams.file_dir` / `cams.periods` | `/local/nordpol` / morning, day, evening | see [docs/VIDEOS.md](docs/VIDEOS.md). Setting `file_dir` also turns on local clips |
 | `cams.remote` | `true` | `false` = never stream the hosted clips from github.io (see *Privacy*); only local files are played |
@@ -174,7 +174,7 @@ Maintainer: `DKAnord` (`12734694+DKAnord@users.noreply.github.com`)
 
 ## Supported Languages
 
-Auto-detected from Home Assistant / browser settings, or set explicitly via `language:` (`en`, `da`, `fr`, `de`, `es`, `sv`, `nb`, `nl`, `fi`, `pl`, `it`, `pt`, `cs`):
+Auto-detected from Home Assistant / browser settings, or set explicitly via `language:` (`en`, `da`, `fr`, `de`, `es`, `sv`, `nb`, `nl`, `fi`, `pl`, `it`, `pt`, `cs`, `hu`):
 
 - 🇬🇧 **English (`en`):** Christmas, Santa Claus, North Pole, Elf, Reindeer, Countdown
 - 🇩🇰 **Dansk (`da`):** Jul, Juleaften, Julemanden, Nordpolen, Nisse, Artig-listen, Kane-tracker
@@ -189,3 +189,4 @@ Auto-detected from Home Assistant / browser settings, or set explicitly via `lan
 - 🇮🇹 **Italiano (`it`):** Natale, Vigilia, Babbo Natale, Polo Nord, Elfo, Lista dei buoni, Slitta
 - 🇵🇹 **Português (`pt`):** Natal, Pai Natal, Polo Norte, Elfo, Lista dos bem-comportados, Trenó
 - 🇨🇿 **Čeština (`cs`):** Vánoce, Štědrý den, Ježíšek, Severní pól, Skřítek, Seznam hodných dětí, Sáně
+- 🇭🇺 **Magyar (`hu`):** Karácsony, Szenteste, Jézuska, Mikulás, Északi-sark, Manó, Jók listája, Szán

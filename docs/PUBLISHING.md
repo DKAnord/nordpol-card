@@ -4,7 +4,7 @@ Current release flow for Nordpol Card (HACS plugin + GitHub Release). Work on a 
 
 ## Cut a release
 
-1. Bump `const VER` in `dist/nordpol-card.js` to the new version (e.g. `2.5.0`).
+1. Bump `const VER` in `dist/nordpol-card.js` to the new version (e.g. `2.5.1`).
 2. Update `CHANGELOG.md` and any README language lists, examples, or docs that mention the version or language set.
 3. Validate locally:
    - `node --check dist/nordpol-card.js`

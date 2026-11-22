@@ -2,6 +2,14 @@
 
 All notable changes to Nordpol Card are documented here. Dates are in Europe/Copenhagen.
 
+## 2.5.1 – 2026-11-22
+
+- **Languages:** Added built-in **Hungarian (`hu`)** — card strings, visual-editor labels, helpers and dropdown options, 16 sleigh-route country names, and 30 localized elves (jokes and daily tasks). Auto-detected from `language: hu`, `<html lang="hu-HU">` or a Hungarian browser; dates and numbers use `hu-HU` (“december 24.”).
+- Countdown default for `hu` is `12-24 18:00` (Szenteste), like `da`/`de`/`sv`/`nb`/`fi`/`pl`/`cs`.
+- Local touches: the nice list is *A Mikulás aranykönyve*, a naughty score means *virgács* in the boot, Jézuska brings the presents on Szenteste, and the elves follow the Hungarian December (boots in the window on 5 December, Mikulás on 6 December, Luca-búza on 13 December, bejgli on 23 December, the bell on Szenteste; szaloncukor, halászlé and the Budapest Christmas fair in the sleigh news).
+- Example: `examples/dashboard.hu.yaml`.
+- Tests: Hungarian added to every language loop (editor labels/helpers, placeholders/HTML, list lengths, all-cards render, elf date format, fallback editor placeholder), plus new checks for `langOf` auto-detect (config, `<html lang>`, `navigator.language`), the `hu` countdown default, `hu-HU` date labels, `LANG_OPTS`/overlay/CCTV options for every language, and long Hungarian words at 320 px (longest elf name, sleigh in flight, after Christmas, board tabs).
+
 ## 2.5.0 – 2026-11-21
 
 - **Languages:** Added built-in **Norwegian Bokmål (`nb`)**, **Dutch (`nl`)**, **Finnish (`fi`)**, **Polish (`pl`)**, **Italian (`it`)**, **Portuguese (`pt`, European)** and **Czech (`cs`)** — card strings, visual-editor labels and helpers, 16 sleigh-route country names, and 30 localized elves (jokes and daily tasks) per language.
