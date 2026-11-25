@@ -68,9 +68,12 @@ jobs:
           git push origin gh-pages
 
       - name: Deploy Web App and media to Cloudflare Pages
-        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "Cloudflare Pages secrets not configured; skipping mirror deploy."
+            exit 0
+          fi
           npx --yes wrangler@4 pages deploy site --project-name=nordpol --branch=main --commit-dirty=true
