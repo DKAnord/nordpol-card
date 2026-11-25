@@ -71,7 +71,7 @@ nordpol-board-card {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.76;
+  opacity: 0.86;
   transition: opacity 0.2s ease, transform 0.15s ease, border-color 0.2s ease, background-color 0.2s ease;
   user-select: none;
   -webkit-user-select: none;
@@ -124,6 +124,112 @@ nordpol-board-card {
   opacity: 1;
   stroke-dashoffset: 0;
   transition: stroke-dashoffset 0.9s linear;
+}
+
+/* Handwritten callout & arrow pointing at the lower-right Settings cogwheel */
+.np-gear-hint {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 4px);
+  width: max-content;
+  max-width: calc(100vw - 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 41;
+  animation: np-hint-bob 3.2s ease-in-out infinite;
+}
+
+.np-gear-hint[hidden] {
+  display: none !important;
+}
+
+@keyframes np-hint-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.np-gear-hint-card {
+  pointer-events: auto;
+  position: relative;
+  width: max-content;
+  max-width: min(252px, calc(100vw - 28px));
+  margin-right: 14px;
+  transform: rotate(-2.5deg);
+  background: rgba(8, 16, 38, 0.86);
+  border: 1.25px dashed rgba(255, 216, 120, 0.62);
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.18s ease, transform 0.18s ease, background-color 0.18s ease;
+}
+
+.np-gear-hint-card:hover {
+  transform: rotate(-1.5deg) translateY(-1px);
+  border-color: #ffd878;
+  background: rgba(13, 24, 54, 0.95);
+}
+
+.np-gear-hint-body {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  max-width: 100%;
+  padding: 7px 26px 8px 12px;
+  color: #ffe596;
+  font-family: "Mountains of Christmas", "Segoe Print", "Bradley Hand", "Chalkboard SE", cursive;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.2px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
+  display: block;
+}
+
+.np-gear-hint-x {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 229, 150, 0.68);
+  font: 700 14px/1 system-ui, sans-serif;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.np-gear-hint-x:hover {
+  color: #fff8e7;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.np-gear-hint-arrow {
+  width: 56px;
+  height: 34px;
+  margin-right: 11px;
+  margin-top: -2px;
+  overflow: visible;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75));
+}
+
+@media (max-width: 480px) {
+  .np-gear-hint-body {
+    font-size: 17.5px;
+    padding: 6px 24px 7px 10px;
+  }
+  .np-gear-hint-card {
+    max-width: min(230px, calc(100vw - 28px));
+  }
 }
 
 /* Status toast */
@@ -916,7 +1022,9 @@ nordpol-board-card {
   .np-btn,
   .np-modal,
   .np-modal-backdrop,
-  .np-wish-stamp.pop {
+  .np-wish-stamp.pop,
+  .np-gear-hint,
+  .np-gear-hint-card {
     transition: none !important;
     animation: none !important;
   }

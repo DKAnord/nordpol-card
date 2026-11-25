@@ -129,9 +129,24 @@
     const audio = createAudio();
     audio.setEnabled(Boolean(settings.sound_enabled));
 
-    // Build floating lower-right dock (Sound + Parent Settings), toast, backdrop & drawer
+    // Build floating lower-right dock (handwritten pointer + Sound + Parent Settings), toast, backdrop & drawer
+    const GEAR_HINT_KEY = "nordpol.web.gear_hint_dismissed";
     const fabDock = document.createElement("div");
     fabDock.className = "np-fab-dock";
+
+    const gearHint = document.createElement("div");
+    gearHint.id = "np-gear-hint";
+    gearHint.className = "np-gear-hint";
+    gearHint.innerHTML = `
+      <div class="np-gear-hint-card">
+        <button type="button" class="np-gear-hint-body" id="np-gear-hint-open"><span id="np-gear-hint-txt"></span></button>
+        <button type="button" class="np-gear-hint-x" id="np-gear-hint-close" aria-label="Close">×</button>
+      </div>
+      <svg class="np-gear-hint-arrow" viewBox="0 0 56 34" fill="none" aria-hidden="true">
+        <path d="M 8 3 C 25 2, 41 11, 45 30" stroke="#ffd878" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M 37.5 24.5 Q 42 28.5 45.2 31.2 Q 47.8 26.5 50.8 22.5" stroke="#ffd878" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
 
     const soundBtn = document.createElement("button");
     soundBtn.type = "button";
@@ -144,7 +159,7 @@
     gearBtn.className = "np-fab-btn np-gear";
     gearBtn.innerHTML = `<svg class="np-hold-ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21"/></svg><span class="np-gear-icon" aria-hidden="true">⚙️</span>`;
 
-    fabDock.append(soundBtn, gearBtn);
+    fabDock.append(gearHint, soundBtn, gearBtn);
 
     const toastEl = document.createElement("div");
     toastEl.id = "np-toast";
@@ -184,6 +199,48 @@
       soundBtn.title = label;
       soundBtn.innerHTML = `<span class="np-fab-icon" aria-hidden="true">${on ? "🔔" : "🔇"}</span>`;
     }
+
+    function isGearHintDismissed() {
+      try {
+        return sessionStorage.getItem(GEAR_HINT_KEY) === "1";
+      } catch {
+        return false;
+      }
+    }
+
+    function syncGearHint() {
+      const L = t();
+      const txtEl = gearHint.querySelector("#np-gear-hint-txt");
+      const closeHintBtn = gearHint.querySelector("#np-gear-hint-close");
+      if (txtEl) txtEl.textContent = L.gear_hint;
+      if (closeHintBtn) {
+        closeHintBtn.setAttribute("aria-label", L.drawer_close);
+        closeHintBtn.title = L.drawer_close;
+      }
+      gearHint.hidden = Boolean(settings.kid_lock) || isDrawerOpen() || isGearHintDismissed();
+    }
+
+    function dismissGearHint() {
+      try {
+        sessionStorage.setItem(GEAR_HINT_KEY, "1");
+      } catch {
+        /* ignore */
+      }
+      syncGearHint();
+    }
+
+    gearHint.querySelector("#np-gear-hint-open").addEventListener("click", () => {
+      if (settings.kid_lock) {
+        showToast(t().kid_lock_toast);
+        return;
+      }
+      openDrawer();
+    });
+
+    gearHint.querySelector("#np-gear-hint-close").addEventListener("click", e => {
+      e.stopPropagation();
+      dismissGearHint();
+    });
 
     let pendingConfirm = null;
     let searchAbort = null;
@@ -252,6 +309,7 @@
       gearBtn.setAttribute("aria-label", t().btn_settings);
       gearBtn.title = t().btn_settings;
       syncSoundBtn();
+      syncGearHint();
     }
 
     function openDrawer() {
@@ -259,6 +317,7 @@
       backdrop.classList.add("open");
       drawer.classList.add("open");
       backdrop.setAttribute("aria-hidden", "false");
+      dismissGearHint();
       const closeBtn = drawer.querySelector("#np-close-btn");
       if (closeBtn) closeBtn.focus();
     }
@@ -268,6 +327,7 @@
       backdrop.classList.remove("open");
       drawer.classList.remove("open");
       backdrop.setAttribute("aria-hidden", "true");
+      syncGearHint();
       gearBtn.focus();
     }
 
