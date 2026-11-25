@@ -12,3 +12,5 @@ __pycache__/
 *.pyc
 !tests/fixtures/*.mp4
 __pycache__/
+.wrangler/
+node_modules/

@@ -12,7 +12,7 @@ A self-contained Christmas dashboard for Home Assistant — **no YAML required**
 * 🎛️ **Visual UI editor** — configure everything right in Home Assistant’s card editor
 
 > [!TIP]
-> **Try it live on the Web (no Home Assistant needed):** Open the standalone family dashboard at **[dkanord.github.io/nordpol-card](https://dkanord.github.io/nordpol-card/)** — installable as a PWA with local browser storage, 14 languages, city picker, and shareable setup links.
+> **Try it live on the Web (no Home Assistant needed):** Open the standalone family dashboard at **[dkanord.github.io/nordpol-card](https://dkanord.github.io/nordpol-card/)** — installable as a PWA with local browser storage, 14 languages, clickable city picker, Santa’s Mailroom Postbox, printable Nice List certificates, December Advent history, optional Web Audio festive chimes, offline QR setup sharing, and an optional zero-cookie visitor counter ([`tools/nordpol-pulse-worker/`](tools/nordpol-pulse-worker/)).
 
 ![Nordpol Card demo](docs/demo.gif)
 
@@ -48,9 +48,10 @@ Create a dedicated **Local To-do** list named **`Nordpol nice list`** (`todo.nor
 All 12 North Pole cam videos and your Home Assistant location & time zone work automatically out of the box.
 
 > [!TIP]
-> **Hidden controls for parents:**
-> * **Nice list:** Press and hold the **Nice list** title for **1 second** to unlock **Parent Mode** (add/edit children, award ⭐/+5/−5 points, or reset).
-> * **Sleigh tracker:** Press and hold the **Sleigh tracker** title for **1 second** to launch a **test flight** any day of the year.
+> **Quick & parent controls:**
+> * **Nice list:** Press and hold the **Nice list** title (or the bottom **Parent Mode** pill) for **1 second** to unlock **Parent Mode** (add/edit children, award ⭐/+5/−5 points, or reset; on Web, also read Santa’s Mailroom wishes and print certificates).
+> * **Sleigh tracker:** Click **✈️ Test flight** (or press and hold the **Sleigh tracker** title for **1 second**) to launch a **test flight** any day of the year.
+> * **Elf of the day:** In December, browse previous Advent elves and completed tasks with **◀ / ▶** (future days stay locked).
 
 ---
 

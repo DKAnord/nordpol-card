@@ -1,0 +1,15 @@
+name = "nordpol-pulse"
+main = "worker.mjs"
+compatibility_date = "2026-01-01"
+
+[[durable_objects.bindings]]
+name = "PULSE"
+class_name = "PulseRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["PulseRoom"]
+
+[vars]
+# Optional: restrict CORS to your GitHub Pages origin once live:
+# ALLOWED_ORIGIN = "https://dkanord.github.io"

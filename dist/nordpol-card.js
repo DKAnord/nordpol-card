@@ -100,6 +100,7 @@ const I18N = {
   sl_news:["Nisserne lakerer de sidste træheste 🐴","Rudolf øver landinger på hustage 🏠","Mor Julemand tester nye pebernødder 🍪",
    "Kanen får nye bjælder monteret 🔔","Nissebanden sorterer ønskesedler 📜","Gavepapir: 4.812 km rullet ud 🎁",
    "Julemanden prøver sin nye røde dragt 🎅","Rensdyrene får ekstra havre 🌾","Nisse-radaren kalibreres 📡","Slæde-GPS opdateres med nye veje 🗺️"],
+  sl_btn_demo:"✈️ Prøvetur", sl_btn_stop:"⏹ Stop prøvetur", cam_conn:"Forbinder…", elf_prog:"⭐ {done}/24", elf_today:"I dag",
   tab_sleigh:"Kanen", tab_nice:"Artig", tab_elf:"Nissen", locale:"da-DK"
  },
  sv: {
@@ -165,6 +166,7 @@ const I18N = {
   sl_news:["Nissarna målar de sista dalahästarna 🐴","Rudolf övar landningar på hustak 🏠","Tomtemor provbakar nya pepparkakor 🍪",
    "Släden får nya bjällror monterade 🔔","Nissarna sorterar önskelistor 📜","Presentpapper: 4 812 km utrullat 🎁",
    "Tomten provar sin nya röda dräkt 🎅","Renarna får extra havre 🌾","Nisseradarn kalibreras 📡","Slädens GPS får nya kartor 🗺️"],
+  sl_btn_demo:"✈️ Provtur", sl_btn_stop:"⏹ Stoppa provtur", cam_conn:"Ansluter…", elf_prog:"⭐ {done}/24", elf_today:"I dag",
   tab_sleigh:"Släden", tab_nice:"Snäll", tab_elf:"Nissen", locale:"sv-SE"
  },
  en: {
@@ -230,6 +232,7 @@ const I18N = {
   sl_news:["The elves are painting the last rocking horses 🐴","Rudolph is practising rooftop landings 🏠","Mrs. Claus is testing new cookies 🍪",
    "New bells are fitted to the sleigh 🔔","The elves are sorting wish lists 📜","Wrapping paper: 4,812 km rolled out 🎁",
    "Santa is trying on his new red suit 🎅","The reindeer get extra oats 🌾","The elf radar is being calibrated 📡","Sleigh GPS is getting new maps 🗺️"],
+  sl_btn_demo:"✈️ Test flight", sl_btn_stop:"⏹ Stop test flight", cam_conn:"Connecting…", elf_prog:"⭐ {done}/24", elf_today:"Today",
   tab_sleigh:"Sleigh", tab_nice:"Nice list", tab_elf:"Elf", locale:"en-GB"
  },
  fr: {
@@ -295,6 +298,7 @@ const I18N = {
   sl_news:["Les lutins peignent les derniers chevaux à bascule 🐴","Rodolphe s’entraîne aux atterrissages sur les toits 🏠","Mère Noël teste de nouveaux biscuits 🍪",
    "De nouveaux grelots sont posés sur le traîneau 🔔","Les lutins trient les listes de souhaits 📜","Papier cadeau : 4 812 km déroulés 🎁",
    "Le Père Noël essaie son nouveau costume rouge 🎅","Les rennes ont droit à une ration extra d’avoine 🌾","Le radar des lutins est en cours de calibrage 📡","Le GPS du traîneau met ses cartes à jour 🗺️"],
+  sl_btn_demo:"✈️ Vol d’essai", sl_btn_stop:"⏹ Arrêter le vol", cam_conn:"Connexion…", elf_prog:"⭐ {done}/24", elf_today:"Aujourd’hui",
   tab_sleigh:"Traîneau", tab_nice:"Sages", tab_elf:"Lutin", locale:"fr-FR"
  },
  de: {
@@ -360,6 +364,7 @@ const I18N = {
   sl_news:["Die Wichtel lackieren die letzten Schaukelpferde 🐴","Rudolf übt Landungen auf Hausdächern 🏠","Die Weihnachtsfrau testet neue Plätzchen 🍪",
    "Neue Glöckchen werden am Schlitten montiert 🔔","Die Wichtel sortieren Wunschzettel 📜","Geschenkpapier: 4.812 km ausgerollt 🎁",
    "Der Weihnachtsmann probiert seinen neuen roten Mantel 🎅","Die Rentiere bekommen extra Hafer 🌾","Das Wichtel-Radar wird kalibriert 📡","Das Schlitten-Navi lädt neue Karten 🗺️"],
+  sl_btn_demo:"✈️ Testflug", sl_btn_stop:"⏹ Testflug stoppen", cam_conn:"Verbinde…", elf_prog:"⭐ {done}/24", elf_today:"Heute",
   tab_sleigh:"Schlitten", tab_nice:"Artig", tab_elf:"Wichtel", locale:"de-DE"
  },
  es: {
@@ -425,6 +430,7 @@ const I18N = {
   sl_news:["Los elfos están pintando los últimos caballitos de madera 🐴","Rodolfo practica aterrizajes en los tejados 🏠","Mamá Noel prueba nuevas galletas 🍪",
    "Colocan cascabeles nuevos en el trineo 🔔","Los elfos ordenan las cartas de deseos 📜","Papel de regalo: 4.812 km desenrollados 🎁",
    "Papá Noel se prueba su traje rojo nuevo 🎅","Los renos reciben avena extra 🌾","Calibrando el radar de los elfos 📡","El GPS del trineo descarga nuevos mapas 🗺️"],
+  sl_btn_demo:"✈️ Vuelo de prueba", sl_btn_stop:"⏹ Detener vuelo", cam_conn:"Conectando…", elf_prog:"⭐ {done}/24", elf_today:"Hoy",
   tab_sleigh:"Trineo", tab_nice:"Lista", tab_elf:"Elfo", locale:"es-ES"
  },
  nb: {
@@ -463,6 +469,7 @@ const I18N = {
   sl_gifts:"🎁 Gaver levert: {n} millioner", sl_speed:"⚡ Fart: {s} km/s", sl_rudolf:"🦌 Rudolf: lyser sterkt", sl_eta:"🏠 Ankomst {home}",
   sl_hint:"hold inne tittelen for en prøveflukt ✈️", sl_np:"Nordpolen", sl_home:"Hjem",
   sl_news:["Nissene lakker de siste gyngehestene 🐴","Rudolf øver på taklandinger 🏠","Mor Julenisse tester nye pepperkaker 🍪","Fjøsnissen får en skål risengrøt – mandelen er gjemt 🍚","Nissene sorterer ønskelister 📜","Gavepapir: 4 812 km rullet ut 🎁","Julenissen prøver den nye røde drakten 🎅","Reinen får ekstra havre 🌾","Noen øver på å gå julebukk med sang og masker 🐐","Slede-GPS-en får nye kart 🗺️"],
+  sl_btn_demo:"✈️ Prøvetur", sl_btn_stop:"⏹ Stopp prøvetur", cam_conn:"Kobler til…", elf_prog:"⭐ {done}/24", elf_today:"I dag",
   tab_sleigh:"Slede", tab_nice:"Snill", tab_elf:"Nissen", locale:"nb-NO"
  },
  nl: {
@@ -501,6 +508,7 @@ const I18N = {
   sl_gifts:"🎁 Cadeaus bezorgd: {n} miljoen", sl_speed:"⚡ Snelheid: {s} km/s", sl_rudolf:"🦌 Rudolf: schijnt helder", sl_eta:"🏠 Aankomst {home}",
   sl_hint:"houd de titel ingedrukt voor een proefvlucht ✈️", sl_np:"Noordpool", sl_home:"Thuis",
   sl_news:["De elfen lakken de laatste hobbelpaarden 🐴","Rudolf oefent landingen op daken 🏠","Mevrouw Kerstman proeft een plakje kerststol 🍞","Er komen nieuwe bellen aan de arrenslee 🔔","De elfen sorteren verlanglijstjes 📜","Inpakpapier: 4.812 km uitgerold 🎁","De Kerstman past zijn nieuwe rode pak 🎅","De rendieren krijgen extra haver 🌾","De oliebollenpan staat al klaar voor oud en nieuw 🍩","De GPS van de arrenslee krijgt nieuwe kaarten 🗺️"],
+  sl_btn_demo:"✈️ Testvlucht", sl_btn_stop:"⏹ Stop testvlucht", cam_conn:"Verbinden…", elf_prog:"⭐ {done}/24", elf_today:"Vandaag",
   tab_sleigh:"Slee", tab_nice:"Lief", tab_elf:"Elf", locale:"nl-NL"
  },
  fi: {
@@ -539,6 +547,7 @@ const I18N = {
   sl_gifts:"🎁 Lahjoja toimitettu: {n} miljoonaa", sl_speed:"⚡ Nopeus: {s} km/s", sl_rudolf:"🦌 Rudolf: loistaa kirkkaasti", sl_eta:"🏠 Saapuminen {home}",
   sl_hint:"pidä otsikkoa pohjassa koelentoa varten ✈️", sl_np:"Pohjoisnapa", sl_home:"Koti",
   sl_news:["Tontut maalaavat viimeisiä keinuhevosia 🐴","Rudolf harjoittelee laskeutumista katoille 🏠","Joulumuori testailee uusia pipareita 🍪","Joulupukki tarkistaa reittinsä Korvatunturilla 🗺️","Tontut järjestävät toivelistoja 📜","Paketointipaperia: 4 812 km rullattuna 🎁","Joulupukki sovittaa uutta punaista nuttuaan 🎅","Joulupuuro porisee ja manteli on piilossa 🍚","Joulusauna lämpenee 🔥","Reen GPS saa uudet kartat 🗺️"],
+  sl_btn_demo:"✈️ Koelento", sl_btn_stop:"⏹ Pysäytä koelento", cam_conn:"Yhdistetään…", elf_prog:"⭐ {done}/24", elf_today:"Tänään",
   tab_sleigh:"Reki", tab_nice:"Kiltti", tab_elf:"Tonttu", locale:"fi-FI"
  },
  pl: {
@@ -577,6 +586,7 @@ const I18N = {
   sl_gifts:"🎁 Doręczone prezenty: {n} mln", sl_speed:"⚡ Prędkość: {s} km/s", sl_rudolf:"🦌 Rudolf: świeci jasno", sl_eta:"🏠 Przyjazd {home}",
   sl_hint:"przytrzymaj tytuł, aby zrobić lot próbny ✈️", sl_np:"Biegun Północny", sl_home:"Dom",
   sl_news:["Elfy malują ostatnie koniki na biegunach 🐴","Rudolf ćwiczy lądowania na dachach 🏠","W kuchni pachnie pierogami na Wigilię 🥟","Elfy przygotowują opłatki do składania życzeń ✨","Elfy sortują listy z życzeniami 📜","Papier do pakowania: 4 812 km rozwinięte 🎁","Święty Mikołaj przymierza nowy czerwony strój 🎅","Renifery dostają dodatkowy owies 🌾","Wolne miejsce przy wigilijnym stole jest już nakryte 🍽️","GPS sań pobiera nowe mapy 🗺️"],
+  sl_btn_demo:"✈️ Lot próbny", sl_btn_stop:"⏹ Zatrzymaj lot", cam_conn:"Łączenie…", elf_prog:"⭐ {done}/24", elf_today:"Dzisiaj",
   tab_sleigh:"Sanie", tab_nice:"Grzeczni", tab_elf:"Elf", locale:"pl-PL"
  },
  it: {
@@ -615,6 +625,7 @@ const I18N = {
   sl_gifts:"🎁 Regali consegnati: {n} milioni", sl_speed:"⚡ Velocità: {s} km/s", sl_rudolf:"🦌 Rudolf: brilla intensamente", sl_eta:"🏠 Arrivo {home}",
   sl_hint:"tieni premuto il titolo per un volo di prova ✈️", sl_np:"Polo Nord", sl_home:"Casa",
   sl_news:["Gli elfi stanno dipingendo gli ultimi cavallini a dondolo 🐴","Rudolf si allena agli atterraggi sui tetti 🏠","Mamma Natale prova il panettone appena sfornato 🍞","Gli elfi stanno preparando il presepe 🏡","Gli elfi ordinano le liste dei desideri 📜","Carta da regalo: 4.812 km srotolati 🎁","Babbo Natale prova il suo nuovo vestito rosso 🎅","Le renne ricevono avena extra 🌾","La Befana controlla la scopa per l'Epifania 🧹","Il GPS della slitta scarica nuove mappe 🗺️"],
+  sl_btn_demo:"✈️ Volo di prova", sl_btn_stop:"⏹ Ferma volo", cam_conn:"Connessione…", elf_prog:"⭐ {done}/24", elf_today:"Oggi",
   tab_sleigh:"Slitta", tab_nice:"Buoni", tab_elf:"Elfo", locale:"it-IT"
  },
  pt: {
@@ -653,6 +664,7 @@ const I18N = {
   sl_gifts:"🎁 Presentes entregues: {n} milhões", sl_speed:"⚡ Velocidade: {s} km/s", sl_rudolf:"🦌 Rudolf: a brilhar intensamente", sl_eta:"🏠 Chegada {home}",
   sl_hint:"mantém o título premido para um voo de teste ✈️", sl_np:"Polo Norte", sl_home:"Casa",
   sl_news:["Os elfos estão a pintar os últimos cavalos de baloiço 🐴","O Rudolf está a treinar aterragens nos telhados 🏠","A Senhora Natal prova o bolo-rei 👑","Os elfos estão a montar o presépio 🏡","Os elfos estão a ordenar as listas de desejos 📜","Papel de embrulho: 4 812 km desenrolados 🎁","O Pai Natal está a experimentar o fato vermelho novo 🎅","As renas recebem aveia extra 🌾","O bacalhau da Consoada já está a demolhar 🐟","O GPS do trenó está a receber mapas novos 🗺️"],
+  sl_btn_demo:"✈️ Voo de teste", sl_btn_stop:"⏹ Parar voo", cam_conn:"A ligar…", elf_prog:"⭐ {done}/24", elf_today:"Hoje",
   tab_sleigh:"Trenó", tab_nice:"Bons", tab_elf:"Elfo", locale:"pt-PT"
  },
  cs: {
@@ -691,6 +703,7 @@ const I18N = {
   sl_gifts:"🎁 Doručené dárky: {n} milionů", sl_speed:"⚡ Rychlost: {s} km/s", sl_rudolf:"🦌 Rudolf: jasně září", sl_eta:"🏠 Příjezd {home}",
   sl_hint:"podržte titulek pro zkušební let ✈️", sl_np:"Severní pól", sl_home:"Domov",
   sl_news:["Elfové natírají poslední houpací koníky 🐴","Rudolf cvičí přistání na střechy 🏠","Peče se poslední várka vánočního cukroví 🍪","Kapr už plave ve vaně 🐟","Elfové třídí seznamy přání 📜","Balicí papír: 4 812 km rozvinuto 🎁","Ježíšek chystá dárky pod stromeček 🎁","Sobi dostávají extra oves 🌾","Formičky na lití olova jsou nachystané ✨","GPS saní stahuje nové mapy 🗺️"],
+  sl_btn_demo:"✈️ Zkušební let", sl_btn_stop:"⏹ Zastavit let", cam_conn:"Připojování…", elf_prog:"⭐ {done}/24", elf_today:"Dnes",
   tab_sleigh:"Saně", tab_nice:"Hodní", tab_elf:"Elf", locale:"cs-CZ"
  },
  hu: {
@@ -729,6 +742,7 @@ const I18N = {
   sl_gifts:"🎁 Kiszállított ajándék: {n} millió", sl_speed:"⚡ Sebesség: {s} km/s", sl_rudolf:"🦌 Rudolf: fényesen ragyog", sl_eta:"🏠 Érkezés: {home}",
   sl_hint:"tartsd lenyomva a címet egy próbarepüléshez ✈️", sl_np:"Északi-sark", sl_home:"Otthon",
   sl_news:["A manók festik az utolsó hintalovakat 🐴","Rudolf a háztetőkre szállást gyakorolja 🏠","Sül a bejgli – mákos és diós is 🥮","Szaloncukrot kötöznek a fenyőágakra 🍬","A manók válogatják a kívánságlistákat 📜","Csomagolópapír: 4 812 km legöngyölítve 🎁","Fő a halászlé a szentesti vacsorához 🐟","A rénszarvasok extra zabot kapnak 🌾","A manók kürtőskalácsot kóstolnak a budapesti adventi vásárban 🎪","A szán GPS-e új térképeket tölt le 🗺️"],
+  sl_btn_demo:"✈️ Próbarepülés", sl_btn_stop:"⏹ Megállítás", cam_conn:"Csatlakozás…", elf_prog:"⭐ {done}/24", elf_today:"Ma",
   tab_sleigh:"Szán", tab_nice:"Jók", tab_elf:"Manó", locale:"hu-HU"
  }
 };
@@ -899,8 +913,11 @@ function keyAct(el, label, fn, role){
   el.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); fn(e); } });
 }
 function longPress(el, ms, fn){
-  let t=null; const start=e=>{t=setTimeout(()=>{t=null;fn(e);},ms)}; const stop=()=>{if(t){clearTimeout(t);t=null}};
+  let t=null;
+  const stop=()=>{if(t){clearTimeout(t);t=null} el.classList.remove("holding");};
+  const start=e=>{if(e.button&&e.button!==0)return; stop(); el.classList.add("holding"); t=setTimeout(()=>{t=null;el.classList.remove("holding");fn(e);},ms);};
   el.addEventListener("pointerdown",start); ["pointerup","pointerleave","pointercancel"].forEach(ev=>el.addEventListener(ev,stop));
+  el.addEventListener("dragstart",e=>e.preventDefault());
   el.addEventListener("contextmenu",e=>e.preventDefault());
 }
 const blobCache = {};
@@ -997,15 +1014,15 @@ class NordpolHero extends HTMLElement {
     @keyframes tw{from{opacity:.35;transform:scale(.85)}to{opacity:1;transform:scale(1.05)}}
     :host(.compact) .hero{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px 14px;text-align:left}
     :host(.compact) .hero>div:first-child{min-width:0;flex:1 1 auto}
-    :host(.compact) .t{font-size:clamp(24px,2.8vw,46px)}
-    :host(.compact) .st{font-size:clamp(10px,1.05vw,13px);letter-spacing:1.1px;line-height:1.25}
+    :host(.compact) .t{font-size:clamp(26px,3vw,50px)}
+    :host(.compact) .st{font-size:clamp(11px,1.15vw,15.5px);letter-spacing:1.1px;line-height:1.25}
     :host(.compact) #body{display:flex;flex-direction:column;align-items:center;flex:0 1 auto;min-width:0}
-    :host(.compact) .lbl{margin:0 0 6px;font-size:clamp(13px,1.5vw,18px)}
+    :host(.compact) .lbl{margin:0 0 6px;font-size:clamp(14px,1.55vw,20px)}
     :host(.compact) .cd{gap:clamp(6px,1vw,14px)}
     :host(.compact) .u{min-width:clamp(60px,6.4vw,98px);padding:8px 5px 6px}
     :host(.compact) .v{font-size:clamp(28px,3.6vw,52px)}
-    :host(.compact) .k{font-size:clamp(9px,1vw,12px);letter-spacing:1px}
-    :host(.compact) .sl{margin-top:8px;padding:6px 14px;font-size:clamp(12px,1.35vw,17px);line-height:1.2;text-align:center;max-width:100%;box-sizing:border-box}
+    :host(.compact) .k{font-size:clamp(9px,1.05vw,14px);letter-spacing:1px}
+    :host(.compact) .sl{margin-top:8px;padding:6px 14px;font-size:clamp(13px,1.4vw,18.5px);line-height:1.2;text-align:center;max-width:100%;box-sizing:border-box}
     :host(.compact) .tree{display:none}
     @media (max-width: 600px){:host(.compact) .hero{flex-direction:column;text-align:center;gap:10px;padding:18px 14px 14px}
       :host(.compact) #body{align-self:stretch} :host(.compact) .u{min-width:0;flex:0 1 98px} :host(.compact) .v{font-size:clamp(22px,9cqi,52px)} :host(.compact) .k{font-size:clamp(8px,2.6cqi,12px)}}
@@ -1089,12 +1106,19 @@ class NordpolCams extends HTMLElement {
     .scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px);
        box-shadow:inset 0 0 40px rgba(0,0,0,.85);mix-blend-mode:multiply}
     .ov{position:absolute;inset:0;pointer-events:none;font-family:"Courier New",ui-monospace,monospace;color:#f2f2f2;
-       text-shadow:0 0 3px #000,0 0 6px #000;font-size:clamp(8.5px,3.9cqi,13.5px);font-weight:700}
+       text-shadow:0 0 3px #000,0 0 6px #000;font-size:clamp(8.5px,3.9cqi,15.5px);font-weight:700}
     .rec{position:absolute;top:6px;left:8px;display:flex;align-items:center;gap:5px}
     .dot{width:.72em;height:.72em;border-radius:50%;background:#ff2230;box-shadow:0 0 8px #ff2230;animation:bl 1s steps(1) infinite}
     @keyframes bl{50%{opacity:0}}
     .clk{position:absolute;top:6px;right:8px}
-    .lab{position:absolute;bottom:6px;left:8px;right:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .lab{position:absolute;bottom:6px;left:8px;right:26px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .exp{position:absolute;bottom:6px;right:8px;opacity:0;transition:opacity .18s ease;font-size:1.05em;line-height:1}
+    @container (max-width: 220px){.exp{display:none}.lab{right:8px}}
+    @media (hover: hover){.tile[data-i]:hover{border-color:#ffd878;box-shadow:0 0 0 1px rgba(255,216,120,.5),0 6px 18px rgba(0,0,0,.7)}.tile[data-i]:hover .exp{opacity:.9}}
+    .buf{display:none;position:absolute;inset:0;align-items:center;justify-content:center;pointer-events:none;font-size:clamp(11px,3.2cqi,14px);font-weight:700;color:#cfe8d8;
+       background:radial-gradient(circle at 50% 50%,rgba(20,38,78,.72),rgba(5,11,31,.88))}
+    .buf span{padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,214,120,.3)}
+    .tile[data-kind=file]:not(.ready) .buf{display:flex}
     .lost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;
        font-family:"Courier New",monospace;font-weight:700;color:#fff;text-shadow:0 0 6px #000;font-size:clamp(12px,2.6vw,18px);letter-spacing:2px}
     .lost span{background:rgba(0,0,0,.6);padding:3px 8px;border-radius:4px}
@@ -1111,8 +1135,8 @@ class NordpolCams extends HTMLElement {
     :host(.fill) .grid{--tw:min(calc((100cqw - 10px)/2),calc((100cqh - 10px)/2*16/9));grid-template-columns:repeat(2,var(--tw));gap:10px}
     :host(.fill) .grid.one{--tw:min(100cqw,calc(100cqh*16/9));grid-template-columns:var(--tw)}
     :host(.fill) .tile{aspect-ratio:16/9;width:var(--tw)}
-    :host(.fill) .hd{font-size:clamp(17px,2vw,25px);padding:14px 16px 6px;gap:8px;white-space:nowrap}
-    :host(.fill) .hd small{font-size:clamp(10px,1vw,12px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex-shrink:1}
+    :host(.fill) .hd{font-size:clamp(18px,2.2vw,28px);padding:14px 16px 6px;gap:8px;white-space:nowrap}
+    :host(.fill) .hd small{font-size:clamp(11px,1.05vw,14.5px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex-shrink:1}
     @media (max-width: 560px){:host(.fill) .hd{white-space:normal;flex-wrap:wrap}:host(.fill) .hd small{white-space:normal}}
     .mini{display:none;position:absolute;bottom:7px;right:9px;width:6px;height:6px;border-radius:50%;background:#ff2230;opacity:.7;box-shadow:0 0 4px #ff2230;animation:bl 1.4s steps(1) infinite;pointer-events:none}
     .tile[data-kind=file] video{filter:none;object-fit:contain}
@@ -1125,12 +1149,13 @@ class NordpolCams extends HTMLElement {
     .np.min .tile[data-kind=file] video{object-fit:cover;filter:none}
     .np.min .tile[data-kind=file] .scan{display:none}
     .tile[data-kind=file]{border-color:#2a3550}
-    .foot{margin-top:6px;font-size:11px;color:#cfe8d8;opacity:.85;text-align:center}
+    .foot{margin-top:6px;font-size:clamp(11.5px,1vw,14px);color:#cfe8d8;opacity:.88;text-align:center}
     `);
     const cams = this._c.cams || []; const L=this._t;
     const tiles = cams.map((c,i)=>`<div class="tile" data-i="${i}"><video muted playsinline loop autoplay preload="auto"></video>
+      <div class="buf"><span>📡 ${L.cam_conn}</span></div>
       <canvas class="gl" width="96" height="72"></canvas><div class="lost gl"><span>${L.cam_lost}</span><span class="rs">${L.cam_restore}</span></div>
-      <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(c.label||("CAM "+(i+1)))}</div></div><i class="mini"></i></div>`).join("");
+      <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(c.label||("CAM "+(i+1)))}</div><span class="exp" aria-hidden="true">⛶</span></div><i class="mini"></i></div>`).join("");
     const lost = `<div class="tile lostT"><canvas width="96" height="72" style="display:block"></canvas><div class="lost"><span>${L.cam_lost}</span><span class="rs">${L.cam_restore}</span></div>
       <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(this._c.lost_label)}</div></div></div>`;
     const showLost = cams.length > 1 && cams.length % 2 === 1 && this._c.fill_lost !== false;
@@ -1139,6 +1164,9 @@ class NordpolCams extends HTMLElement {
       <div class="foot">${this._c.footer!=null?esc(this._c.footer):L.cam_foot}</div></div></ha-card>`;
     this._vids=[...r.querySelectorAll("video")];
     this._vids.forEach((v,i)=>{ v.muted=true; v.defaultMuted=true;
+      const markReady=()=>{ const tl=v.closest(".tile"); tl&&tl.classList.add("ready"); };
+      v.addEventListener("loadeddata",markReady);
+      v.addEventListener("playing",markReady);
       v.addEventListener("error",()=>{ if(v.dataset.kind==="file"){ this._exists[v.dataset.url]={ok:false,t:Date.now()}; this._update(true); } }); });
     this._exists = this._exists || {};
     this._update(true);
@@ -1168,7 +1196,7 @@ class NordpolCams extends HTMLElement {
       this._exists[url]={ok,t:Date.now()}; delete fl[url]; return ok; })(); }
   _setSrc(i,src,kind,url){ const v=this._vids[i]; if(!v||!src||v.dataset.src===src) return;
     v.dataset.src=src; v.dataset.kind=kind; v.dataset.url=url||""; v.src=src; const p=v.play&&v.play(); p&&p.catch&&p.catch(()=>{});
-    const tile=v.closest(".tile"); if(tile) tile.dataset.kind=kind; }
+    const tile=v.closest(".tile"); if(tile){ tile.dataset.kind=kind; if(kind==="file"&&v.readyState<2) tile.classList.remove("ready"); else tile.classList.add("ready"); } }
   /* one update at a time: calls that arrive meanwhile are merged into a single follow-up run */
   _update(force){ if(!this._vids) return Promise.resolve();
     if(this._busy){ this._again = this._again===true || force===true ? true : "soft"; return this._busy; }
@@ -1383,13 +1411,20 @@ class NordpolNice extends HTMLElement {
       .pb{display:none;gap:6px;margin-top:8px;flex-wrap:wrap}.parent .pb{display:flex}
       button{font:700 14px system-ui;border:none;border-radius:10px;padding:7px 12px;cursor:pointer;color:#fff}
       .plus{background:#1c9c56}.minus{background:#b3121f}
-      .log{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(255,248,231,.08);border:1px solid rgba(255,214,120,.3);font-size:13px;line-height:1.5}
-      .log b{color:#ffd878;font-family:${FONT_X};font-size:17px}
+      .log{margin:12px 0 10px;padding:10px 12px;border-radius:12px;background:rgba(255,248,231,.08);border:1px solid rgba(255,214,120,.3);font-size:13px;line-height:1.5}
+      .log b{color:#ffd878;font-family:${FONT_X};font-size:18px}
       .why{display:none;margin-top:10px}.parent .why{display:block}
       input{box-sizing:border-box;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,214,120,.5);background:rgba(0,0,0,.35);color:#fff;font-size:14px;min-width:0}
       .why input{width:100%}
-      .pm{display:none;font-size:12px;color:#ffd878;margin-top:4px}.parent .pm{display:block}
-      .hint{font-size:11px;opacity:.45;text-align:right;margin-top:6px}
+      .pm{display:none;font-size:clamp(12px,1.1vw,14.5px);color:#ffd878;margin-top:4px}.parent .pm{display:block}
+      .hd[role=button]{cursor:pointer;position:relative}
+      .hd[role=button]::after{content:"";position:absolute;left:18px;right:18px;bottom:0;height:2px;border-radius:2px;background:#ffd878;transform:scaleX(0);transform-origin:left;opacity:0}
+      .hd[role=button].holding::after{opacity:1;transform:scaleX(1);transition:transform .9s linear}
+      .hint{position:relative;overflow:hidden;align-self:flex-start;margin-top:auto;padding:6px 12px;border-radius:999px;font-size:clamp(11.5px,1.05vw,13.5px);opacity:.85;cursor:pointer;
+        border:1px solid rgba(255,214,120,.38);background:rgba(255,255,255,.06);max-width:100%;box-sizing:border-box;user-select:none;-webkit-user-select:none}
+      .hint:hover{opacity:1;border-color:#ffd878}
+      .hint::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,216,120,.35),rgba(214,32,47,.4));transform:scaleX(0);transform-origin:left;pointer-events:none}
+      .hint.holding::before{transform:scaleX(1);transition:transform .9s linear}
       .empty{padding:14px 4px;opacity:.8}
       .addk{display:none;margin:4px 0 6px;width:100%;background:#1c9c56;border:1.5px solid rgba(255,214,120,.6);font-size:16px;padding:10px}.showadd .addk{display:block}
       .parent.editing .addk{display:none}
@@ -1406,14 +1441,15 @@ class NordpolNice extends HTMLElement {
       .dlg.on{display:flex}
       .dlg>div{max-width:min(86vw,520px);padding:18px;border-radius:16px;background:#1a2550;border:2px solid #ffd878;text-align:center;font-size:16px;line-height:1.45;box-shadow:0 10px 30px rgba(0,0,0,.6)}
       .dlg p{margin:0 0 14px} .dlg button{margin:4px}.dlg .yes{background:#b3121f}.dlg .no{background:#38446e}
-      :host(.tab) .hd{font-size:clamp(16px,1.75vw,22px);padding:14px 16px 4px;gap:8px} :host(.tab) .hd small{font-size:clamp(10px,1vw,12px);text-align:right;line-height:1.2}
-      :host(.tab) .nm{font-size:clamp(17px,1.8vw,21px)} :host(.tab) .nm span{font-size:clamp(13px,1.3vw,15px)}
+      :host(.tab) .hd{font-size:clamp(19px,2vw,26px);padding:14px 16px 4px;gap:8px} :host(.tab) .hd small{font-size:clamp(11px,1.05vw,14px);text-align:right;line-height:1.2}
+      :host(.tab) .nm{font-size:clamp(17px,1.8vw,21px)} :host(.tab) .nm span{font-size:clamp(13px,1.35vw,16px)}
       :host(.tab) .av{width:56px;height:56px;font-size:32px} :host(.tab) .kid{grid-template-columns:56px 1fr;gap:12px;padding:11px 0}
       :host(.tab) .bar{height:22px} :host(.tab) .star{font-size:21px;top:-2px}
       :host(.tab) button{font-size:18px;min-height:52px;min-width:56px;padding:10px 14px;border-radius:14px}
       :host(.tab) input{font-size:18px;padding:12px;min-height:52px} :host(.tab) .er .em{font-size:26px}
       :host(.tab) .er{grid-template-columns:70px 1fr 76px auto auto} :host(.tab) .er.new{grid-template-columns:70px 1fr 76px auto} :host(.tab) .eh{grid-template-columns:70px 1fr 76px 118px;font-size:13px}
-      :host(.tab) .dlg>div{font-size:20px} :host(.tab) .log{font-size:clamp(12.5px,1.25vw,15px);line-height:1.45} :host(.tab) .err{font-size:14px} :host(.tab) .err button{font-size:14px;min-height:0;padding:6px 12px}
+      :host(.tab) .dlg>div{font-size:20px} :host(.tab) .log{font-size:clamp(13px,1.3vw,15.5px);line-height:1.5} :host(.tab) .log b{font-size:clamp(18px,1.7vw,22px)} :host(.tab) .err{font-size:14px} :host(.tab) .err button{font-size:14px;min-height:0;padding:6px 12px}
+      @media (min-width: 861px) and (orientation: landscape){:host(.tab){display:block;height:100%} :host(.tab) .np{min-height:100%;display:flex;flex-direction:column;box-sizing:border-box} :host(.tab) .bd{flex:1;display:flex;flex-direction:column}}
       `);
       r.innerHTML+=`<ha-card class="np"><div class="hd" id="hd">${this._c.title?esc(this._c.title):t.nice_title}<small>${t.nice_sub}</small></div><div class="bd" id="bd">
         <div class="pm">${t.parent}</div>
@@ -1423,13 +1459,16 @@ class NordpolNice extends HTMLElement {
         <div id="kids"></div>
         <div class="err" id="err"></div>
         <button class="addk" id="addk">${t.add_kid}</button>
-        <div class="log"><b>${t.log_title}</b><div id="log"></div></div><div class="hint">${t.hold}</div></div>
+        <div class="log"><b>${t.log_title}</b><div id="log"></div></div><div class="hint" id="holdpill">${t.hold}</div></div>
         <div class="dlg" id="dlg"><div><p id="dq"></p><button class="yes" id="yes"></button><button class="no" id="no">${t.cancel}</button></div></div></ha-card>`;
       const $=id=>r.getElementById(id);
-      longPress($("hd"), 900, ()=>this._toggleParent()); keyAct($("hd"), String(t.parent||"").replace(/<[^>]*>/g,""), ()=>this._toggleParent());
+      const pLbl=String(t.parent||"").replace(/<[^>]*>/g,"");
+      longPress($("hd"), 900, ()=>this._toggleParent()); keyAct($("hd"), pLbl, ()=>this._toggleParent());
+      longPress($("holdpill"), 900, ()=>this._toggleParent()); keyAct($("holdpill"), pLbl, ()=>this._toggleParent());
       $("kids").addEventListener("click",e=>{ const b=e.target.closest("button[data-d]"); if(!b) return; const row=b.closest(".kid");
         const k=this._kids().find(x=>x.uid===row.dataset.uid); if(!k) return; const why=$("why"); const d=+b.dataset.d; const w=(why.value||"").trim();
-        const ns=clamp100(k.score+d); this._setScore(k,ns); this._log(`${k.name} ${d>0?"+":""}${d}${w?": "+w:""}`); why.value=""; this._armTimer(); });
+        const ns=clamp100(k.score+d); this._setScore(k,ns); this._log(`${k.name} ${d>0?"+":""}${d}${w?": "+w:""}`); why.value=""; this._armTimer();
+        this.dispatchEvent(new CustomEvent("nordpol-sfx",{detail:{type:d>0?"star":"tap"},bubbles:true,composed:true})); });
       $("ed").addEventListener("click",()=>{ this._edit=!this._edit; $("edit").classList.toggle("on",this._edit); $("bd").classList.toggle("editing",this._edit); $("ed").textContent=this._edit?this._tr.edit_done:this._tr.edit; this._renderEdit(true); this._armTimer(); });
       $("rst").addEventListener("click",()=>{ this._confirm(`<b>${t.reset_q}</b><br>${t.reset_txt}`, this._tr.yes_reset, async ()=>{
         for(const k of this._kids()) await this._setScore(k,k.start); this._log(this._tr.new_start, true); }); });
@@ -1504,19 +1543,20 @@ class NordpolElf extends HTMLElement {
       computeHelper: mkHelper()
     };
   }
-  setConfig(c){ this._t=T(c); this._tr=TRaw(c); this._c=Object.assign({title:this._tr.elf_title, entity:null},c||{}); this._last=null; if(this._hass) this.hass=this._hass; else if(!this._c.entity) this._render(this._builtin()); }
+  setConfig(c){ this._t=T(c); this._tr=TRaw(c); this._c=Object.assign({title:this._tr.elf_title, entity:null},c||{}); this._last=null; this._selAdv=null; if(this._hass) this.hass=this._hass; else if(!this._c.entity) this._render(this._builtin()); }
   _now(){ return nowInTz(this._c.time_zone||(this._hass&&this._hass.config&&this._hass.config.time_zone)); }
   _list(){ const u=this._c&&this._c.elves; return (u&&u.length)?u.map(e=>Array.isArray(e)?e:[e.name,e.joke,e.task]):this._tr.elves; }
   /* advent day = days until the celebration date counted back from 24 (24 on the day itself, so Dec 1 = 1 with the default date) */
   _adv(n){ const [mo,d]=dateMD(this._c); const t=new Date(eventYear(n,this._c),mo,d); const today=new Date(n.getFullYear(),n.getMonth(),n.getDate());
     return 24-Math.round((t-today)/86400000); }
   _builtin(){ const E=this._list(), n=this._now(), a=this._adv(n);
-    const i=(a>=1&&a<=30)?(a-1)%E.length:(n.getFullYear()*372+n.getMonth()*31+n.getDate())%E.length; return E[i].join("|"); }
-  set hass(h){ const first=!this._hass; this._hass=h; const st=this._c.entity&&h.states[this._c.entity]; const s=st&&!["unknown","unavailable",""].includes(st.state)?st.state:this._builtin(); if(first||s!==this._last){this._last=s; this._render(s);} }
+    const d=(!this._c.entity && a>=1 && a<=30 && this._selAdv!=null)?Math.max(1,Math.min(a,this._selAdv)):a;
+    const i=(d>=1&&d<=30)?(d-1)%E.length:(n.getFullYear()*372+n.getMonth()*31+n.getDate())%E.length; return E[i].join("|"); }
+  set hass(h){ const first=!this._hass; this._hass=h; const st=this._c.entity&&h.states[this._c.entity]; const s=st&&!["unknown","unavailable",""].includes(st.state)?st.state:this._builtin(); if(first||s!==this._last){ if(s!==this._last) this._selAdv=null; this._last=s; this._render(s);} }
   getCardSize(){ return 4; }
   getGridOptions(){ return {columns:"full", rows:"auto"}; }
   _render(s){
-    const r=this.shadowRoot||this.attachShadow({mode:"open"}); r.innerHTML=""; 
+    const r=this.shadowRoot||this.attachShadow({mode:"open"}); r.innerHTML="";
     css(r, BASE_CSS+`
       .scroll{position:relative;margin-top:4px;padding:16px 16px 14px;border-radius:14px;color:#3b2207;
         background:linear-gradient(180deg,#fff3d1,#f3dba4);box-shadow:inset 0 0 22px rgba(140,90,20,.35),0 6px 16px rgba(0,0,0,.4)}
@@ -1524,32 +1564,59 @@ class NordpolElf extends HTMLElement {
       .elf{font-size:46px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3));animation:wb 2.4s ease-in-out infinite}
       @keyframes wb{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
       .n{font-family:${FONT_X};font-size:28px;font-weight:700;color:#9c1020}
-      .dt{font-size:12px;opacity:.7}
-      .j{margin-top:10px;font-size:15px;line-height:1.45}
+      .dt{font-size:clamp(12px,1.15vw,14px);opacity:.82}
+      .j{margin-top:12px;font-size:15px;line-height:1.45}
       .j b{color:#9c1020}
-      .ans{display:inline-block;margin-top:4px;padding:2px 8px;border-radius:6px;background:#3b2207;color:#3b2207;cursor:pointer;transition:all .3s}
-      .ans.show{background:transparent;color:#1d6b3c;font-weight:700}
-      .task{margin-top:12px;padding:10px 12px;border-radius:10px;background:#1c7a45;color:#fff;font-weight:700;display:flex;gap:8px;align-items:center}
+      .ans{position:relative;display:inline-block;margin-top:6px;padding:6px 12px;border-radius:8px;cursor:pointer;transition:all .25s;max-width:100%;box-sizing:border-box;font-weight:700}
+      .ans:not(.show){color:transparent;background:linear-gradient(180deg,#9c1020,#680914);border:1.5px dashed #ffd878;min-width:min(210px,100%);min-height:32px}
+      .ans:not(.show):hover{background:linear-gradient(180deg,#b81628,#7e0c1a);border-color:#fff}
+      .ans:not(.show)::after{content:attr(data-tap);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ffd878;font-size:13px;font-weight:700;padding:0 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .ans.show{background:rgba(29,107,60,.12);border:1px solid rgba(29,107,60,.3);color:#1d6b3c}
+      .task{margin-top:14px;padding:10px 12px;border-radius:10px;background:#1c7a45;color:#fff;font-weight:700;display:flex;gap:8px;align-items:center;cursor:pointer}
       .task.done{background:#b8860b}
-      :host(.tab) .hd{display:none}
-      :host(.tab) .n{font-size:clamp(22px,2.3vw,32px);line-height:1.1;overflow-wrap:break-word} :host(.tab) .elf{font-size:clamp(44px,4.5vw,58px)} :host(.tab) .j{font-size:clamp(15px,1.55vw,19px);line-height:1.4}
-      :host(.tab) .task{font-size:clamp(14px,1.45vw,18px);padding:12px 14px;min-height:48px;line-height:1.35} :host(.tab) .ans{padding:5px 10px}
+      .advbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px;max-width:100%}
+      .advb,.advt{appearance:none;border:1px solid rgba(255,214,120,.45);background:rgba(255,255,255,.1);color:#fff8e7;border-radius:9px;min-height:30px;padding:4px 9px;font:700 13px system-ui,sans-serif;cursor:pointer;box-sizing:border-box;max-width:100%}
+      .advb:hover:not(:disabled),.advt:hover{border-color:#ffd878;background:rgba(255,255,255,.18)}
+      .advb:disabled{opacity:.35;cursor:default}
+      .advlbl{font-size:clamp(12px,1.15vw,14px);font-weight:700;color:#ffd878}
+      .advp{margin-left:auto;font-size:clamp(12px,1.1vw,14px);font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(14,110,58,.55);border:1px solid rgba(126,240,168,.5);color:#fff8e7;white-space:nowrap}
+      :host(.tab) .hd{display:flex;font-size:clamp(19px,2vw,26px);padding:14px 16px 6px;gap:8px}
+      :host(.tab) .hd small{font-size:clamp(11px,1.05vw,14px);text-align:right;line-height:1.2}
+      :host(.tab) .n{font-size:clamp(22px,2.3vw,32px);line-height:1.1;overflow-wrap:break-word} :host(.tab) .elf{font-size:clamp(44px,4.5vw,58px)} :host(.tab) .j{font-size:clamp(15px,1.55vw,19px);line-height:1.45}
+      :host(.tab) .task{font-size:clamp(14px,1.45vw,18px);padding:12px 14px;min-height:48px;line-height:1.35}
+      @media (min-width: 861px) and (orientation: landscape){:host(.tab){display:block;height:100%} :host(.tab) .np{min-height:100%;display:flex;flex-direction:column;box-sizing:border-box} :host(.tab) .bd{flex:1;display:flex;flex-direction:column}}
     `);
-    const L=this._t; const [name,joke,task]=(s||this._builtin()).split("|");
+    const L=this._t, TR=this._tr; const [name,joke,task]=(s||this._builtin()).split("|");
     let q=joke||"", a=""; const k=q.indexOf("?"); if(k>0){a=q.slice(k+1).trim(); q=q.slice(0,k+1);}
-    const n=this._now(); const adv=this._adv(n);
+    const n=this._now(); const adv=this._adv(n); const hasAdv=!this._c.entity && adv>=1 && adv<=30;
+    const vd=hasAdv && this._selAdv!=null ? Math.max(1,Math.min(adv,this._selAdv)) : adv;
+    const vn=hasAdv ? new Date(n.getFullYear(),n.getMonth(),n.getDate()-(adv-vd)) : n;
     /* one label format for every December day (elf_date), the locale's own format for other months (e.g. date: 01-07) */
-    const dd=(adv>=1&&adv<=30)?(n.getMonth()===11?F(L.elf_date,{d:n.getDate()}):n.toLocaleDateString(this._tr.locale,{day:"numeric",month:"long"})):L.elf_trial;
-    const key="nordpol-task-"+n.toDateString();
+    const dd=(vd>=1&&vd<=30)?(vn.getMonth()===11?F(L.elf_date,{d:vn.getDate()}):vn.toLocaleDateString(TR.locale,{day:"numeric",month:"long"})):L.elf_trial;
+    const key="nordpol-task-"+vn.toDateString();
     const done=localStorage.getItem(key)==="1";
-    r.innerHTML+=`<ha-card class="np"><div class="hd">${esc(this._c.title)}<small>${dd}</small></div><div class="bd"><div class="scroll">
+    let advHtml="";
+    if(hasAdv){
+      let doneCount=0; const cap=Math.min(24,adv);
+      for(let i=1;i<=cap;i++){ const d0=new Date(n.getFullYear(),n.getMonth(),n.getDate()-(adv-i)); if(localStorage.getItem("nordpol-task-"+d0.toDateString())==="1") doneCount++; }
+      advHtml=`<div class="advbar"><button type="button" class="advb" id="advPrev" ${vd<=1?"disabled":""} aria-label="Previous day">◀</button><span class="advlbl">${dd}</span><button type="button" class="advb" id="advNext" ${vd>=adv?"disabled":""} aria-label="Next day">▶</button>${vd<adv?`<button type="button" class="advt" id="advToday">${L.elf_today}</button>`:""}<span class="advp">${F(L.elf_prog,{done:doneCount})}</span></div>`;
+    }
+    r.innerHTML+=`<ha-card class="np"><div class="hd">${esc(this._c.title)}<small>${dd}</small></div><div class="bd">${advHtml}<div class="scroll">
       <div class="who"><div class="elf">🧝</div><div><div class="n">${esc(name)}</div><div class="dt">${L.elf_duty}</div></div></div>
-      ${q?`<div class="j"><b>${L.elf_joke}</b><br>${esc(q)}<br><span class="ans" id="ans">${esc(a||"…")}</span> <small style="opacity:.6">${L.elf_tap}</small></div>`:""}
+      ${q?`<div class="j"><b>${L.elf_joke}</b><br>${esc(q)}<br><span class="ans" id="ans" data-tap="🎁 ${esc(TR.elf_tap)}">${esc(a||"…")}</span></div>`:""}
       ${task?`<div class="task ${done?"done":""}" id="task">${done?"✅":"🎯"} <span>${L.elf_task} ${esc(task)}</span></div>`:""}
     </div></div></ha-card>`;
-    const an=r.getElementById("ans"); an&&an.addEventListener("click",()=>an.classList.add("show")); keyAct(an, L.elf_tap, ()=>an.classList.add("show"));
-    const t=r.getElementById("task"); const tog=()=>{ const d=localStorage.getItem(key)==="1"; localStorage.setItem(key,d?"0":"1"); this._render(s); const nt=r.getElementById("task"); nt&&nt.focus(); };
+    const an=r.getElementById("ans");
+    const rev=()=>{ if(!an||an.classList.contains("show")) return; an.classList.add("show"); this.dispatchEvent(new CustomEvent("nordpol-sfx",{detail:{type:"reveal"},bubbles:true,composed:true})); };
+    an&&an.addEventListener("click",rev); keyAct(an, TR.elf_tap, rev);
+    const t=r.getElementById("task"); const tog=()=>{ const d=localStorage.getItem(key)==="1"; localStorage.setItem(key,d?"0":"1"); if(!d) this.dispatchEvent(new CustomEvent("nordpol-sfx",{detail:{type:"star"},bubbles:true,composed:true})); this._render(this._c.entity?s:this._builtin()); const nt=r.getElementById("task"); nt&&nt.focus(); };
     t&&t.addEventListener("click",tog); if(t){ keyAct(t, null, tog); t.setAttribute("aria-pressed", done?"true":"false"); }
+    if(hasAdv){
+      const ap=r.getElementById("advPrev"), ax=r.getElementById("advNext"), at=r.getElementById("advToday");
+      ap&&ap.addEventListener("click",()=>{ this._selAdv=Math.max(1,vd-1); this._render(this._builtin()); });
+      ax&&ax.addEventListener("click",()=>{ this._selAdv=Math.min(adv,vd+1); this._render(this._builtin()); });
+      at&&at.addEventListener("click",()=>{ this._selAdv=null; this._render(this._builtin()); });
+    }
   }
 }
 
@@ -1640,28 +1707,33 @@ class NordpolSleigh extends HTMLElement {
       .eta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;padding:10px 14px;border-radius:14px;
         background:rgba(214,32,47,.35);border:1px solid rgba(255,120,120,.5);font-weight:800;font-size:18px}
       .eta span:last-child{font-variant-numeric:tabular-nums;color:#ffd878;text-align:right}
-      .news{margin-top:10px;font-size:13px;opacity:.9}
-      .demo{font-size:11px;opacity:.45;text-align:right;margin-top:6px}
+      .news{margin-top:10px;font-size:14px;opacity:.92;line-height:1.45}
+      .demobar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:8px}
+      .demobtn{appearance:none;font:700 clamp(12.5px,1.1vw,14px) system-ui,sans-serif;padding:7px 13px;border-radius:999px;cursor:pointer;color:#fff8e7;
+        background:rgba(255,255,255,.1);border:1px solid rgba(255,214,120,.45);max-width:100%;box-sizing:border-box;transition:background .15s,border-color .15s}
+      .demobtn:hover{background:rgba(255,255,255,.18);border-color:#ffd878}
+      .demobtn.on{background:linear-gradient(180deg,#d6202f,#8d0f19);border-color:#ffd878}
+      #info{display:flex;flex-direction:column;flex:1}
       :host(.tab){display:block;height:100%}
       :host(.tab) .np{height:100%;display:flex;flex-direction:column;box-sizing:border-box}
-      :host(.tab) .hd{padding:10px 14px 4px;font-size:clamp(15px,1.55vw,18px);gap:6px}
-      :host(.tab) .hd small{font-size:clamp(10px,.95vw,11px);text-align:right;white-space:nowrap}
-      :host(.tab) .bd{flex:1;min-height:0;display:flex;flex-direction:column;padding:4px 14px 10px}
+      :host(.tab) .hd{padding:12px 16px 6px;font-size:clamp(19px,2vw,26px);gap:6px;cursor:pointer}
+      :host(.tab) .hd small{font-size:clamp(11px,1.05vw,14px);text-align:right;white-space:nowrap}
+      :host(.tab) .bd{flex:1;min-height:0;display:flex;flex-direction:column;padding:4px 14px 12px}
       :host(.tab) .map{flex:0 1 auto;width:100%;aspect-ratio:2.3/1;min-height:110px}
-      :host(.tab) .st{gap:5px;margin-top:8px}
-      :host(.tab) .row{grid-template-columns:minmax(0,max-content) minmax(56px,1fr) auto;gap:8px;font-size:clamp(12px,1.2vw,14px)}
+      :host(.tab) .st{gap:6px;margin-top:10px}
+      :host(.tab) .row{grid-template-columns:minmax(0,max-content) minmax(56px,1fr) auto;gap:8px;font-size:clamp(12px,1.25vw,15.5px)}
       :host(.tab) .row > span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-      :host(.tab) .pb{height:11px}
-      :host(.tab) .big{font-size:clamp(13px,1.35vw,15px);margin-top:8px;padding:8px 12px;line-height:1.3}
-      :host(.tab) .eta{font-size:clamp(14px,1.45vw,17px);padding:8px 12px;margin-top:8px}
-      :host(.tab) .news{font-size:12px;margin-top:6px}
-      :host(.tab) .demo{margin-top:4px;font-size:10px}
+      :host(.tab) .pb{height:12px}
+      :host(.tab) .big{font-size:clamp(13.5px,1.4vw,16.5px);margin-top:10px;padding:10px 13px;line-height:1.4}
+      :host(.tab) .eta{font-size:clamp(14px,1.5vw,18.5px);padding:9px 13px;margin-top:10px}
+      :host(.tab) .news{font-size:clamp(12.5px,1.15vw,15px);margin-top:8px;line-height:1.45}
     `);
     r.innerHTML+=`<ha-card class="np"><div class="hd" id="hd">${this._c.title?esc(this._c.title):t.sl_title}<small id="mode">${t.sl_radar}</small></div><div class="bd">
       <div class="map"><svg id="svg" viewBox="0 0 360 180" preserveAspectRatio="none"></svg></div><div id="info"></div>
-      <div class="demo">${t.sl_hint}</div></div></ha-card>`;
+      <div class="demobar"><button type="button" class="demobtn" id="demobtn">${t.sl_btn_demo}</button></div></div></ha-card>`;
     const demo=()=>{ this._demo=!this._demo; this._demoStart=Date.now(); this._tick(); };
     longPress(r.getElementById("hd"),900,demo); keyAct(r.getElementById("hd"), null, demo);
+    r.getElementById("demobtn").addEventListener("click",()=>{ demo(); this.dispatchEvent(new CustomEvent("nordpol-sfx",{detail:{type:this._demo?"sleigh":"tap"},bubbles:true,composed:true})); });
     if(this._hass||this._c.home&&typeof this._c.home==="object"){ this._makeRoute(); this._drawBase(); }
   }
   _xy(lat,lon){ return [lon+180, 90-lat]; }
@@ -1681,7 +1753,7 @@ class NordpolSleigh extends HTMLElement {
     s+=`<path id="done" d="" fill="none" stroke="#ffd878" stroke-width="1.2"/>`;
     this._route.forEach((p,i)=>{ const [x,y]=this._xy(p.lat,p.lon); const home=!!p.home;
       s+=`<circle cx="${x}" cy="${y}" r="${home?2.6:1.4}" fill="${home?"#ff3b4a":"#fff"}" ${home?'stroke="#ffd878" stroke-width=".8"':''}/>`;
-      if(home) s+=`<text x="${x+3}" y="${y-3}" font-size="7" fill="#ffd878" font-weight="700">${esc(this._homeName)}</text>`; });
+      if(home) s+=`<text x="${x+3}" y="${y-3}" font-size="9" fill="#ffd878" font-weight="700" paint-order="stroke" stroke="#061024" stroke-width="2" stroke-linejoin="round">${esc(this._homeName)}</text>`; });
     s+=`<g id="sl"><circle r="6" fill="rgba(255,60,74,.35)">${reducedMotion()?"":`<animate attributeName="r" values="3;8;3" dur="1.6s" repeatCount="indefinite"/>`}</circle><text font-size="12" text-anchor="middle" dy="4">🛷</text></g>`;
     svg.innerHTML=s;
   }
@@ -1703,6 +1775,7 @@ class NordpolSleigh extends HTMLElement {
     if(this._demo){ const el=(Date.now()-this._demoStart)/1000; min=this._demoMin(el); if(min>R[R.length-1].t+10){this._demo=false; min=undefined;} }
     else if(real>=Math.min(-this._homeOff*60,R[0].t-120) && real<=R[R.length-1].t+30) min=real;
     const sr=this.shadowRoot, info=sr.getElementById("info"), mode=sr.getElementById("mode"), sl=sr.getElementById("sl"); if(!sl) return;
+    const db=sr.getElementById("demobtn"); if(db){ db.textContent=this._demo?this._tr.sl_btn_stop:this._tr.sl_btn_demo; db.classList.toggle("on",!!this._demo); db.setAttribute("aria-pressed",this._demo?"true":"false"); }
     if(min===undefined){
       mode.textContent=this._tr.sl_status;
       const tz=this._c.time_zone||(this._hass&&this._hass.config&&this._hass.config.time_zone);
@@ -1769,11 +1842,11 @@ class NordpolBoard extends HTMLElement {
     .hero{grid-area:hero;min-width:0}.cams{grid-area:cams;min-height:0;min-width:0}
     .side{grid-area:side;min-height:0;min-width:0;display:flex;flex-direction:column;gap:8px}
     .tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:6px}
-    .tabs button{font:800 clamp(12px,1.3vw,16px) system-ui,sans-serif;min-height:46px;border-radius:14px;cursor:pointer;color:#fff8e7;
+    .tabs button{font:800 clamp(12px,1.35vw,17px) system-ui,sans-serif;min-height:50px;border-radius:14px;cursor:pointer;color:#fff8e7;
       border:1.5px solid rgba(255,214,120,.5);background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03));
       box-shadow:0 4px 12px rgba(0,0,0,.35);-webkit-tap-highlight-color:transparent;padding:4px 4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .tabs button.on{background:linear-gradient(180deg,#d6202f,#8d0f19);border-color:#ffd878;box-shadow:0 0 16px rgba(214,32,47,.6)}
-    .tabs button span{display:block;font-size:clamp(17px,1.8vw,20px);line-height:1}
+    .tabs button span{display:block;font-size:clamp(17px,1.9vw,22px);line-height:1}
     .pane{flex:1;min-height:0;overflow:auto;border-radius:22px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
     .pane::-webkit-scrollbar{display:none}
     .pane > *{display:none}.pane > .show{display:block;height:100%}

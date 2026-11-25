@@ -1,6 +1,6 @@
 /* Nordpol Web Service Worker — caches lightweight UI shell & font ONLY.
    MP4 clips (/media/ or *.mp4) and cross-origin requests are strictly bypassed. */
-const CACHE_NAME = "nordpol-shell-v1";
+const CACHE_NAME = "nordpol-shell-v2";
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -9,6 +9,10 @@ const SHELL_ASSETS = [
   "./storage.js",
   "./i18n.js",
   "./tz-cities.js",
+  "./audio.js",
+  "./qr.js",
+  "./pulse.js",
+  "./extras.js",
   "./nordpol-card.js",
   "./manifest.webmanifest",
   "./fonts/mountains-of-christmas-700.woff2",

@@ -16,9 +16,32 @@ const isMobile = mode === "mobile";
 
 let geocodeCalls = [];
 let copiedTexts = [];
+let pulseCalls = [];
+let sharedPayloads = [];
 
 window.__NORDPOL_WEB_OPTS__ = {
   remote_dir: "/remote",
+  pulse_url: "https://pulse.example",
+  async pulseFetch(url, init) {
+    pulseCalls.push({ url, body: init && init.body });
+    return {
+      ok: true,
+      status: 200,
+      async json() {
+        return {
+          ok: true,
+          live: 7,
+          live_countries: [{ code: "DK", count: 4 }, { code: "DE", count: 3 }],
+          total_visits: 142,
+          top_countries: [{ code: "DK", count: 80 }, { code: "US", count: 30 }],
+          top_languages: [{ code: "da", count: 75 }, { code: "en", count: 67 }]
+        };
+      }
+    };
+  },
+  async share(data) {
+    sharedPayloads.push(data);
+  },
   async geocodeFetch(url) {
     geocodeCalls.push(url);
     const u = new URL(url);
@@ -102,6 +125,8 @@ window.__runWebTests = async () => {
   localStorage.clear();
   geocodeCalls = [];
   copiedTexts = [];
+  pulseCalls = [];
+  sharedPayloads = [];
 
   // 1. Initial mount & instant full-screen dashboard
   let { w, errors } = await mountFrame();
@@ -111,6 +136,112 @@ window.__runWebTests = async () => {
   assert(errors.length === 0, "Zero console/page errors on initial mount: " + errors.join("; "));
   assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth,
     `No horizontal overflow on initial ${mode} render (${doc.documentElement.scrollWidth} <= ${doc.documentElement.clientWidth})`);
+
+  // 1b. Lower-right floating dock (Sound + Settings), Live Pulse badge, Sleigh #demobtn & city chip
+  const initGear = doc.getElementById("np-settings-btn");
+  const initSound = doc.getElementById("np-sound-btn");
+  const gearRect = initGear.getBoundingClientRect();
+  const soundRect = initSound.getBoundingClientRect();
+  assert(gearRect.right > doc.documentElement.clientWidth - 90 && gearRect.bottom > doc.documentElement.clientHeight - 90,
+    "Settings button sits in lower-right dock");
+  assert(soundRect.right > doc.documentElement.clientWidth - 90 && soundRect.bottom > doc.documentElement.clientHeight - 90,
+    "Sound toggle sits in lower-right dock");
+
+  assert(initSound.getAttribute("aria-pressed") === "false", "Sound toggle muted by default");
+  initSound.click();
+  await sleep(30);
+  assert(initSound.getAttribute("aria-pressed") === "true" && api.getSettings().sound_enabled === true,
+    "Sound toggle enables and persists sound_enabled");
+  initSound.click();
+  await sleep(30);
+  assert(initSound.getAttribute("aria-pressed") === "false" && api.getSettings().sound_enabled === false,
+    "Second Sound toggle click mutes sound cleanly");
+
+  await sleep(40);
+  assert(pulseCalls.length >= 1, "Pulse client pings configured pulse_url on startup");
+  const pulseBadge = api.board.shadowRoot.querySelector("nordpol-cam-card").shadowRoot.getElementById("np-pulse-badge");
+  assert(pulseBadge && pulseBadge.textContent.includes("7") && pulseBadge.textContent.includes("🇩🇰"),
+    "Cam header renders live viewer count and country flag");
+
+  const initSleighSr = api.board.shadowRoot.querySelector("nordpol-sleigh-card").shadowRoot;
+  const demoBtn = initSleighSr.getElementById("demobtn");
+  assert(demoBtn, "Visible Test Flight button (#demobtn) present on Sleigh Tracker");
+  demoBtn.click();
+  await sleep(40);
+  const modeOn = initSleighSr.getElementById("mode").textContent;
+  assert(modeOn.includes("TEST FLIGHT") || modeOn.includes("PRØVETUR"), "Test Flight activates via #demobtn");
+  assert(demoBtn.textContent.includes("⏹"), "Test Flight button switches to Stop icon");
+  demoBtn.click();
+  await sleep(40);
+  const modeOff = initSleighSr.getElementById("mode").textContent;
+  assert(!modeOff.includes("TEST FLIGHT") && !modeOff.includes("PRØVETUR") && !demoBtn.textContent.includes("⏹"),
+    "Second #demobtn click stops Test Flight");
+
+  const cityChip = initSleighSr.getElementById("np-city-chip");
+  assert(cityChip && cityChip.textContent.includes("📍"), "Clickable city chip rendered on Sleigh Tracker");
+  cityChip.click();
+  await sleep(40);
+  assert(doc.getElementById("np-drawer").classList.contains("open") && doc.activeElement.id === "np-city-search",
+    "Clicking #np-city-chip opens Settings drawer and focuses city search");
+  doc.getElementById("np-close-btn").click();
+  await sleep(40);
+
+  // 1c. Visible Elf header, gift-tag joke reveal pill & December Advent history navigation
+  const tabs0 = api.board.shadowRoot.querySelectorAll('.tabs button[role="tab"]');
+  tabs0[2].click();
+  await sleep(50);
+  let esr = api.board.shadowRoot.querySelector("nordpol-elf-card").shadowRoot;
+  assert(w.getComputedStyle(esr.querySelector(".hd")).display !== "none", "NordpolElf header visible in tab mode");
+  const jokeAns = esr.getElementById("ans");
+  assert(jokeAns && jokeAns.dataset.tap && jokeAns.dataset.tap.trim().length > 0, "Joke reveal pill uses data-tap prompt");
+  assert(!jokeAns.textContent.includes(jokeAns.dataset.tap), "Answer textContent excludes data-tap reveal prompt");
+  jokeAns.click();
+  await sleep(20);
+  assert(jokeAns.classList.contains("show"), "Clicking joke card reveals the punchline");
+
+  const RealDate = w.Date;
+  const fixedDecMs = RealDate.parse("2026-12-05T12:00:00Z");
+  function FakeDecDate(...args) {
+    if (!(this instanceof FakeDecDate)) return new RealDate(fixedDecMs).toString();
+    return args.length ? new RealDate(...args) : new RealDate(fixedDecMs);
+  }
+  FakeDecDate.prototype = RealDate.prototype;
+  FakeDecDate.now = () => fixedDecMs;
+  FakeDecDate.parse = RealDate.parse.bind(RealDate);
+  FakeDecDate.UTC = RealDate.UTC.bind(RealDate);
+  w.Date = FakeDecDate;
+  try {
+    api.refreshBoard();
+    await sleep(50);
+    api.board.shadowRoot.querySelectorAll('.tabs button[role="tab"]')[2].click();
+    await sleep(50);
+    esr = api.board.shadowRoot.querySelector("nordpol-elf-card").shadowRoot;
+    const advBar = esr.querySelector(".advbar");
+    const advNext = esr.getElementById("advNext");
+    const advPrev = esr.getElementById("advPrev");
+    assert(advBar && esr.querySelector(".advlbl"), "December renders Advent navigation bar");
+    assert(advNext.disabled === true && esr.getElementById("advPrev").disabled === false, "Cannot navigate ahead of Dec 5");
+    esr.getElementById("task").click();
+    await sleep(30);
+    assert(esr.querySelector(".advp").textContent.includes("1/24"), "Completing Dec 5 updates Advent progress to 1/24");
+    esr.getElementById("advPrev").click();
+    await sleep(30);
+    esr = api.board.shadowRoot.querySelector("nordpol-elf-card").shadowRoot;
+    const advToday = esr.getElementById("advToday");
+    assert(esr.getElementById("advNext").disabled === false, "Navigating to Dec 4 enables Next button");
+    assert(advToday && w.getComputedStyle(advToday).display !== "none",
+      "Today shortcut appears when viewing past Advent day");
+    advToday.click();
+    await sleep(30);
+    assert(esr.getElementById("advNext").disabled === true, "Today shortcut returns to Dec 5");
+  } finally {
+    w.Date = RealDate;
+    for (const k of Object.keys(localStorage)) {
+      if (k.startsWith("nordpol-task-") && k.includes("2026")) localStorage.removeItem(k);
+    }
+    api.refreshBoard();
+    await sleep(40);
+  }
 
   // 2. 14-language i18n parity & TZ cities checks
   const { LANGS, WEB_I18N, DEMO_KIDS, resolveLang } = w.NordpolWebI18n;
@@ -305,6 +436,11 @@ window.__runWebTests = async () => {
   assert(!drawer.classList.contains("open"), "Kid Lock blocks quick click");
   assert(doc.getElementById("np-toast").classList.contains("on"), "Kid Lock shows hold hint toast");
 
+  const lockSleighChip = api.board.shadowRoot.querySelector("nordpol-sleigh-card").shadowRoot.getElementById("np-city-chip");
+  lockSleighChip.click();
+  await sleep(30);
+  assert(!drawer.classList.contains("open"), "Kid Lock blocks opening drawer via clickable city chip");
+
   gear.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
   await sleep(980);
   gear.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
@@ -328,17 +464,75 @@ window.__runWebTests = async () => {
   await sleep(50);
   assert(api.board.shadowRoot.querySelector("nordpol-nice-card").shadowRoot.getElementById("bd").classList.contains("parent"), "Parent mode unlocked via Quick Action");
 
-  // 7. Privacy-safe #hash share link
+  // 7. Mailroom Postbox, Printable Certificate, Offline QR, Pulse Stats & Privacy-safe #hash link
   api.backend.save([{ uid: "s1", summary: "SecretKidName", status: "needs_action", description: JSON.stringify({ emoji: "🌟", score: 90, start: 75 }) }]);
+  api.refreshBoard();
+  api.board.shadowRoot.querySelectorAll('.tabs button[role="tab"]')[1].click();
+  await sleep(50);
+
+  let niceSr2 = api.board.shadowRoot.querySelector("nordpol-nice-card").shadowRoot;
+  niceSr2.getElementById("np-wish-open").click();
+  await sleep(40);
+  const wishModal = doc.getElementById("np-wish-modal");
+  assert(!wishModal.hidden, "Mailroom Postbox modal opens from Nice List");
+  doc.getElementById("np-wish-child").value = "Astrid";
+  doc.getElementById("np-wish-text").value = "A wooden train";
+  doc.getElementById("np-wish-send").click();
+  await sleep(40);
+  assert(!doc.getElementById("np-wish-stamp").hidden, "North Pole Postbox stamp appears after sending wish");
+  assert(w.NordpolWebStorage.loadWishes().length === 1, "Wish persisted to localStorage");
+  doc.getElementById("np-wish-close").click();
+  await sleep(30);
+
+  // Parent Mode Inbox & Official Certificate
+  niceSr2.getElementById("hd").dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+  await sleep(30);
+  const inboxBtn = niceSr2.getElementById("np-inbox-open");
+  assert(inboxBtn && inboxBtn.textContent.includes("(1)"), "Parent Inbox badge shows 1 wish");
+  inboxBtn.click();
+  await sleep(30);
+  assert(!wishModal.hidden && wishModal.textContent.includes("Astrid") && wishModal.textContent.includes("A wooden train"),
+    "Parent Inbox displays submitted wish");
+  doc.getElementById("np-wish-close").click();
+  await sleep(30);
+
+  niceSr2.getElementById("np-cert-open").click();
+  await sleep(40);
+  const certModal = doc.getElementById("np-cert-modal");
+  assert(!certModal.hidden && doc.getElementById("np-cert-sheet").textContent.includes("SecretKidName")
+    && doc.getElementById("np-cert-sheet").textContent.includes("/ 100"),
+    "Official Nice List Certificate renders child name and score");
+  doc.getElementById("np-cert-close").click();
+  await sleep(30);
+
   gear.click();
   await sleep(30);
+  const qrPath = doc.querySelector("#np-qr-box svg path");
+  assert(qrPath && qrPath.getAttribute("d") && qrPath.getAttribute("d").length > 20, "Offline QR SVG rendered in Settings drawer");
+  const nativeShareBtn = doc.getElementById("np-native-share");
+  assert(nativeShareBtn, "Native share button shown when navigator/opts.share exists");
+  nativeShareBtn.click();
+  await sleep(30);
+  assert(sharedPayloads.length >= 1 && sharedPayloads[0].url.includes("#"), "Native share passes Nordpol setup URL");
+
+  const pulseStatsEl = doc.getElementById("np-pulse-stats");
+  assert(pulseStatsEl && !pulseStatsEl.hidden && pulseStatsEl.textContent.includes("142") && pulseStatsEl.textContent.includes("DK"),
+    "Live Pulse stats displayed in Settings drawer");
+  const optOutChk = doc.getElementById("np-pulse-optout");
+  optOutChk.checked = true;
+  optOutChk.dispatchEvent(new Event("change"));
+  await sleep(40);
+  assert(pulseStatsEl.hidden === true && !api.board.shadowRoot.querySelector("nordpol-cam-card").shadowRoot.getElementById("np-pulse-badge"),
+    "Pulse opt-out hides badge and clears live stats");
+
   doc.getElementById("np-copy-link").click();
   await sleep(40);
   assert(copiedTexts.length >= 1, "Copy setup link wrote to clipboard");
   const shareUrl = copiedTexts[copiedTexts.length - 1];
   assert(shareUrl.includes("eta=20%3A15"), "Share hash includes configured ETA");
-  assert(!shareUrl.includes("SecretKidName") && !shareUrl.includes("Ella") && !shareUrl.includes("nice_items"),
-    "Share link strictly excludes children's names and Nice list data");
+  assert(!shareUrl.includes("SecretKidName") && !shareUrl.includes("Ella") && !shareUrl.includes("nice_items")
+    && !shareUrl.includes("Astrid") && !shareUrl.includes("wooden"),
+    "Share link strictly excludes children's names, Nice list data, and wishes");
 
   // Apply shared hash on fresh mount
   const hashOnly = new URL(shareUrl).hash;
@@ -355,6 +549,10 @@ window.__runWebTests = async () => {
   const exported = exportBackup(api.getSettings(), api.backend);
   assert(exported.app === "nordpol-web" && exported.version === 1, "Exported backup header valid");
   assert(exported.nice_items.some(i => i.summary === "SecretKidName"), "Exported backup includes Nice list");
+  assert(Array.isArray(exported.wishes) && exported.wishes.some(x => x.child === "Astrid"), "Exported backup includes Mailroom wishes");
+  const roundTrip = importBackup(JSON.stringify(exported));
+  assert(Array.isArray(roundTrip.wishes) && roundTrip.wishes.length === 1 && roundTrip.wishes[0].child === "Astrid",
+    "importBackup preserves Mailroom wishes");
 
   let rejectedMalformed = false;
   try { importBackup("{broken"); } catch { rejectedMalformed = true; }

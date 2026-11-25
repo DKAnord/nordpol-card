@@ -16,7 +16,7 @@ jobs:
         with: { node-version: 22 }
       - name: Syntax check
         run: |
-          for f in dist/nordpol-card.js web/app.js web/storage.js web/i18n.js web/tz-cities.js web/sw.js; do
+          for f in dist/nordpol-card.js web/app.js web/storage.js web/i18n.js web/tz-cities.js web/audio.js web/pulse.js web/qr.js web/extras.js web/sw.js tools/nordpol-pulse-worker/worker.mjs; do
             node --check "$f"
           done
       - name: Validate hacs.json

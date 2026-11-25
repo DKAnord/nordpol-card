@@ -14,11 +14,17 @@
     sanitizeHome,
     loadSettings,
     saveSettings,
+    loadWishes,
+    saveWishes,
     encodeShareHash,
     parseShareHash,
     exportBackup,
     importBackup
   } = window.NordpolWebStorage;
+  const { createAudio } = window.NordpolWebAudio;
+  const { toSvg: qrToSvg } = window.NordpolQr;
+  const { DEFAULT_PULSE_URL, countryFlag, createPulseClient } = window.NordpolPulse;
+  const { createExtras } = window.NordpolExtras;
 
   function readBootOpts() {
     if (window.__NORDPOL_WEB_OPTS__) return window.__NORDPOL_WEB_OPTS__;
@@ -120,24 +126,25 @@
     const board = document.createElement("nordpol-board-card");
     appEl.appendChild(board);
 
-    function syncDocumentMeta() {
-      const lang = curLang();
-      document.documentElement.lang = lang;
-      document.title = t().page_title;
-    }
+    const audio = createAudio();
+    audio.setEnabled(Boolean(settings.sound_enabled));
 
-    function refreshBoard() {
-      syncDocumentMeta();
-      board.hass = webHass.makeHass();
-      board.setConfig(buildBoardConfig());
-    }
+    // Build floating lower-right dock (Sound + Parent Settings), toast, backdrop & drawer
+    const fabDock = document.createElement("div");
+    fabDock.className = "np-fab-dock";
 
-    // Build floating corner Settings button, toast, backdrop & drawer
+    const soundBtn = document.createElement("button");
+    soundBtn.type = "button";
+    soundBtn.id = "np-sound-btn";
+    soundBtn.className = "np-fab-btn";
+
     const gearBtn = document.createElement("button");
     gearBtn.type = "button";
     gearBtn.id = "np-settings-btn";
-    gearBtn.className = "np-gear";
-    gearBtn.innerHTML = `<svg class="np-hold-ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20"/></svg><span class="np-gear-icon" aria-hidden="true">⚙️</span>`;
+    gearBtn.className = "np-fab-btn np-gear";
+    gearBtn.innerHTML = `<svg class="np-hold-ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21"/></svg><span class="np-gear-icon" aria-hidden="true">⚙️</span>`;
+
+    fabDock.append(soundBtn, gearBtn);
 
     const toastEl = document.createElement("div");
     toastEl.id = "np-toast";
@@ -158,7 +165,7 @@
     drawer.setAttribute("aria-labelledby", "np-drawer-title");
     drawer.tabIndex = -1;
 
-    document.body.append(gearBtn, toastEl, backdrop, drawer);
+    document.body.append(fabDock, toastEl, backdrop, drawer);
 
     let toastTimer = null;
     function showToast(msg) {
@@ -168,6 +175,16 @@
       toastTimer = setTimeout(() => toastEl.classList.remove("on"), 2800);
     }
 
+    function syncSoundBtn() {
+      const on = Boolean(settings.sound_enabled);
+      const L = t();
+      const label = on ? L.sound_on : L.sound_off;
+      soundBtn.setAttribute("aria-pressed", on ? "true" : "false");
+      soundBtn.setAttribute("aria-label", label);
+      soundBtn.title = label;
+      soundBtn.innerHTML = `<span class="np-fab-icon" aria-hidden="true">${on ? "🔔" : "🔇"}</span>`;
+    }
+
     let pendingConfirm = null;
     let searchAbort = null;
     let searchDebounce = null;
@@ -175,6 +192,66 @@
 
     function isDrawerOpen() {
       return drawer.classList.contains("open");
+    }
+
+    function onOpenLocation() {
+      if (settings.kid_lock) {
+        showToast(t().kid_lock_toast);
+        return;
+      }
+      openDrawer();
+      const searchEl = drawer.querySelector("#np-city-search");
+      if (searchEl) searchEl.focus();
+    }
+
+    const extras = createExtras({
+      board,
+      backend,
+      getT: t,
+      getLang: curLang,
+      getHome: resolvedHome,
+      onOpenLocation,
+      playSfx: type => audio.play(type)
+    });
+
+    const pulse = createPulseClient({
+      getUrl: () => settings.pulse_url || opts.pulse_url || DEFAULT_PULSE_URL,
+      getLang: curLang,
+      isOptOut: () => Boolean(settings.pulse_opt_out),
+      fetchFn: opts.pulseFetch,
+      onUpdate: stats => {
+        extras.updatePulseBadge(stats);
+        if (isDrawerOpen()) renderPulseStatsInDrawer();
+      }
+    });
+
+    board.addEventListener("nordpol-sfx", e => {
+      audio.play(e.detail && e.detail.type);
+    });
+
+    soundBtn.addEventListener("click", () => {
+      const nextOn = !settings.sound_enabled;
+      audio.setEnabled(nextOn);
+      settings = saveSettings(Object.assign({}, settings, { sound_enabled: nextOn }));
+      syncSoundBtn();
+      if (nextOn) audio.play("toggle");
+      showToast(nextOn ? t().sound_on : t().sound_off);
+    });
+
+    function syncDocumentMeta() {
+      const lang = curLang();
+      document.documentElement.lang = lang;
+      document.title = t().page_title;
+    }
+
+    function refreshBoard() {
+      syncDocumentMeta();
+      board.hass = webHass.makeHass();
+      board.setConfig(buildBoardConfig());
+      extras.decorateBoard();
+      gearBtn.setAttribute("aria-label", t().btn_settings);
+      gearBtn.title = t().btn_settings;
+      syncSoundBtn();
     }
 
     function openDrawer() {
@@ -274,6 +351,11 @@
       closeDrawer();
       clickBoardTab(0);
       const sleighCard = board.shadowRoot && board.shadowRoot.querySelector("nordpol-sleigh-card");
+      const demobtn = sleighCard && sleighCard.shadowRoot && sleighCard.shadowRoot.getElementById("demobtn");
+      if (demobtn) {
+        demobtn.click();
+        return;
+      }
       const hd = sleighCard && sleighCard.shadowRoot && sleighCard.shadowRoot.getElementById("hd");
       if (hd) hd.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
     }
@@ -435,8 +517,12 @@
       );
     }
 
+    function currentShareUrl() {
+      return window.location.origin + window.location.pathname + window.location.search + encodeShareHash(settings);
+    }
+
     async function copyShareLink() {
-      const url = window.location.origin + window.location.pathname + window.location.search + encodeShareHash(settings);
+      const url = currentShareUrl();
       const clip = opts.clipboard || navigator.clipboard;
       let copied = false;
       if (clip && typeof clip.writeText === "function") {
@@ -465,6 +551,19 @@
       if (copied) showToast(t().toast_copied);
     }
 
+    async function nativeShareAction() {
+      const shareFn = opts.share || (typeof navigator.share === "function" ? navigator.share.bind(navigator) : null);
+      if (!shareFn) return;
+      try {
+        await shareFn({
+          title: t().page_title,
+          url: currentShareUrl()
+        });
+      } catch {
+        /* ignore user cancel */
+      }
+    }
+
     function exportBackupAction() {
       const payload = exportBackup(settings, backend);
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -488,7 +587,11 @@
           nextSettings.remote_dir = opts.remote_dir;
         }
         settings = saveSettings(nextSettings);
+        audio.setEnabled(Boolean(settings.sound_enabled));
         backend.save(restored.nice_items);
+        if (Array.isArray(restored.wishes)) {
+          saveWishes(restored.wishes);
+        }
         if (restored.elf_tasks) {
           for (const [k, v] of Object.entries(restored.elf_tasks)) {
             try {
@@ -511,12 +614,43 @@
         const base = Object.assign({}, DEFAULT_SETTINGS);
         if (opts.remote_dir) base.remote_dir = opts.remote_dir;
         settings = saveSettings(base);
+        audio.setEnabled(Boolean(settings.sound_enabled));
         syncWakeLock(false);
         refreshBoard();
         renderDrawer();
         hideConfirm();
         showToast(t().toast_reset);
       });
+    }
+
+    function formatPulseStatsHtml(stats, L) {
+      if (!stats || settings.pulse_opt_out) return "";
+      const cArr = Array.isArray(stats.top_countries) ? stats.top_countries : stats.countries;
+      const lArr = Array.isArray(stats.top_languages) ? stats.top_languages : stats.languages;
+      const flags = Array.isArray(cArr)
+        ? cArr.slice(0, 5).map(c => `${countryFlag(c.code)} ${escapeHtml(c.code)} (${c.count})`).join(" · ")
+        : "";
+      const langs = Array.isArray(lArr)
+        ? lArr.slice(0, 5).map(l => `${escapeHtml(l.code)} (${l.count})`).join(" · ")
+        : "";
+      const liveTxt = Number.isFinite(stats.live) ? L.pulse_watching.replace("{n}", String(stats.live)) : "";
+      return `
+        <div class="np-sec-title">${escapeHtml(L.pulse_stats_title)}</div>
+        <div class="np-pulse-grid">
+          ${liveTxt ? `<div>${escapeHtml(liveTxt)}</div>` : ""}
+          <div><strong>${escapeHtml(L.pulse_total_visits)}:</strong> ${escapeHtml(String(stats.total_visits ?? 0))}</div>
+          ${flags ? `<div><strong>${escapeHtml(L.pulse_countries)}:</strong> ${flags}</div>` : ""}
+          ${langs ? `<div><strong>${escapeHtml(L.pulse_languages)}:</strong> ${langs}</div>` : ""}
+        </div>
+      `;
+    }
+
+    function renderPulseStatsInDrawer() {
+      const box = drawer.querySelector("#np-pulse-stats");
+      if (!box) return;
+      const html = formatPulseStatsHtml(pulse.getStats(), t());
+      box.innerHTML = html;
+      box.hidden = !html;
     }
 
     function renderDrawer() {
@@ -547,9 +681,19 @@
 
       const wakeSupported = "wakeLock" in navigator;
       const geoSupported = Boolean(opts.geolocation || navigator.geolocation);
+      const canNativeShare = typeof (opts.share || navigator.share) === "function";
+      const wishCount = loadWishes().length;
+      const shareUrl = currentShareUrl();
+      let qrSvg = "";
+      try {
+        qrSvg = qrToSvg(shareUrl, { margin: 2, fg: "#081026", bg: "#fff8e7" });
+      } catch {
+        qrSvg = qrToSvg(window.location.origin + window.location.pathname, { margin: 2, fg: "#081026", bg: "#fff8e7" });
+      }
 
       gearBtn.setAttribute("aria-label", L.btn_settings);
       gearBtn.title = L.btn_settings;
+      syncSoundBtn();
 
       drawer.innerHTML = `
         <div class="np-drawer-hd">
@@ -647,12 +791,25 @@
               <button type="button" class="np-btn np-btn-primary" id="np-parent-mode">🔓 ${escapeHtml(L.btn_parent_mode)}</button>
               <button type="button" class="np-btn" id="np-demo-kids">🧒 ${escapeHtml(L.btn_demo_kids)}</button>
               <button type="button" class="np-btn np-btn-danger" id="np-clear-nice">🧹 ${escapeHtml(L.btn_clear_nice)}</button>
+              <button type="button" class="np-btn" id="np-drawer-wish">${escapeHtml(L.wish_btn)}</button>
+              <button type="button" class="np-btn" id="np-drawer-inbox">${escapeHtml(L.wish_inbox_btn.replace("{n}", String(wishCount)))}</button>
+              <button type="button" class="np-btn" id="np-drawer-cert" style="grid-column:1/-1">${escapeHtml(L.cert_btn)}</button>
             </div>
           </section>
 
           <section class="np-sec">
             <h3 class="np-sec-title">${escapeHtml(L.sec_share)}</h3>
-            <button type="button" class="np-btn" id="np-copy-link">🔗 ${escapeHtml(L.btn_copy_link)}</button>
+            <div class="np-btn-grid">
+              <button type="button" class="np-btn" id="np-copy-link" ${canNativeShare ? "" : 'style="grid-column:1/-1"'}>🔗 ${escapeHtml(L.btn_copy_link)}</button>
+              ${canNativeShare ? `<button type="button" class="np-btn" id="np-native-share">📤 ${escapeHtml(L.btn_native_share)}</button>` : ""}
+            </div>
+            <div class="np-qr-wrap">
+              <div class="np-qr-box" id="np-qr-box" aria-label="${escapeHtml(L.qr_heading)}">${qrSvg}</div>
+              <div class="np-field">
+                <strong style="font-size:13.5px;color:#ffd878">${escapeHtml(L.qr_heading)}</strong>
+                <p class="np-hint">${escapeHtml(L.qr_hint)}</p>
+              </div>
+            </div>
             <p class="np-hint">${escapeHtml(L.share_hint)}</p>
             <div class="np-btn-grid">
               <button type="button" class="np-btn" id="np-export-btn">⬇️ ${escapeHtml(L.btn_export)}</button>
@@ -665,6 +822,11 @@
           <section class="np-sec">
             <h3 class="np-sec-title">${escapeHtml(L.sec_about)}</h3>
             <p class="np-hint">${escapeHtml(L.about_privacy)}</p>
+            <div class="np-pulse-stats" id="np-pulse-stats" hidden></div>
+            <label class="np-check">
+              <input type="checkbox" id="np-pulse-optout" ${settings.pulse_opt_out ? "checked" : ""}>
+              <span>${escapeHtml(L.pulse_opt_out)}</span>
+            </label>
             <div class="np-links">
               <a href="https://my.home-assistant.io/redirect/marketplace_repository/?owner=DKAnord&repository=nordpol-card&category=plugin" target="_blank" rel="noopener noreferrer">🏠 ${escapeHtml(L.about_ha)}</a>
               <a href="https://github.com/DKAnord/nordpol-card" target="_blank" rel="noopener noreferrer">⭐ ${escapeHtml(L.about_repo)}</a>
@@ -684,7 +846,10 @@
       const $ = id => drawer.querySelector("#" + id);
 
       $("np-close-btn").addEventListener("click", closeDrawer);
-      $("np-lang").addEventListener("change", e => updateSettings({ language: e.target.value }, { reRenderDrawer: true }));
+      $("np-lang").addEventListener("change", e => {
+        updateSettings({ language: e.target.value }, { reRenderDrawer: true });
+        pulse.refresh(false);
+      });
       $("np-tab").addEventListener("change", e => {
         updateSettings({ default_tab: e.target.value });
         const idx = { sleigh: 0, nice: 1, elf: 2 }[e.target.value];
@@ -754,7 +919,32 @@
       $("np-parent-mode").addEventListener("click", unlockParentMode);
       $("np-demo-kids").addEventListener("click", loadDemoKidsAction);
       $("np-clear-nice").addEventListener("click", clearNiceListAction);
+      $("np-drawer-wish").addEventListener("click", () => {
+        closeDrawer();
+        extras.openWishModal("send");
+      });
+      $("np-drawer-inbox").addEventListener("click", () => {
+        closeDrawer();
+        extras.openWishModal("inbox");
+      });
+      $("np-drawer-cert").addEventListener("click", () => {
+        closeDrawer();
+        extras.openCertModal();
+      });
       $("np-copy-link").addEventListener("click", copyShareLink);
+      const nativeShareBtn = $("np-native-share");
+      if (nativeShareBtn) nativeShareBtn.addEventListener("click", nativeShareAction);
+      $("np-pulse-optout").addEventListener("change", e => {
+        const off = e.target.checked;
+        settings = saveSettings(Object.assign({}, settings, { pulse_opt_out: off }));
+        if (off) {
+          extras.updatePulseBadge(null);
+          renderPulseStatsInDrawer();
+        } else {
+          pulse.refresh(true);
+        }
+      });
+      renderPulseStatsInDrawer();
       $("np-export-btn").addEventListener("click", exportBackupAction);
       $("np-import-btn").addEventListener("click", () => $("np-import-file").click());
       $("np-import-file").addEventListener("change", e => {
@@ -851,14 +1041,16 @@
 
     // Initial render
     refreshBoard();
-    gearBtn.setAttribute("aria-label", t().btn_settings);
-    gearBtn.title = t().btn_settings;
     if (settings.wake_lock) syncWakeLock(true);
     if (appliedShared) showToast(t().toast_shared_applied);
+    pulse.ping(false);
 
     const api = {
       board,
       backend,
+      pulse,
+      audio,
+      extras,
       getSettings: () => Object.assign({}, settings),
       buildBoardConfig,
       openDrawer,

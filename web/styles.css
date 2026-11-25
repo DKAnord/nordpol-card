@@ -27,6 +27,12 @@ html, body {
   min-height: 100dvh;
 }
 
+@media (orientation: portrait), (max-width: 860px) {
+  #app {
+    padding-bottom: 68px;
+  }
+}
+
 nordpol-board-card {
   display: block;
   width: 100%;
@@ -37,47 +43,60 @@ nordpol-board-card {
   outline-offset: 2px;
 }
 
-/* Subtle floating corner settings gear */
-.np-gear {
+/* Lower-right floating controls dock (Sound + Parent Settings) */
+.np-fab-dock {
   position: fixed;
-  bottom: max(10px, env(safe-area-inset-bottom));
-  left: max(10px, env(safe-area-inset-left));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  right: max(14px, env(safe-area-inset-right));
   z-index: 40;
-  width: 42px;
-  height: 42px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.np-fab-btn,
+.np-gear {
+  position: relative;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border-radius: 999px;
-  border: 1px solid rgba(255, 216, 120, 0.36);
-  background: rgba(8, 16, 38, 0.64);
+  border: 1px solid rgba(255, 216, 120, 0.42);
+  background: rgba(8, 16, 38, 0.78);
   color: #ffd878;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.54;
+  opacity: 0.76;
   transition: opacity 0.2s ease, transform 0.15s ease, border-color 0.2s ease, background-color 0.2s ease;
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
+.np-fab-btn:hover,
+.np-fab-btn:focus-visible,
+.np-fab-btn[aria-pressed="true"],
 .np-gear:hover,
 .np-gear:focus-visible,
 .np-gear.holding {
   opacity: 1;
   border-color: #ffd878;
-  background: rgba(13, 24, 54, 0.9);
+  background: rgba(13, 24, 54, 0.94);
 }
 
+.np-fab-btn:active,
 .np-gear:active {
   transform: scale(0.95);
 }
 
+.np-fab-icon,
 .np-gear-icon {
-  font-size: 19px;
+  font-size: 20px;
   line-height: 1;
   pointer-events: none;
 }
@@ -96,8 +115,8 @@ nordpol-board-card {
   stroke: #ffd878;
   stroke-width: 2.5;
   stroke-linecap: round;
-  stroke-dasharray: 126;
-  stroke-dashoffset: 126;
+  stroke-dasharray: 132;
+  stroke-dashoffset: 132;
   opacity: 0;
 }
 
@@ -158,7 +177,7 @@ nordpol-board-card {
   right: 0;
   bottom: 0;
   z-index: 9010;
-  width: min(440px, 100vw);
+  width: min(476px, 100vw);
   max-width: 100vw;
   background: radial-gradient(120% 70% at 10% 0%, rgba(190, 25, 45, 0.28), transparent 55%),
     radial-gradient(120% 70% at 100% 100%, rgba(15, 110, 60, 0.28), transparent 55%),
@@ -249,7 +268,7 @@ nordpol-board-card {
 
 .np-sec-title {
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.9px;
   text-transform: uppercase;
@@ -278,7 +297,7 @@ nordpol-board-card {
 
 .np-field label,
 .np-field-label {
-  font-size: 12.5px;
+  font-size: 14px;
   font-weight: 600;
   color: #e4eee7;
 }
@@ -293,7 +312,7 @@ nordpol-board-card {
   background: rgba(4, 10, 26, 0.72);
   color: #fff8e7;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .np-input::placeholder {
@@ -319,7 +338,7 @@ nordpol-board-card {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: 600;
   color: #fff8e7;
   cursor: pointer;
@@ -342,7 +361,7 @@ nordpol-board-card {
   background: rgba(255, 255, 255, 0.08);
   color: #fff8e7;
   font-family: inherit;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
@@ -404,7 +423,7 @@ nordpol-board-card {
 }
 
 .np-city-status {
-  font-size: 12px;
+  font-size: 13px;
   color: #cfe8d8;
 }
 
@@ -429,7 +448,7 @@ nordpol-board-card {
   background: rgba(8, 16, 38, 0.72);
   color: #fff8e7;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -443,17 +462,17 @@ nordpol-board-card {
 }
 
 .np-city-sub {
-  font-size: 11.5px;
+  font-size: 12.5px;
   color: #cfe8d8;
   opacity: 0.85;
 }
 
 .np-hint {
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.45;
   color: #cfe8d8;
-  opacity: 0.88;
+  opacity: 0.9;
 }
 
 .np-links {
@@ -464,7 +483,7 @@ nordpol-board-card {
 
 .np-links a {
   color: #ffd878;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   text-decoration: none;
   padding: 5px 9px;
@@ -506,13 +525,399 @@ nordpol-board-card {
   display: none !important;
 }
 
+/* Modals: Mailroom Postbox + Nice List Certificate */
+.np-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9100;
+  background: rgba(3, 7, 19, 0.68);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.np-modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0s linear 0s;
+}
+
+.np-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9110;
+  width: min(490px, calc(100vw - 24px));
+  max-height: calc(100dvh - 28px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  border: 1.5px solid rgba(255, 214, 120, 0.6);
+  background: radial-gradient(120% 80% at 15% 0%, rgba(190, 25, 45, 0.3), transparent 55%),
+    linear-gradient(170deg, #0f1d42 0%, #070e24 100%);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.72);
+  color: #fff8e7;
+  overflow: hidden;
+}
+
+.np-modal-wide {
+  width: min(640px, calc(100vw - 24px));
+}
+
+.np-modal[hidden] {
+  display: none;
+}
+
+.np-modal-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 214, 120, 0.22);
+}
+
+.np-modal-hd h3 {
+  margin: 0;
+  font-family: "Mountains of Christmas", "Apple Chancery", "Brush Script MT", cursive;
+  font-size: 26px;
+  color: #ffd878;
+  line-height: 1.1;
+}
+
+.np-modal-bd {
+  padding: 16px;
+  overflow-y: auto;
+  display: grid;
+  gap: 12px;
+}
+
+.np-textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.45;
+}
+
+.np-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.np-kid-chip {
+  appearance: none;
+  border: 1px solid rgba(255, 214, 120, 0.42);
+  border-radius: 999px;
+  padding: 5px 11px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff8e7;
+  font: 700 13.5px/1.2 inherit;
+  cursor: pointer;
+}
+
+.np-kid-chip:hover {
+  border-color: #ffd878;
+  background: rgba(255, 214, 120, 0.18);
+}
+
+.np-wish-list {
+  display: grid;
+  gap: 10px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.np-wish-card {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 214, 120, 0.26);
+  display: grid;
+  gap: 5px;
+}
+
+.np-wish-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.np-wish-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: #ffd878;
+}
+
+.np-wish-stamp {
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(14, 110, 58, 0.25);
+  border: 1.5px dashed rgba(126, 240, 168, 0.65);
+  text-align: center;
+  display: grid;
+  gap: 4px;
+}
+
+.np-wish-stamp[hidden] {
+  display: none;
+}
+
+.np-wish-stamp.pop {
+  animation: np-stamp-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes np-stamp-pop {
+  0% { transform: scale(0.86) rotate(-3deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.np-stamp-badge {
+  font-size: 15px;
+  font-weight: 800;
+  color: #7ef0a8;
+  letter-spacing: 0.4px;
+}
+
+.np-wish-stamp p {
+  margin: 0;
+  font-size: 13px;
+  color: #e4eee7;
+}
+
+/* Nice List Certificate */
+.np-cert-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.np-cert-controls > .np-select {
+  flex: 1 1 200px;
+}
+
+.np-cert-sheet {
+  border-radius: 16px;
+  padding: 12px;
+  background: linear-gradient(155deg, #fffdf4 0%, #f9edd0 100%);
+  color: #1f1722;
+  border: 4px solid #c59732;
+  box-shadow: inset 0 0 0 2px #8e1522;
+}
+
+.np-cert-inner {
+  border: 1.5px dashed #b91c2b;
+  border-radius: 10px;
+  padding: 20px 18px;
+  text-align: center;
+  display: grid;
+  gap: 10px;
+}
+
+.np-cert-top {
+  font-size: 26px;
+  letter-spacing: 6px;
+}
+
+.np-cert-h {
+  margin: 0;
+  font-family: "Mountains of Christmas", Georgia, serif;
+  font-size: 32px;
+  color: #8e1522;
+  line-height: 1.1;
+}
+
+.np-cert-lead {
+  margin: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #5c4520;
+  font-weight: 700;
+}
+
+.np-cert-name {
+  font-family: "Mountains of Christmas", Georgia, serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: #0e4a2b;
+  padding: 4px 12px;
+  border-bottom: 2px solid rgba(142, 21, 34, 0.35);
+  justify-self: center;
+}
+
+.np-cert-body {
+  margin: 0 auto;
+  max-width: 44ch;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: #2c241d;
+}
+
+.np-cert-badges {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.np-cert-badges > div {
+  background: rgba(197, 151, 50, 0.14);
+  border: 1px solid rgba(197, 151, 50, 0.5);
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: grid;
+  gap: 2px;
+}
+
+.np-cert-badges span {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #6b5323;
+  font-weight: 700;
+}
+
+.np-cert-badges strong {
+  font-size: 15.5px;
+  color: #1f1722;
+}
+
+.np-cert-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.np-cert-sign {
+  text-align: left;
+  font-size: 13px;
+}
+
+.np-cert-sig-line {
+  font-family: "Mountains of Christmas", Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #8e1522;
+  border-bottom: 1.5px solid #5c4520;
+  padding-bottom: 2px;
+}
+
+.np-cert-date {
+  font-size: 12px;
+  color: #5c4520;
+  margin-top: 2px;
+}
+
+.np-cert-seal {
+  width: 82px;
+  height: 82px;
+  border-radius: 999px;
+  border: 2px dashed #8e1522;
+  background: radial-gradient(circle, #ffe49b 0%, #d4a135 100%);
+  color: #6e1019;
+  font-size: 10.5px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6px;
+  transform: rotate(-10deg);
+  flex: 0 0 auto;
+}
+
+/* QR Code Preview */
+.np-qr-wrap {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.np-qr-box {
+  flex: 0 0 auto;
+  width: 120px;
+  height: 120px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #fff8e7;
+  border: 1.5px solid rgba(255, 214, 120, 0.7);
+}
+
+.np-qr-box svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* North Pole Pulse Stats in Settings */
+.np-pulse-stats {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(14, 110, 58, 0.16);
+  border: 1px solid rgba(126, 240, 168, 0.32);
+}
+
+.np-pulse-stats[hidden] {
+  display: none;
+}
+
+.np-pulse-grid {
+  display: grid;
+  gap: 4px;
+  font-size: 13.5px;
+  color: #e4eee7;
+}
+
+@media print {
+  body {
+    background: #fff !important;
+  }
+  body > *:not(#np-cert-modal),
+  .np-no-print {
+    display: none !important;
+  }
+  #np-cert-modal {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  #np-cert-modal .np-modal-bd {
+    overflow: visible !important;
+  }
+  .np-cert-sheet {
+    box-shadow: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .np-fab-btn,
   .np-gear,
   .np-hold-ring circle,
   .np-toast,
   .np-backdrop,
   .np-drawer,
-  .np-btn {
+  .np-btn,
+  .np-modal,
+  .np-modal-backdrop,
+  .np-wish-stamp.pop {
     transition: none !important;
+    animation: none !important;
   }
 }
