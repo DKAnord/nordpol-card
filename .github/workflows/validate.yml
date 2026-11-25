@@ -15,7 +15,10 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - name: Syntax check
-        run: node --check dist/nordpol-card.js
+        run: |
+          for f in dist/nordpol-card.js web/app.js web/storage.js web/i18n.js web/tz-cities.js web/sw.js; do
+            node --check "$f"
+          done
       - name: Validate hacs.json
         run: node -e 'const h=JSON.parse(require("fs").readFileSync("hacs.json","utf8")); if(!/^\d{4}\.\d+\.\d+$/.test(h.homeassistant||"")) throw new Error("hacs.json needs homeassistant minimum version")'
       - name: Elf lists match tools/elves_data.py
@@ -24,7 +27,7 @@ jobs:
         run: node tests/run.mjs
       - name: No private data
         run: |
-          ! grep -rEn "192\.168\.|ntfy\.sh|ses-home" --include=*.js --include=*.mjs --include=*.html --include=*.yaml --include=*.md . | grep -v "README.md"
+          ! grep -rEn "192\.168\.|ntfy\.sh|ses-home" --include=*.js --include=*.mjs --include=*.html --include=*.yaml --include=*.md --include=*.css . | grep -v "README.md"
   helpers:
     name: Helper package in real Home Assistant
     runs-on: ubuntu-latest

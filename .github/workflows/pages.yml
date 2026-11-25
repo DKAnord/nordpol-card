@@ -1,0 +1,68 @@
+name: Deploy Web App to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "dist/nordpol-card.js"
+      - "docs/screenshot-sleigh.png"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          path: src
+          fetch-depth: 1
+
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+          fetch-depth: 1
+
+      - name: Verify hosted media clips exist on gh-pages
+        run: |
+          test -f site/media/cam1_morning.mp4
+
+      - name: Sync web app and nordpol-card.js while preserving media/
+        run: |
+          find site -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '.nojekyll' ! -name 'media' -exec rm -rf {} +
+          cp -R src/web/. site/
+          cp src/dist/nordpol-card.js site/nordpol-card.js
+          cp src/docs/screenshot-sleigh.png site/og-preview.png
+          touch site/.nojekyll
+
+      - name: Assert all 12 media clips remain intact
+        run: |
+          for cam in 1 2 3 4; do
+            for per in morning day evening; do
+              test -s "site/media/cam${cam}_${per}.mp4"
+            done
+          done
+
+      - name: Commit and push gh-pages
+        working-directory: site
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to deploy."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Deploy Nordpol Web App from ${GITHUB_SHA::7}"
+          git push origin gh-pages

@@ -11,6 +11,9 @@ A self-contained Christmas dashboard for Home Assistant — **no YAML required**
 * 🧝 **Elf of the day** — 30 built-in elves (one per day with a joke & daily task) or bring your own
 * 🎛️ **Visual UI editor** — configure everything right in Home Assistant’s card editor
 
+> [!TIP]
+> **Try it live on the Web (no Home Assistant needed):** Open the standalone family dashboard at **[dkanord.github.io/nordpol-card](https://dkanord.github.io/nordpol-card/)** — installable as a PWA with local browser storage, 14 languages, city picker, and shareable setup links.
+
 ![Nordpol Card demo](docs/demo.gif)
 
 ---
@@ -168,7 +171,7 @@ Accessibility: the countdown is exposed as a timer, the board tabs as a tab list
 </details>
 
 ## Credits & Licence
-MIT – see [LICENSE](LICENSE). World outline: [Natural Earth](https://www.naturalearthdata.com/) (public domain). Videos (optional pack): AI-generated with Google Flow (Veo), shared for personal Home Assistant dashboard use.
+MIT – see [LICENSE](LICENSE). World outline: [Natural Earth](https://www.naturalearthdata.com/) (public domain). Display font: [Mountains of Christmas](web/fonts/LICENSE.txt) by Tart Workshop (Apache-2.0). Videos (optional pack): AI-generated with Google Flow (Veo), shared for personal Home Assistant dashboard use.
 
 Maintainer: `DKAnord` (`12734694+DKAnord@users.noreply.github.com`)
 

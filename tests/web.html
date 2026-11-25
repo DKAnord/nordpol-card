@@ -1,0 +1,387 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nordpol Web App tests</title>
+<style>html,body{margin:0;padding:0;width:100%;height:100%;background:#050b1f}iframe{display:block;width:100%;height:100vh;border:0}</style>
+</head>
+<body>
+<div id="host"></div>
+<script>
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const params = new URLSearchParams(location.search);
+const mode = params.get("mode") || "desktop";
+const isMobile = mode === "mobile";
+
+let geocodeCalls = [];
+let copiedTexts = [];
+
+window.__NORDPOL_WEB_OPTS__ = {
+  remote_dir: "/remote",
+  async geocodeFetch(url) {
+    geocodeCalls.push(url);
+    const u = new URL(url);
+    const q = (u.searchParams.get("name") || "").toLowerCase();
+    if (q.includes("zzznone")) {
+      return { ok: true, status: 200, async json() { return { results: [] }; } };
+    }
+    if (q.includes("aar")) {
+      return {
+        ok: true,
+        status: 200,
+        async json() {
+          return {
+            results: [
+              { name: "Aarhus", latitude: 56.1567, longitude: 10.2108, timezone: "Europe/Copenhagen", admin1: "Central Jutland", country: "Denmark" }
+            ]
+          };
+        }
+      };
+    }
+    return {
+      ok: true,
+      status: 200,
+      async json() {
+        return {
+          results: [
+            { name: "Odense", latitude: 55.4038, longitude: 10.4024, timezone: "Europe/Copenhagen", admin1: "Southern Denmark", country: "Denmark" }
+          ]
+        };
+      }
+    };
+  },
+  geolocation: {
+    getCurrentPosition(success) {
+      success({ coords: { latitude: 57.0488, longitude: 9.9217 } });
+    }
+  },
+  clipboard: {
+    async writeText(txt) {
+      copiedTexts.push(txt);
+    }
+  }
+};
+
+async function mountFrame(url = "/index.html?nosw=1") {
+  const host = document.getElementById("host");
+  host.innerHTML = "";
+  const iframe = document.createElement("iframe");
+  const errors = [];
+  const loaded = new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error("Iframe load timeout")), 10000);
+    iframe.addEventListener("load", () => {
+      clearTimeout(t);
+      const w = iframe.contentWindow;
+      const origErr = w.console.error.bind(w.console);
+      w.console.error = (...args) => { errors.push(args.join(" ")); origErr(...args); };
+      w.addEventListener("error", ev => errors.push(String(ev.message || ev.error)));
+      w.addEventListener("unhandledrejection", ev => errors.push(String(ev.reason)));
+      resolve({ iframe, w, errors });
+    }, { once: true });
+  });
+  iframe.src = url;
+  host.appendChild(iframe);
+  const ctx = await loaded;
+  for (let i = 0; i < 60; i++) {
+    if (ctx.w.__NORDPOL_WEB_API__) break;
+    await sleep(25);
+  }
+  if (!ctx.w.__NORDPOL_WEB_API__) throw new Error("NordpolWebApp failed to initialize");
+  await sleep(60);
+  return ctx;
+}
+
+window.__runWebTests = async () => {
+  let checks = 0;
+  const assert = (cond, msg) => {
+    checks++;
+    if (!cond) throw new Error(msg || "Assertion failed");
+  };
+
+  localStorage.clear();
+  geocodeCalls = [];
+  copiedTexts = [];
+
+  // 1. Initial mount & instant full-screen dashboard
+  let { w, errors } = await mountFrame();
+  let api = w.__NORDPOL_WEB_API__;
+  let doc = w.document;
+
+  assert(errors.length === 0, "Zero console/page errors on initial mount: " + errors.join("; "));
+  assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth,
+    `No horizontal overflow on initial ${mode} render (${doc.documentElement.scrollWidth} <= ${doc.documentElement.clientWidth})`);
+
+  // 2. 14-language i18n parity & TZ cities checks
+  const { LANGS, WEB_I18N, DEMO_KIDS, resolveLang } = w.NordpolWebI18n;
+  const { TZ_CITIES, defaultHomeForTz } = w.NordpolTzCities;
+  assert(LANGS.length === 14, "14 supported languages");
+  const enKeys = Object.keys(WEB_I18N.en).sort();
+  for (const lg of LANGS) {
+    assert(WEB_I18N[lg], `WEB_I18N has ${lg}`);
+    const ks = Object.keys(WEB_I18N[lg]).sort();
+    assert(JSON.stringify(ks) === JSON.stringify(enKeys), `Key parity for ${lg}`);
+    for (const k of enKeys) {
+      assert(typeof WEB_I18N[lg][k] === "string" && WEB_I18N[lg][k].trim().length > 0, `Non-empty ${lg}.${k}`);
+    }
+    const demo = DEMO_KIDS[lg];
+    assert(demo && Array.isArray(demo.kids) && demo.kids.length >= 2, `DEMO_KIDS kids for ${lg}`);
+    assert(Array.isArray(demo.logs) && demo.logs.length >= 1, `DEMO_KIDS logs for ${lg}`);
+  }
+  assert(resolveLang("no") === "nb" && resolveLang("nn-NO") === "nb", "no/nn maps to nb");
+  assert(resolveLang("fr-CA") === "fr", "fr-CA maps to fr");
+
+  for (const [tz, c] of Object.entries(TZ_CITIES)) {
+    assert(typeof c.name === "string" && c.name.length > 0, `TZ city name for ${tz}`);
+    assert(Number.isFinite(c.lat) && c.lat >= -90 && c.lat <= 90, `TZ lat range for ${tz}`);
+    assert(Number.isFinite(c.lon) && c.lon >= -180 && c.lon <= 180, `TZ lon range for ${tz}`);
+  }
+  const expectedCity = isMobile ? "New York" : "Copenhagen";
+  assert(defaultHomeForTz().name === expectedCity, `Default home from emulated TZ resolves to ${expectedCity} (got ${defaultHomeForTz().name})`);
+  assert(geocodeCalls.length === 0, "Zero geocoding requests on initial load");
+
+  // 3. Nice List empty state & full localStorage CRUD + reload persistence
+  const board = api.board;
+  const tabs = () => board.shadowRoot.querySelectorAll('.tabs button[role="tab"]');
+  tabs()[1].click();
+  await sleep(80);
+  let nice = board.shadowRoot.querySelector("nordpol-nice-card");
+  let nsr = nice.shadowRoot;
+  assert(nsr.getElementById("bd").classList.contains("showadd"), "Empty Nice List shows Add child button");
+
+  nsr.getElementById("addk").click();
+  await sleep(30);
+  nsr.querySelector(".er.new .em").value = "🦊";
+  nsr.querySelector(".er.new .nmI").value = "Luna";
+  nsr.querySelector(".er.new .stI").value = "80";
+  nsr.querySelector(".er.new .ad").click();
+  await sleep(80);
+
+  let kidsText = nsr.getElementById("kids").textContent;
+  assert(kidsText.includes("Luna"), "Added child Luna appears in Nice List");
+
+  // Award +5 with reason + 3 rapid +1 taps
+  nsr.getElementById("why").value = "Helped bake";
+  nsr.querySelector('.kid button[data-d="5"]').click();
+  await sleep(25);
+  for (let i = 0; i < 3; i++) nsr.querySelector('.kid button[data-d="1"]').click();
+  await sleep(100);
+
+  const storedNice = JSON.parse(localStorage.getItem("nordpol.web.nice.v1") || "[]");
+  const lunaItem = storedNice.find(i => i.summary === "Luna");
+  const logItems = storedNice.filter(i => i.summary === "📜 log");
+  assert(lunaItem && JSON.parse(lunaItem.description).score === 88, "Luna score persisted as 88 in localStorage");
+  assert(logItems.length === 1 && logItems[0].description.includes("Luna +5: Helped bake"), "Single 📜 log item persisted with entries");
+
+  // Reload iframe and confirm persistence
+  ({ w, errors } = await mountFrame());
+  api = w.__NORDPOL_WEB_API__;
+  doc = w.document;
+  assert(errors.length === 0, "Zero errors on reload");
+  api.board.shadowRoot.querySelectorAll('.tabs button[role="tab"]')[1].click();
+  await sleep(80);
+  nice = api.board.shadowRoot.querySelector("nordpol-nice-card");
+  nsr = nice.shadowRoot;
+  assert(nsr.getElementById("kids").textContent.includes("Luna"), "Luna restored after reload");
+  assert(nsr.getElementById("log").textContent.includes("Helped bake"), "Elf log restored after reload");
+
+  // Edit & delete Luna
+  nsr.getElementById("hd").dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+  await sleep(20);
+  nsr.getElementById("ed").click();
+  await sleep(30);
+  nsr.querySelector(".er:not(.new) .nmI").value = "Lina";
+  nsr.querySelector(".er:not(.new) .stI").value = "70";
+  nsr.querySelector(".er:not(.new) .sv").click();
+  await sleep(80);
+  assert(JSON.parse(localStorage.getItem("nordpol.web.nice.v1")).some(i => i.summary === "Lina"), "Child renamed to Lina");
+  nsr.querySelector(".er:not(.new) .dl").click();
+  await sleep(20);
+  nsr.getElementById("yes").click();
+  await sleep(80);
+  assert(!JSON.parse(localStorage.getItem("nordpol.web.nice.v1")).some(i => i.summary === "Lina"), "Child Lina deleted");
+
+  // 4. Settings Drawer, Demo Kids, Language Switching, City Search, GPS, Snow, Overlay, ETA
+  const gear = doc.getElementById("np-settings-btn");
+  const drawer = doc.getElementById("np-drawer");
+  gear.click();
+  await sleep(40);
+  assert(drawer.classList.contains("open"), "Settings drawer opens on click");
+  assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth,
+    `No horizontal overflow with drawer open (${mode})`);
+
+  // Load demo kids
+  doc.getElementById("np-demo-kids").click();
+  await sleep(80);
+  assert(!drawer.classList.contains("open"), "Drawer closes after Load Demo Kids");
+  assert(api.backend.load().filter(i => i.summary !== "📜 log").length === 2, "Demo kids saved");
+
+  // Language switch: fr -> da -> en
+  gear.click();
+  await sleep(30);
+  const langSel = doc.getElementById("np-lang");
+  langSel.value = "fr";
+  langSel.dispatchEvent(new Event("change"));
+  await sleep(40);
+  assert(doc.getElementById("np-drawer-title").textContent.includes("Pôle Nord"), "Drawer translated to French");
+  assert(api.board.shadowRoot.querySelector('.tabs button[role="tab"]').textContent.includes("Traîneau"), "Board tabs translated to French");
+
+  doc.getElementById("np-lang").value = "da";
+  doc.getElementById("np-lang").dispatchEvent(new Event("change"));
+  await sleep(40);
+  assert(doc.getElementById("np-drawer-title").textContent.includes("Nordpol"), "Drawer translated to Danish");
+
+  doc.getElementById("np-lang").value = "en";
+  doc.getElementById("np-lang").dispatchEvent(new Event("change"));
+  await sleep(40);
+
+  // City search (mocked Open-Meteo)
+  const searchEl = doc.getElementById("np-city-search");
+  searchEl.value = "Aar";
+  searchEl.dispatchEvent(new Event("input"));
+  await sleep(450);
+  assert(geocodeCalls.length >= 1, "Open-Meteo geocodeFetch called on city input");
+  const cityBtn = doc.querySelector("#np-city-results .np-city-item");
+  assert(cityBtn && cityBtn.textContent.includes("Aarhus"), "Mocked Aarhus search result rendered");
+  cityBtn.click();
+  await sleep(50);
+  const sleighSvg = api.board.shadowRoot.querySelector("nordpol-sleigh-card").shadowRoot.getElementById("svg");
+  assert(sleighSvg.textContent.includes("Aarhus"), "Sleigh map home marker updated to Aarhus");
+
+  // GPS location button
+  doc.getElementById("np-gps-btn").click();
+  await sleep(40);
+  assert(api.getSettings().home.lat === 57.0488 && api.getSettings().home.lon === 9.9217, "GPS updates coordinates");
+
+  // Snow toggle
+  const snowChk = doc.getElementById("np-snow");
+  snowChk.checked = false;
+  snowChk.dispatchEvent(new Event("change"));
+  await sleep(40);
+  assert(doc.querySelectorAll("body > canvas").length === 0, "Snow canvas removed when unchecked");
+  snowChk.checked = true;
+  snowChk.dispatchEvent(new Event("change"));
+  await sleep(40);
+  assert(doc.querySelectorAll("body > canvas").length === 1, "Snow canvas active when checked");
+
+  // Overlay + ETA + date
+  const ovSel = doc.getElementById("np-overlay");
+  ovSel.value = "cctv";
+  ovSel.dispatchEvent(new Event("change"));
+  await sleep(30);
+  let camCard = api.board.shadowRoot.querySelector("nordpol-cam-card").shadowRoot.querySelector("ha-card");
+  assert(camCard.classList.contains("cctv") && !camCard.classList.contains("min"), "Cam overlay switched to cctv");
+
+  ovSel.value = "off";
+  ovSel.dispatchEvent(new Event("change"));
+  await sleep(30);
+  camCard = api.board.shadowRoot.querySelector("nordpol-cam-card").shadowRoot.querySelector("ha-card");
+  assert(!camCard.classList.contains("cctv"), "Cam overlay switched to off");
+
+  ovSel.value = "minimal";
+  ovSel.dispatchEvent(new Event("change"));
+  await sleep(30);
+
+  const etaIn = doc.getElementById("np-eta");
+  etaIn.value = "20:15";
+  etaIn.dispatchEvent(new Event("change"));
+  const dateIn = doc.getElementById("np-date");
+  dateIn.value = "12-25";
+  dateIn.dispatchEvent(new Event("change"));
+  await sleep(30);
+  assert(api.buildBoardConfig().sleigh.eta === "20:15", "Sleigh ETA updated to 20:15");
+  assert(api.buildBoardConfig().date === "12-25", "Celebration date updated to 12-25");
+
+  // 5. Kid Lock (quick click blocked + toast; 1s hold opens drawer)
+  const klChk = doc.getElementById("np-kid-lock");
+  klChk.checked = true;
+  klChk.dispatchEvent(new Event("change"));
+  doc.getElementById("np-close-btn").click();
+  await sleep(40);
+  assert(!drawer.classList.contains("open"), "Drawer closed before Kid Lock test");
+
+  gear.click();
+  await sleep(40);
+  assert(!drawer.classList.contains("open"), "Kid Lock blocks quick click");
+  assert(doc.getElementById("np-toast").classList.contains("on"), "Kid Lock shows hold hint toast");
+
+  gear.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+  await sleep(980);
+  gear.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
+  await sleep(40);
+  assert(drawer.classList.contains("open"), "1s hold unlocks Kid Lock and opens Settings drawer");
+
+  // Turn Kid Lock back off
+  doc.getElementById("np-kid-lock").checked = false;
+  doc.getElementById("np-kid-lock").dispatchEvent(new Event("change"));
+
+  // 6. Quick Actions: Launch Test Flight & Unlock Parent Mode
+  doc.getElementById("np-test-flight").click();
+  await sleep(50);
+  assert(!drawer.classList.contains("open"), "Drawer closes on Launch Test Flight");
+  const sleighMode = api.board.shadowRoot.querySelector("nordpol-sleigh-card").shadowRoot.getElementById("mode").textContent;
+  assert(sleighMode.includes("TEST FLIGHT") || sleighMode.includes("PRØVETUR"), `Sleigh test flight active (got: ${sleighMode})`);
+
+  gear.click();
+  await sleep(30);
+  doc.getElementById("np-parent-mode").click();
+  await sleep(50);
+  assert(api.board.shadowRoot.querySelector("nordpol-nice-card").shadowRoot.getElementById("bd").classList.contains("parent"), "Parent mode unlocked via Quick Action");
+
+  // 7. Privacy-safe #hash share link
+  api.backend.save([{ uid: "s1", summary: "SecretKidName", status: "needs_action", description: JSON.stringify({ emoji: "🌟", score: 90, start: 75 }) }]);
+  gear.click();
+  await sleep(30);
+  doc.getElementById("np-copy-link").click();
+  await sleep(40);
+  assert(copiedTexts.length >= 1, "Copy setup link wrote to clipboard");
+  const shareUrl = copiedTexts[copiedTexts.length - 1];
+  assert(shareUrl.includes("eta=20%3A15"), "Share hash includes configured ETA");
+  assert(!shareUrl.includes("SecretKidName") && !shareUrl.includes("Ella") && !shareUrl.includes("nice_items"),
+    "Share link strictly excludes children's names and Nice list data");
+
+  // Apply shared hash on fresh mount
+  const hashOnly = new URL(shareUrl).hash;
+  localStorage.removeItem("nordpol.web.settings.v1");
+  ({ w, errors } = await mountFrame("/index.html?nosw=1" + hashOnly));
+  api = w.__NORDPOL_WEB_API__;
+  doc = w.document;
+  assert(errors.length === 0, "Zero errors loading shared hash URL");
+  assert(api.getSettings().eta === "20:15", "Shared hash restored ETA on fresh load");
+  assert(api.getSettings().date === "12-25", "Shared hash restored celebration date");
+
+  // 8. Backup JSON export/import & security validation + reset
+  const { exportBackup, importBackup } = w.NordpolWebStorage;
+  const exported = exportBackup(api.getSettings(), api.backend);
+  assert(exported.app === "nordpol-web" && exported.version === 1, "Exported backup header valid");
+  assert(exported.nice_items.some(i => i.summary === "SecretKidName"), "Exported backup includes Nice list");
+
+  let rejectedMalformed = false;
+  try { importBackup("{broken"); } catch { rejectedMalformed = true; }
+  assert(rejectedMalformed, "importBackup rejects malformed JSON");
+
+  let rejectedWrongApp = false;
+  try { importBackup('{"app":"other","version":1,"settings":{}}'); } catch { rejectedWrongApp = true; }
+  assert(rejectedWrongApp, "importBackup rejects unrecognized backup app");
+
+  const sanitized = importBackup('{"app":"nordpol-web","version":1,"settings":{"__proto__":{"polluted":true},"eta":"19:00"},"nice_items":[{"uid":"k1","summary":"Max","status":"needs_action","description":"{\\"score\\":999,\\"start\\":-5,\\"__proto__\\":{\\"x\\":1}}"}]}');
+  assert(({}).polluted === undefined && sanitized.settings.eta === "19:00", "Prototype pollution blocked during backup import");
+  const maxDesc = JSON.parse(sanitized.nice_items[0].description);
+  assert(maxDesc.score === 100 && maxDesc.start === 0, "Backup import clamps out-of-range scores to 0..100");
+
+  // Reset all settings via UI confirm bar
+  doc.getElementById("np-settings-btn").click();
+  await sleep(30);
+  doc.getElementById("np-reset-all").click();
+  await sleep(20);
+  doc.getElementById("np-confirm-yes").click();
+  await sleep(50);
+  assert(api.getSettings().eta === "23:59" && api.getSettings().date === "", "Reset all restores default settings");
+  assert(errors.length === 0, "Zero errors across entire test run");
+
+  localStorage.clear();
+  return { count: checks, mode };
+};
+</script>
+</body>
+</html>

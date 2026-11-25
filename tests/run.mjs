@@ -8,8 +8,10 @@ import { fileURLToPath } from "node:url";
 const TESTS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(TESTS_DIR, "..");
 const CARD_JS_PATH = path.join(ROOT_DIR, "dist", "nordpol-card.js");
+const WEB_DIR = path.join(ROOT_DIR, "web");
 
 const BEH = r => `${r.count} checks (${r.groups})`;
+const WEB = r => `${r.count} checks (${r.mode})`;
 const SUITES = [
   { file: "escaping.html", expr: "window.__runTests()", report: r => `${r.suiteA.length} suiteA + ${r.suiteB.length} suiteB checks` },
   { file: "editors.html", expr: "window.__runEditorTests()", report: r => `${r.count} checks` },
@@ -18,7 +20,10 @@ const SUITES = [
   { file: "behavior.html?groups=dst,dates", tz: "America/New_York", width: 1280, expr: "window.__runBehaviorTests()", report: BEH },
   { file: "behavior.html?groups=dst,dates", tz: "Australia/Sydney", width: 1280, expr: "window.__runBehaviorTests()", report: BEH },
   { file: "behavior.html?groups=width", tz: "Europe/Copenhagen", width: 320, expr: "window.__runBehaviorTests()", report: BEH },
-  { file: "behavior.html?groups=motion", tz: "Europe/Copenhagen", width: 1280, reducedMotion: true, expr: "window.__runBehaviorTests()", report: BEH }
+  { file: "behavior.html?groups=motion", tz: "Europe/Copenhagen", width: 1280, reducedMotion: true, expr: "window.__runBehaviorTests()", report: BEH },
+  /* standalone web app suites */
+  { file: "web.html", tz: "Europe/Copenhagen", width: 1280, expr: "window.__runWebTests()", report: WEB },
+  { file: "web.html?mode=mobile", tz: "America/New_York", width: 390, expr: "window.__runWebTests()", report: WEB }
 ];
 
 function findBrowser() {
@@ -44,10 +49,24 @@ function findBrowser() {
 function startServer() {
   const routes = new Map([
     ["/nordpol-card.js", { file: CARD_JS_PATH, type: "application/javascript; charset=utf-8" }],
+    ["/dist/nordpol-card.js", { file: CARD_JS_PATH, type: "application/javascript; charset=utf-8" }],
     ["/escaping.html", { file: path.join(TESTS_DIR, "escaping.html"), type: "text/html; charset=utf-8" }],
     ["/editors.html", { file: path.join(TESTS_DIR, "editors.html"), type: "text/html; charset=utf-8" }],
-    ["/behavior.html", { file: path.join(TESTS_DIR, "behavior.html"), type: "text/html; charset=utf-8" }]
+    ["/behavior.html", { file: path.join(TESTS_DIR, "behavior.html"), type: "text/html; charset=utf-8" }],
+    ["/web.html", { file: path.join(TESTS_DIR, "web.html"), type: "text/html; charset=utf-8" }]
   ]);
+  const MIME = {
+    ".html": "text/html; charset=utf-8",
+    ".css": "text/css; charset=utf-8",
+    ".js": "application/javascript; charset=utf-8",
+    ".json": "application/json; charset=utf-8",
+    ".webmanifest": "application/manifest+json; charset=utf-8",
+    ".woff2": "font/woff2",
+    ".svg": "image/svg+xml",
+    ".png": "image/png",
+    ".txt": "text/plain; charset=utf-8",
+    ".mp4": "video/mp4"
+  };
   const TINY = { file: path.join(TESTS_DIR, "fixtures", "tiny.mp4"), type: "video/mp4" };
   const reqlog = [];
   const server = http.createServer((req, res) => {
@@ -62,6 +81,13 @@ function startServer() {
     /* fake media: /local/present/* and /remote/* exist, everything else under /local/ is a 404 */
     let entry = routes.get(u.pathname);
     if (!entry && (u.pathname.startsWith("/local/present/") || u.pathname.startsWith("/remote/")) && u.pathname.endsWith(".mp4")) entry = TINY;
+    if (!entry) {
+      const rel = u.pathname === "/" ? "index.html" : u.pathname.replace(/^\/+/, "");
+      const candidate = path.resolve(WEB_DIR, rel);
+      if ((candidate === WEB_DIR || candidate.startsWith(WEB_DIR + path.sep)) && fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+        entry = { file: candidate, type: MIME[path.extname(candidate)] || "application/octet-stream" };
+      }
+    }
     if (!entry) { res.writeHead(404); res.end(); return; }
     const buf = fs.readFileSync(entry.file);
     res.writeHead(200, { "Content-Type": entry.type, "Content-Length": buf.length });
