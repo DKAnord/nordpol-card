@@ -3,6 +3,7 @@
 (() => {
   const SETTINGS_KEY = "nordpol.web.settings.v1";
   const NICE_KEY = "nordpol.web.nice.v1";
+  const WISHES_KEY = "nordpol.web.wishes.v1";
   const TODO_ENTITY = "todo.nordpol_nice_list";
   const LOG_ITEM = "📜 log";
 
@@ -26,6 +27,9 @@
     snow: true,
     kid_lock: false,
     wake_lock: false,
+    sound_enabled: false,
+    pulse_opt_out: false,
+    pulse_url: "",
     remote_dir: ""
   });
 
@@ -106,6 +110,13 @@
     if (typeof raw.snow === "boolean") out.snow = raw.snow;
     if (typeof raw.kid_lock === "boolean") out.kid_lock = raw.kid_lock;
     if (typeof raw.wake_lock === "boolean") out.wake_lock = raw.wake_lock;
+    if (typeof raw.sound_enabled === "boolean") out.sound_enabled = raw.sound_enabled;
+    if (typeof raw.pulse_opt_out === "boolean") out.pulse_opt_out = raw.pulse_opt_out;
+
+    const purl = String(raw.pulse_url || "").trim().replace(/\/+$/, "");
+    if (purl && (/^https?:\/\//i.test(purl) || purl.startsWith("/")) && purl.length <= 240) {
+      out.pulse_url = purl;
+    }
 
     const rdir = String(raw.remote_dir || "").trim();
     if (rdir && (/^https?:\/\//i.test(rdir) || rdir.startsWith("/")) && rdir.length <= 240) {
@@ -424,6 +435,42 @@
     return sanitizeSettings(Object.assign({}, DEFAULT_SETTINGS, patch));
   }
 
+  function sanitizeWishes(raw) {
+    if (!Array.isArray(raw)) return [];
+    const out = [];
+    for (const w of raw) {
+      if (!w || typeof w !== "object" || Array.isArray(w)) continue;
+      const text = String(w.text || "").trim().slice(0, 280);
+      if (!text) continue;
+      const child = String(w.child || "").trim().slice(0, 40);
+      const id = String(w.id || makeUid()).trim().slice(0, 80) || makeUid();
+      const created_at = String(w.created_at || new Date().toISOString()).slice(0, 40);
+      out.push({ id, child, text, created_at });
+      if (out.length >= 50) break;
+    }
+    return out;
+  }
+
+  function loadWishes(storageKey = WISHES_KEY) {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) return [];
+      return sanitizeWishes(safeParseJson(raw));
+    } catch {
+      return [];
+    }
+  }
+
+  function saveWishes(wishes, storageKey = WISHES_KEY) {
+    const clean = sanitizeWishes(wishes);
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(clean));
+    } catch {
+      /* ignore */
+    }
+    return clean;
+  }
+
   function collectElfTasks() {
     const out = Object.create(null);
     try {
@@ -446,6 +493,7 @@
       exported_at: new Date().toISOString(),
       settings: sanitizeSettings(settings),
       nice_items: backend ? backend.load() : [],
+      wishes: loadWishes(),
       elf_tasks: collectElfTasks()
     };
   }
@@ -466,8 +514,8 @@
     if (data.version !== undefined && data.version !== 1) {
       throw new Error("Unsupported backup version");
     }
-    if (!("settings" in data) && !("nice_items" in data)) {
-      throw new Error("Backup contains neither settings nor nice_items");
+    if (!("settings" in data) && !("nice_items" in data) && !("wishes" in data)) {
+      throw new Error("Backup contains no recognized data");
     }
     if ("settings" in data && (!data.settings || typeof data.settings !== "object" || Array.isArray(data.settings))) {
       throw new Error("Invalid settings in backup");
@@ -475,9 +523,13 @@
     if ("nice_items" in data && !Array.isArray(data.nice_items)) {
       throw new Error("Invalid nice_items in backup");
     }
+    if ("wishes" in data && !Array.isArray(data.wishes)) {
+      throw new Error("Invalid wishes in backup");
+    }
 
     const settings = sanitizeSettings(data.settings || DEFAULT_SETTINGS);
     const nice_items = sanitizeNiceItems(data.nice_items || []);
+    const wishes = sanitizeWishes(data.wishes || []);
     const elf_tasks = Object.create(null);
     if (data.elf_tasks && typeof data.elf_tasks === "object" && !Array.isArray(data.elf_tasks)) {
       let count = 0;
@@ -489,12 +541,13 @@
       }
     }
 
-    return { settings, nice_items, elf_tasks };
+    return { settings, nice_items, wishes, elf_tasks };
   }
 
   window.NordpolWebStorage = {
     SETTINGS_KEY,
     NICE_KEY,
+    WISHES_KEY,
     TODO_ENTITY,
     LOG_ITEM,
     DEFAULT_SETTINGS,
@@ -503,8 +556,11 @@
     sanitizeSettings,
     sanitizeHome,
     sanitizeNiceItems,
+    sanitizeWishes,
     loadSettings,
     saveSettings,
+    loadWishes,
+    saveWishes,
     encodeShareHash,
     parseShareHash,
     exportBackup,
