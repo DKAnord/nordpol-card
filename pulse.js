@@ -1,7 +1,7 @@
 /* Cookie-free client for the optional Nordpol Pulse Cloudflare Worker.
    Uses only an ephemeral sessionStorage tab ID + edge country (never IPs or cookies). */
 (() => {
-  const DEFAULT_PULSE_URL = "";
+  const DEFAULT_PULSE_URL = "https://nordpol-pulse.dkanord.workers.dev";
   const SID_KEY = "nordpol.pulse.sid";
   const PING_INTERVAL_MS = 120000;
 
