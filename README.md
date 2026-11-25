@@ -12,7 +12,7 @@ A self-contained Christmas dashboard for Home Assistant — **no YAML required**
 * 🎛️ **Visual UI editor** — configure everything right in Home Assistant’s card editor
 
 > [!TIP]
-> **Try it live on the Web (no Home Assistant needed):** Open the standalone family dashboard at **[dkanord.github.io/nordpol-card](https://dkanord.github.io/nordpol-card/)** — installable as a PWA with local browser storage, 14 languages, clickable city picker, Santa’s Mailroom Postbox, printable Nice List certificates, December Advent history, optional Web Audio festive chimes, offline QR setup sharing, and an optional zero-cookie visitor counter ([`tools/nordpol-pulse-worker/`](tools/nordpol-pulse-worker/)).
+> **Try it live on the Web (no Home Assistant needed):** Open the standalone family dashboard at **[nordpol.pages.dev](https://nordpol.pages.dev/)** — installable as a PWA with local browser storage, 14 languages, clickable city picker, Santa’s Mailroom Postbox, printable Nice List certificates, December Advent history, optional Web Audio festive chimes, offline QR setup sharing, and an optional zero-cookie visitor counter ([`tools/nordpol-pulse-worker/`](tools/nordpol-pulse-worker/)).
 
 ![Nordpol Card demo](docs/demo.gif)
 

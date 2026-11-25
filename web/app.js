@@ -95,6 +95,12 @@
 
     const webHass = createWebHass(backend, () => settings, resolvedHome);
 
+    function defaultWebRemoteDir() {
+      const h = window.location.hostname || "";
+      if (h.endsWith(".pages.dev")) return "./media";
+      return "https://nordpol.pages.dev/media";
+    }
+
     function buildBoardConfig() {
       const home = resolvedHome();
       const tz = effectiveTimeZone();
@@ -118,7 +124,7 @@
       if (settings.date) cfg.date = settings.date;
       if (settings.target) cfg.hero.target = settings.target;
       if (tz) cfg.time_zone = tz;
-      const rdir = settings.remote_dir || opts.remote_dir;
+      const rdir = settings.remote_dir || opts.remote_dir || defaultWebRemoteDir();
       if (rdir) cfg.cams.remote_dir = rdir;
       return cfg;
     }

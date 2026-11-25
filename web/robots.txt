@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dkanord.github.io/nordpol-card/sitemap.xml
+Sitemap: https://nordpol.pages.dev/sitemap.xml
