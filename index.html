@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nordpol — Santa's Secret Control Room</title>
+  <meta name="description" content="Free interactive Christmas dashboard for families: live countdown, North Pole elf cams, Santa sleigh tracker, Nice list, and Elf of the day in 14 languages.">
+  <meta name="theme-color" content="#0b1a3a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Nordpol">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nordpol — Santa's Secret Control Room">
+  <meta property="og:description" content="Christmas countdown, North Pole elf cams, live Santa sleigh tracker, Nice list, and Elf of the day in 14 languages.">
+  <meta property="og:url" content="https://dkanord.github.io/nordpol-card/">
+  <meta property="og:image" content="https://dkanord.github.io/nordpol-card/og-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nordpol — Santa's Secret Control Room">
+  <meta name="twitter:description" content="Christmas countdown, North Pole elf cams, live Santa sleigh tracker, Nice list, and Elf of the day.">
+  <meta name="twitter:image" content="https://dkanord.github.io/nordpol-card/og-preview.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div id="app"></div>
+  <script src="./tz-cities.js"></script>
+  <script src="./i18n.js"></script>
+  <script src="./storage.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    (function () {
+      function loadCard(src, onErr) {
+        var s = document.createElement("script");
+        s.src = src;
+        if (onErr) s.onerror = onErr;
+        document.head.appendChild(s);
+      }
+      loadCard("./nordpol-card.js", function () {
+        loadCard("../dist/nordpol-card.js");
+      });
+
+      if (
+        "serviceWorker" in navigator &&
+        (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1") &&
+        !new URLSearchParams(location.search).has("nosw")
+      ) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("./sw.js").catch(function () {});
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
