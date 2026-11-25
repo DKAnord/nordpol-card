@@ -123,6 +123,7 @@ window.__runWebTests = async () => {
   };
 
   localStorage.clear();
+  sessionStorage.clear();
   geocodeCalls = [];
   copiedTexts = [];
   pulseCalls = [];
@@ -156,6 +157,24 @@ window.__runWebTests = async () => {
   await sleep(30);
   assert(initSound.getAttribute("aria-pressed") === "false" && api.getSettings().sound_enabled === false,
     "Second Sound toggle click mutes sound cleanly");
+
+  const gearHint = doc.getElementById("np-gear-hint");
+  const gearHintTxt = doc.getElementById("np-gear-hint-txt");
+  const gearHintOpen = doc.getElementById("np-gear-hint-open");
+  assert(gearHint && !gearHint.hidden, "Handwritten Settings pointer is visible on initial load");
+  assert(gearHintTxt && gearHintTxt.textContent === w.NordpolWebI18n.WEB_I18N[doc.documentElement.lang].gear_hint,
+    "Settings pointer matches active language");
+  assert(gearHint.querySelector("svg path"), "Settings pointer renders curved SVG arrow");
+  const hintRect = gearHintOpen.getBoundingClientRect();
+  assert(hintRect.left >= 0 && hintRect.right <= doc.documentElement.clientWidth,
+    "Settings pointer fits cleanly inside viewport horizontally");
+  gearHintOpen.click();
+  await sleep(40);
+  assert(doc.getElementById("np-drawer").classList.contains("open"), "Clicking Settings pointer opens drawer");
+  doc.getElementById("np-close-btn").click();
+  await sleep(40);
+  assert(!doc.getElementById("np-drawer").classList.contains("open") && gearHint.hidden === true,
+    "Closing drawer keeps Settings pointer dismissed for session");
 
   await sleep(40);
   assert(pulseCalls.length >= 1, "Pulse client pings configured pulse_url on startup");
