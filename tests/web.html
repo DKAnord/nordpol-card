@@ -432,6 +432,22 @@ window.__runWebTests = async () => {
   ovSel.dispatchEvent(new Event("change"));
   await sleep(30);
 
+  // Camera layout toggle in Settings drawer & cam card header
+  const viewSel = doc.getElementById("np-cam-view");
+  assert(viewSel && viewSel.value === "grid", "Settings drawer has Camera layout selector defaulting to grid");
+  viewSel.value = "cycle";
+  viewSel.dispatchEvent(new Event("change"));
+  await sleep(40);
+  assert(api.getSettings().cam_view === "cycle" && !!api.board.shadowRoot.querySelector("nordpol-cam-card").shadowRoot.querySelector(".cycstage"),
+    "Switching Camera layout to cycle renders 1-view cycle stage");
+  api.board.shadowRoot.querySelector("nordpol-cam-card").shadowRoot.getElementById("viewbtn").click();
+  await sleep(40);
+  assert(api.getSettings().cam_view === "grid" && doc.getElementById("np-cam-view").value === "grid",
+    "Clicking cam card #viewbtn syncs web settings and Settings drawer back to grid");
+  api.board.shadowRoot.querySelector("nordpol-cam-card").shadowRoot.getElementById("viewbtn").click();
+  await sleep(40);
+  assert(api.getSettings().cam_view === "cycle", "Clicking cam card #viewbtn switches back to cycle before share hash check");
+
   const etaIn = doc.getElementById("np-eta");
   etaIn.value = "20:15";
   etaIn.dispatchEvent(new Event("change"));
@@ -501,6 +517,22 @@ window.__runWebTests = async () => {
   assert(!doc.getElementById("np-wish-stamp").hidden, "North Pole Postbox stamp appears after sending wish");
   assert(w.NordpolWebStorage.loadWishes().length === 1, "Wish persisted to localStorage");
   doc.getElementById("np-wish-close").click();
+  await sleep(60);
+  const camSrWish = api.board.shadowRoot.querySelector("nordpol-cam-card").shadowRoot;
+  assert(!!(camSrWish.querySelector(".tile.mail-hi") || camSrWish.querySelector(".letter-stage")),
+    "Sending wish triggers live Mailroom arrival spotlight on cam card");
+  const ltrBackBtn = camSrWish.getElementById("ltrback");
+  if (ltrBackBtn) {
+    assert(camSrWish.querySelector(".ltr-paper").textContent.includes("Astrid") && camSrWish.querySelector(".ltr-paper").textContent.includes("A wooden train"),
+      "Mailroom letter overlay shows Astrid's wish text");
+    ltrBackBtn.click();
+    await sleep(40);
+  }
+  // Verify #ltrbtn on cam card opens unified Web Mailroom modal (preventing standalone dialog)
+  camSrWish.getElementById("ltrbtn").click();
+  await sleep(40);
+  assert(!wishModal.hidden, "Clicking #ltrbtn on cam card opens Web Mailroom Postbox modal");
+  doc.getElementById("np-wish-close").click();
   await sleep(30);
 
   // Parent Mode Inbox & Official Certificate
@@ -549,6 +581,7 @@ window.__runWebTests = async () => {
   assert(copiedTexts.length >= 1, "Copy setup link wrote to clipboard");
   const shareUrl = copiedTexts[copiedTexts.length - 1];
   assert(shareUrl.includes("eta=20%3A15"), "Share hash includes configured ETA");
+  assert(shareUrl.includes("cv=cycle"), "Share hash includes cv=cycle when cycle layout is active");
   assert(!shareUrl.includes("SecretKidName") && !shareUrl.includes("Ella") && !shareUrl.includes("nice_items")
     && !shareUrl.includes("Astrid") && !shareUrl.includes("wooden"),
     "Share link strictly excludes children's names, Nice list data, and wishes");
@@ -562,6 +595,7 @@ window.__runWebTests = async () => {
   assert(errors.length === 0, "Zero errors loading shared hash URL");
   assert(api.getSettings().eta === "20:15", "Shared hash restored ETA on fresh load");
   assert(api.getSettings().date === "12-25", "Shared hash restored celebration date");
+  assert(api.getSettings().cam_view === "cycle", "Shared hash restored cam_view=cycle");
 
   // 8. Backup JSON export/import & security validation + reset
   const { exportBackup, importBackup } = w.NordpolWebStorage;

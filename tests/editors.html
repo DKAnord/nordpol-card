@@ -40,7 +40,7 @@
       // 2. getConfigForm() on all 5 standalone cards
       const standalone = [
         ["nordpol-hero-card", ["language", "date", "title", "subtitle", "target", "until", "time_zone", "snow"]],
-        ["nordpol-cam-card", ["language", "title", "overlay", "cctv_style", "date_format", "time_zone", "footer", "glitch"]],
+        ["nordpol-cam-card", ["language", "title", "view", "overlay", "cctv_style", "date_format", "time_zone", "footer", "glitch"]],
         ["nordpol-nice-card", ["language", "title", "store", "log_entity", "default_start", "log_lines"]],
         ["nordpol-elf-card", ["language", "title", "date", "time_zone", "entity"]],
         ["nordpol-sleigh-card", ["language", "title", "eta", "date", "time_zone"]]
@@ -174,14 +174,18 @@
       assert(!ed.shadowRoot.querySelector("ha-form"), "fallback HTML renders before ha-form is defined");
       const tabOptText = ed.shadowRoot.querySelector('#tab option[value="sleigh"]').textContent;
       assert(tabOptText.includes("Santa's Sled & Co") && !tabOptText.includes("&#39;") && !tabOptText.includes("&amp;"), `fallback #tab uses unescaped TRaw: ${tabOptText}`);
+      eq(ed.shadowRoot.getElementById("view").value, "grid", "fallback #view defaults to grid");
       eq(ed.shadowRoot.getElementById("ov").value, "cctv", "fallback #ov reads boolean overlay=true as cctv");
       eq(ed.shadowRoot.getElementById("cctv").value, "mono", "fallback #cctv reads mono");
       eq(ed.shadowRoot.getElementById("tz").value, "Europe/Copenhagen", "fallback #tz reads time_zone");
 
-      // Edit fallback #tz and #ov and verify nested emit + advanced key preservation
+      // Edit fallback #view, #tz and #ov and verify nested emit + advanced key preservation
+      ed.shadowRoot.getElementById("view").value = "cycle";
+      ed.shadowRoot.getElementById("view").dispatchEvent(new Event("change"));
       ed.shadowRoot.getElementById("ov").value = "off";
       ed.shadowRoot.getElementById("ov").dispatchEvent(new Event("change"));
       let last = changes[changes.length - 1];
+      eq(last.cams.view, "cycle", "fallback #view=cycle maps to cams.view=cycle");
       eq(last.cams.overlay, false, "fallback #ov=off maps to cams.overlay=false");
       eq(last.cams.cams, [{ label: "CAM A" }], "fallback preserves cams.cams");
       eq(last.sleigh.home, { name: "Odense", lat: 55.4, lon: 10.4 }, "fallback preserves sleigh.home");
@@ -204,6 +208,7 @@
         target: "12-24 19:00",
         eta: "22:30",
         store: "todo.nordpol_nice_list",
+        view: "cycle",
         overlay: "off",
         cctv_style: "mono",
         home_button_path: "/lovelace/home",
@@ -226,14 +231,15 @@
       ed.setConfig(last);
       assert(haForm.schema === schemaEn, "<ha-form>.schema keeps object identity when language & strings are unchanged");
 
-      // Switch language to 'de' -> schema rebuilds, computeLabel updates
+      // Switch language to 'de' -> schema rebuilds, computeLabel updates, view='grid' cleans cams.view
       haForm.dispatchEvent(new CustomEvent("value-changed", {
-        detail: { value: Object.assign({}, haForm.data, { language: "de", overlay: "cctv", cctv_style: "color", date: "12-25" }) },
+        detail: { value: Object.assign({}, haForm.data, { language: "de", view: "grid", overlay: "cctv", cctv_style: "color", date: "12-25" }) },
         bubbles: true, composed: true
       }));
       last = changes[changes.length - 1];
       eq(last.language, "de", "language updated to de");
       eq(last.date, "12-25", "date updated to 12-25");
+      assert(!("view" in last.cams), "view=grid cleans default from cams");
       eq(last.cams.overlay, true, "overlay=cctv maps to cams.overlay=true");
       assert(!("cctv_style" in last.cams), "cctv_style=color cleans default from cams");
       ed.setConfig(last);
@@ -376,9 +382,11 @@
       eq(LANG_OPTS.find(o => o.value === "hu").label, "Magyar", "LANG_OPTS hu label is Magyar");
       const OVL = new Function("return (" + src.match(/const OV_OPTS_L = (\{[\s\S]*?\n\});/)[1] + ")")();
       const CCL = new Function("return (" + src.match(/const CCTV_OPTS_L = (\{[\s\S]*?\n\});/)[1] + ")")();
+      const VWL = new Function("return (" + src.match(/const VIEW_OPTS_L = (\{[\s\S]*?\n\});/)[1] + ")")();
       for (const lg of ALL) {
         eq((OVL[lg] || []).map(o => o.value).join(), "minimal,cctv,off", `OV_OPTS_L.${lg} has minimal/cctv/off`);
         eq((CCL[lg] || []).map(o => o.value).join(), "color,mono", `CCTV_OPTS_L.${lg} has color/mono`);
+        eq((VWL[lg] || []).map(o => o.value).join(), "grid,cycle", `VIEW_OPTS_L.${lg} has grid/cycle`);
       }
       eq(ovOpts({ language: "hu" })[2].label, "Ki (csak videó)", "ovOpts hu translated");
       eq(ED_H.nl.target.includes("12-25 00:00"), true, "ed_h.nl.target states 12-25 00:00");

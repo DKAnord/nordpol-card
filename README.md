@@ -127,9 +127,9 @@ Use `prefer_files: true` instead if you want local clips first with the hosted c
 
 | Card | Type | Visual editor options |
 |---|---|---|
-| Tablet board | `custom:nordpol-board-card` | `language`, `default_tab`, `date`, `hero.target`, `sleigh.eta`, `nice.store`, `cams.overlay`, `cams.cctv_style`, `home_button.path`, `time_zone`, `hero.snow` |
+| Tablet board | `custom:nordpol-board-card` | `language`, `default_tab`, `date`, `hero.target`, `sleigh.eta`, `nice.store`, `cams.view`, `cams.overlay`, `cams.cctv_style`, `home_button.path`, `time_zone`, `hero.snow` |
 | Countdown hero | `custom:nordpol-hero-card` | `language`, `date`, `title`, `subtitle`, `target`, `until`, `time_zone`, `snow` |
-| North Pole cams | `custom:nordpol-cam-card` | `language`, `title`, `overlay`, `cctv_style`, `date_format`, `time_zone`, `footer`, `glitch` |
+| North Pole cams | `custom:nordpol-cam-card` | `language`, `title`, `view`, `overlay`, `cctv_style`, `date_format`, `time_zone`, `footer`, `glitch` |
 | Sleigh tracker | `custom:nordpol-sleigh-card` | `language`, `title`, `eta`, `date`, `time_zone` |
 | Nice list | `custom:nordpol-nice-card` | `language`, `title`, `store`, `log_entity`, `default_start`, `log_lines` |
 | Elf of the day | `custom:nordpol-elf-card` | `language`, `title`, `date`, `time_zone`, `entity` |

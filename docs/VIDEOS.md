@@ -22,7 +22,9 @@ GitHub Release.
 ## File naming
 
 ```
-<config>/www/nordpol/cam<N>_<period>.mp4        →  served as /local/nordpol/cam<N>_<period>.mp4
+<config>/www/nordpol/cam<N>_<period>.mp4          →  4-view grid (10s seamless loops)
+<config>/www/nordpol/cycle<N>_<period>.mp4        →  1-view cycle (24–30s perspective shots)
+<config>/www/nordpol/mailroom_letter_<period>.mp4 →  live-action letter arrival (or mailroom_letter.mp4)
 ```
 
 | Cam (order in `cams:`) | morning | day | evening |
@@ -32,6 +34,7 @@ GitHub Release.
 | 3 | `cam3_morning.mp4` | `cam3_day.mp4` | `cam3_evening.mp4` |
 | 4 | `cam4_morning.mp4` | `cam4_day.mp4` | `cam4_evening.mp4` |
 
+* **1-view cycle & Letter-to-Santa clips:** See [cycle-video-prompts.md](cycle-video-prompts.md) for the 24–30s Google Flow `First Frame + Extend` workflow (no locked end-frame needed), 13 starter keyframes, and `letter_cue` alignment tuning. When `cycle<N>_<period>.mp4` or `mailroom_letter*.mp4` are not present yet, the card automatically falls back to `cam<N>_<period>.mp4`.
 * Period names and start times are configurable (`cams.periods`). Existing files such as `cam1_morgen.mp4` keep working
   if you set `periods: [{name: morgen, from: "05:00"}, …]`.
 * Missing file? The card falls back to the same cam's other periods, then to the optional `src:` clip, then static noise.

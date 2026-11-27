@@ -112,7 +112,7 @@ function mount(tag, cfg, { width, hass, ha, parent } = {}) {
   if (ha) { ha.cards.push(el); el.hass = ha.makeHass(); } else if (hass) el.hass = hass;
   return el;
 }
-function cleanup() { root.innerHTML = ""; document.querySelectorAll("body > div[style*='z-index: 10000']").forEach(x => x.remove()); }
+function cleanup() { root.innerHTML = ""; document.querySelectorAll("body > div[style*='z-index: 10000']").forEach(x => x.remove()); try { localStorage.removeItem("nordpol-cam-view"); } catch {} }
 const snowCanvases = () => document.querySelectorAll("body > canvas").length;
 const reqlog = async (reset) => (await fetch("/__reqlog" + (reset ? "?reset=1" : ""), { cache: "no-store" })).json();
 const heroVals = el => { const g = id => +el.shadowRoot.getElementById(id).textContent; return { d: g("d"), h: g("h"), m: g("m"), s: g("s") }; };
@@ -124,7 +124,7 @@ const test = (group, name, fn) => TESTS.push({ group, name, fn });
 
 window.__runBehaviorTests = async function () {
   const want = (new URLSearchParams(location.search).get("groups") || "all").split(",");
-  const ALL = ["base", "width", "dst", "dates", "nice", "probes", "live", "preview", "editor", "elf", "a11y"];
+  const ALL = ["base", "width", "dst", "dates", "nice", "probes", "cycle", "live", "preview", "editor", "elf", "a11y"];
   const groups = want.includes("all") ? ALL : want;
   const results = []; const ran = new Set();
   const ctx = {
@@ -412,6 +412,91 @@ test("probes", "prefer_files: false never probes", async ({ eq }) => {
 });
 
 /* ===================================================================== */
+/* cycle view toggle, fallback, dot navigation & letter spotlight */
+test("cycle", "view toggle switches 4-grid <-> 1-view cycle, cycles on ended, and falls back to legacy cam*.mp4", async ({ eq, ok }) => {
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 12, 0));
+  const beforeIv = __iv.size;
+  const events = [];
+  const el = mount("nordpol-cam-card", camCfg({ remote_dir: "/remote" }), { hass: mkHA().makeHass() });
+  el.addEventListener("nordpol-cam-view", e => events.push(e.detail.view));
+  await sleep(120);
+  eq(el.shadowRoot.querySelectorAll(".tile[data-i]").length, 4, "starts in 4-view grid");
+  const vbtn = el.shadowRoot.getElementById("viewbtn");
+  ok(!!vbtn && vbtn.getAttribute("aria-pressed") === "false", "view toggle button present in grid mode");
+  vbtn.click();
+  await sleep(120);
+  eq(events, ["cycle"], "clicking #viewbtn emits nordpol-cam-view=cycle");
+  eq(localStorage.getItem("nordpol-cam-view"), "cycle", "view preference saved to localStorage");
+  ok(!!el.shadowRoot.querySelector(".grid.one .cycstage"), "switched to .grid.one .cycstage");
+  const dots = [...el.shadowRoot.querySelectorAll(".cdot")];
+  eq(dots.length, 4, "4 cycle indicator dots rendered");
+  const activeVid = () => el.shadowRoot.querySelector(".cycstage video.active");
+  ok((activeVid().getAttribute("src") || "").endsWith("/remote/cycle1_day.mp4"), "cycle slot 0 loads cycle1_day.mp4");
+
+  for (const [step, wantNum] of [[1, 2], [2, 3], [3, 4], [4, 1]]) {
+    activeVid().dispatchEvent(new Event("ended"));
+    await sleep(60);
+    ok((activeVid().getAttribute("src") || "").endsWith(`/remote/cycle${wantNum}_day.mp4`), `ended step ${step} advances to cycle${wantNum}_day.mp4`);
+    ok(el.shadowRoot.querySelector(`.cdot[data-ci="${wantNum - 1}"]`).classList.contains("on"), `dot ${wantNum} active`);
+  }
+  el.shadowRoot.querySelector('.cdot[data-ci="2"]').click();
+  await sleep(60);
+  ok(el.shadowRoot.querySelector(".cycstage .lab").textContent.includes("MAILROOM"), "clicking dot 3 jumps directly to Mailroom");
+
+  el.shadowRoot.getElementById("viewbtn").click();
+  await sleep(60);
+  eq(el.shadowRoot.querySelectorAll(".tile[data-i]").length, 4, "clicking #viewbtn again returns to 4-view grid");
+
+  /* legacy host serving only cam*.mp4 falls back cleanly */
+  const leg = mount("nordpol-cam-card", camCfg({ view: "cycle", remote_dir: "/remote-legacy" }), { hass: mkHA().makeHass() });
+  await sleep(220);
+  const legSrc = leg.shadowRoot.querySelector(".cycstage video.active").getAttribute("src") || "";
+  ok(legSrc.endsWith("/remote-legacy/cam1_day.mp4"), "cycle falls back to legacy cam1_day.mp4 when cycle1_day.mp4 404s (got " + legSrc + ")");
+  cleanup();
+  eq(__iv.size, beforeIv, "no leaked intervals after cycle card removal");
+});
+
+test("cycle", "triggerLetter highlights mailroom, renders XSS-safe parchment overlay, and returns cleanly", async ({ eq, ok }) => {
+  __setNow(instant("Europe/Copenhagen", 2026, 11, 10, 12, 0));
+  window.__xss = 0;
+  const g = mount("nordpol-cam-card", camCfg({ remote_dir: "/remote", letter_cue: { fallback_ms: 450 } }), { hass: mkHA().makeHass() });
+  await sleep(80);
+  g.triggerLetter({ child: "Ella", text: "A wooden sled <img src=x onerror=window.__xss=1>" });
+  ok(g.shadowRoot.querySelector('.tile[data-i="2"]').classList.contains("mail-hi"), "grid mode highlights CAM 03 Mailroom first");
+  await sleep(820);
+  const stage = g.shadowRoot.querySelector(".letter-stage");
+  ok(!!stage, "transitions to .letter-stage spotlight");
+  const paper = stage.querySelector(".ltr-paper");
+  ok(!!paper && paper.textContent.includes("Ella") && paper.textContent.includes("<img src=x onerror=window.__xss=1>"), "parchment displays child name and escaped wish text");
+  eq(window.__xss, 0, "no XSS executed inside parchment overlay");
+  await sleep(100);
+  ok(paper.classList.contains("show"), "parchment unfolds smoothly (.show)");
+  await sleep(450);
+  ok(!g.shadowRoot.querySelector(".letter-stage"), "spotlight auto-returns to 4-grid after completion");
+
+  /* cycle mode + manual #ltrback + built-in #ltrbtn modal */
+  const c = mount("nordpol-cam-card", camCfg({ view: "cycle", remote_dir: "/remote" }), { hass: mkHA().makeHass() });
+  await sleep(80);
+  const sent = [];
+  c.addEventListener("nordpol-letter-sent", e => sent.push(e.detail));
+  c.shadowRoot.getElementById("ltrbtn").click();
+  await sleep(30);
+  const dlg = document.querySelector("body > div[role=dialog]");
+  ok(!!dlg && !!dlg.querySelector("#npl-msg"), "built-in #ltrbtn opens Letter-to-Santa dialog when event is not prevented");
+  dlg.querySelector("#npl-name").value = "Leo";
+  dlg.querySelector("#npl-msg").value = "Snow globe";
+  dlg.querySelector("#npl-send").click();
+  await sleep(60);
+  eq(sent, [{ child: "Leo", text: "Snow globe" }], "submitting dialog emits nordpol-letter-sent");
+  const cStage = c.shadowRoot.querySelector(".letter-stage");
+  ok(!!cStage && cStage.textContent.includes("Leo") && cStage.textContent.includes("Snow globe"), "cycle mode enters spotlight with Leo's letter");
+  cStage.querySelector("#ltrback").click();
+  await sleep(60);
+  ok(!c.shadowRoot.querySelector(".letter-stage"), "#ltrback exits spotlight early");
+  ok(c.shadowRoot.querySelector(".cycstage").dataset.i === "3", "cycle mode advances past Mailroom to CAM 04 on return");
+});
+
+/* ===================================================================== */
 /* B5: live config changes */
 test("live", "switching the nice list store re-subscribes and shows the new list", async ({ eq, ok }) => {
   const ha = mkHA({ lists: { "todo.nordpol_nice_list": [kid("a", "Anna", 80)], "todo.other": [kid("x", "Xena", 40)] } });
@@ -526,6 +611,7 @@ test("width", "hu: long Hungarian words stay inside every card at 320 px", async
     __setNow(RealDate.parse(iso));
     const ha = mkHA({ lists: { "todo.nordpol_nice_list": kids } });
     const els = ["hero", "cam", "nice", "elf", "sleigh"].map(t => mount(`nordpol-${t}-card`, { language: "hu", snow: false, store: "todo.nordpol_nice_list", remote_dir: "/remote" }, { width: cw, ha }));
+    els.push(mount("nordpol-cam-card", { language: "hu", view: "cycle", remote_dir: "/remote" }, { width: cw, ha }));
     await sleep(120);
     const nice = els[2]; nice._toggleParent && nice._toggleParent(); await sleep(30);
     for (const el of els) {

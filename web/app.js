@@ -108,6 +108,7 @@
         default_tab: settings.default_tab || "sleigh",
         hero: { snow: settings.snow !== false },
         cams: {
+          view: settings.cam_view || "grid",
           overlay: settings.overlay || "minimal",
           cctv_style: settings.cctv_style || "color"
         },
@@ -290,6 +291,20 @@
 
     board.addEventListener("nordpol-sfx", e => {
       audio.play(e.detail && e.detail.type);
+    });
+
+    board.addEventListener("nordpol-cam-view", e => {
+      const v = e.detail && e.detail.view;
+      if (v === "grid" || v === "cycle") {
+        settings = saveSettings(Object.assign({}, settings, { cam_view: v }));
+        const sel = drawer.querySelector("#np-cam-view");
+        if (sel) sel.value = v;
+      }
+    });
+
+    board.addEventListener("nordpol-letter-open", e => {
+      e.preventDefault();
+      extras.openWishModal("send");
     });
 
     soundBtn.addEventListener("click", () => {
@@ -734,6 +749,11 @@
         ["elf", `🧝 ${L.tab_elf}`]
       ].map(([v, label]) => `<option value="${v}" ${settings.default_tab === v ? "selected" : ""}>${escapeHtml(label)}</option>`).join("");
 
+      const camViewOpts = [
+        ["grid", L.view_grid],
+        ["cycle", L.view_cycle]
+      ].map(([v, label]) => `<option value="${v}" ${settings.cam_view === v ? "selected" : ""}>${escapeHtml(label)}</option>`).join("");
+
       const ovOpts = [
         ["minimal", L.ov_minimal],
         ["cctv", L.ov_cctv],
@@ -820,6 +840,10 @@
 
           <section class="np-sec">
             <h3 class="np-sec-title">${escapeHtml(L.sec_cams)}</h3>
+            <div class="np-field">
+              <label for="np-cam-view">${escapeHtml(L.lbl_cam_view)}</label>
+              <select class="np-select" id="np-cam-view">${camViewOpts}</select>
+            </div>
             <div class="np-grid2">
               <div class="np-field">
                 <label for="np-overlay">${escapeHtml(L.lbl_overlay)}</label>
@@ -961,6 +985,7 @@
       const gpsBtn = $("np-gps-btn");
       if (gpsBtn) gpsBtn.addEventListener("click", useMyLocation);
 
+      $("np-cam-view").addEventListener("change", e => updateSettings({ cam_view: e.target.value }));
       $("np-overlay").addEventListener("change", e => updateSettings({ overlay: e.target.value }));
       $("np-cctv").addEventListener("change", e => updateSettings({ cctv_style: e.target.value }));
       $("np-snow").addEventListener("change", e => updateSettings({ snow: e.target.checked }));

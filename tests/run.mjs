@@ -77,10 +77,11 @@ function startServer() {
       if (u.searchParams.get("reset")) reqlog.length = 0;
       res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" }); res.end(body); return;
     }
-    if (u.pathname.startsWith("/local/") || u.pathname.startsWith("/remote/")) reqlog.push({ m: req.method, p: u.pathname });
-    /* fake media: /local/present/* and /remote/* exist, everything else under /local/ is a 404 */
+    if (u.pathname.startsWith("/local/") || u.pathname.startsWith("/remote/") || u.pathname.startsWith("/remote-legacy/")) reqlog.push({ m: req.method, p: u.pathname });
+    /* fake media: /local/present/* and /remote/* exist, /remote-legacy/ serves only cam*.mp4, everything else under /local/ is a 404 */
     let entry = routes.get(u.pathname);
     if (!entry && (u.pathname.startsWith("/local/present/") || u.pathname.startsWith("/remote/")) && u.pathname.endsWith(".mp4")) entry = TINY;
+    if (!entry && u.pathname.startsWith("/remote-legacy/cam") && u.pathname.endsWith(".mp4")) entry = TINY;
     if (!entry) {
       const rel = u.pathname === "/" ? "index.html" : u.pathname.replace(/^\/+/, "");
       const candidate = path.resolve(WEB_DIR, rel);
