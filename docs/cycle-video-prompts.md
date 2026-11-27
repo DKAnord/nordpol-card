@@ -124,7 +124,7 @@ Unlike the 4-grid wall (which needed identical first/last frames to loop in plac
 Anchor image: `mailroom_letter_anchor.png`
 
 > [!IMPORTANT]
-> **Choreography timing matters!** `NordpolCams` fades the child's live letter text onto a translucent aged parchment sheet centered over the lower-center oak table from **`8.5s` to `21.5s`** (with the `"★ RECEIVED · NORTH POLE ★"` stamp popping in at **`19.0s`**). Keep the lower-center foreground table space open and hold a **completely blank cream parchment sheet** steady there during the middle beat!
+> **Choreography timing matters!** `NordpolCams` fades the child's live letter text onto a translucent aged parchment sheet centered over the lower-center oak table from **`9.8s` to `20.2s`** (with the `"★ RECEIVED · NORTH POLE ★"` stamp popping in at **`18.0s`**). Keep the lower-center foreground table space open and hold a **completely blank cream parchment sheet** steady there during the middle beat!
 
 - **Beat 1 — Pneumatic Arrival (0–8.5s):**
   Locked closer angled mailroom camera in warm timeless golden lantern light. Suddenly, the open curved brass pneumatic mail pipe on the left brick wall vents a dramatic crisp puff of white steam and shoots a cream envelope sealed with red wax spinning out of the brass chute straight down into the woven wicker basket. Both delighted elves jump excitedly, rush over to the basket, lift the envelope triumphantly, hurry forward to the empty oak table in the lower-center foreground, carefully break the red wax seal, and unfold a **large, flat, completely blank cream parchment sheet** squarely in the center of the lower-center oak tabletop so its entire blank surface faces the camera cleanly.
@@ -140,14 +140,14 @@ If your generated `mailroom_letter.mp4` unfolds the blank paper at slightly diff
 ```yaml
 cams:
   letter_cue:
-    start: 8.5     # seconds when parchment fades in
-    end: 21.5      # seconds when parchment fades out
-    stampAt: 19.0  # seconds when ★ RECEIVED ★ stamp pops in
+    start: 9.8     # seconds when parchment fades in
+    end: 20.2      # seconds when parchment fades out
+    stampAt: 18.0  # seconds when ★ RECEIVED ★ stamp pops in
     x: 50          # horizontal center (%)
-    y: 63          # vertical center (%)
-    w: 56          # parchment width (% of video width)
-    rot: -1.2      # planar tilt (deg)
-    tilt: 9        # perspective X-tilt matching tabletop angle (deg)
+    y: 79          # vertical center (%)
+    w: 42          # parchment width (% of video width)
+    rot: -0.6      # planar tilt (deg)
+    tilt: 18       # perspective X-tilt matching tabletop angle (deg)
 ```
 
 ---

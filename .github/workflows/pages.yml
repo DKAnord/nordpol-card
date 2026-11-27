@@ -46,13 +46,15 @@ jobs:
           cp src/docs/screenshot-sleigh.png site/og-preview.png
           touch site/.nojekyll
 
-      - name: Assert all 12 media clips remain intact
+      - name: Assert all 25 media clips remain intact
         run: |
           for cam in 1 2 3 4; do
             for per in morning day evening; do
               test -s "site/media/cam${cam}_${per}.mp4"
+              test -s "site/media/cycle${cam}_${per}.mp4"
             done
           done
+          test -s "site/media/mailroom_letter.mp4"
 
       - name: Commit and push gh-pages
         working-directory: site
