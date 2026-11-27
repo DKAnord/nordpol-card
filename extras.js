@@ -47,6 +47,7 @@
     let modalBackdrop = null;
     let wishModal = null;
     let certModal = null;
+    let wishCloseTimer = null;
 
     function ensureContainers() {
       if (modalBackdrop) return;
@@ -80,6 +81,8 @@
     }
 
     function closeModals() {
+      clearTimeout(wishCloseTimer);
+      wishCloseTimer = null;
       if (!modalBackdrop) return;
       modalBackdrop.classList.remove("open");
       modalBackdrop.setAttribute("aria-hidden", "true");
@@ -190,10 +193,12 @@
           textIn.focus();
           return;
         }
+        const wishChild = childIn.value.trim().slice(0, 40);
+        const wishText = text.slice(0, 280);
         const next = [{
           id: "w_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 6),
-          child: childIn.value.trim().slice(0, 40),
-          text: text.slice(0, 280),
+          child: wishChild,
+          text: wishText,
           created_at: new Date().toISOString()
         }, ...loadWishes()].slice(0, 50);
         saveWishes(next);
@@ -204,6 +209,12 @@
         stampEl.classList.add("pop");
         textIn.value = "";
         decorateBoard();
+        const camCard = board.shadowRoot && board.shadowRoot.querySelector("nordpol-cam-card");
+        if (camCard && typeof camCard.triggerLetter === "function") {
+          camCard.triggerLetter({ child: wishChild, text: wishText });
+        }
+        clearTimeout(wishCloseTimer);
+        wishCloseTimer = setTimeout(closeModals, 1100);
       });
 
       (kids.length ? textIn : childIn).focus();

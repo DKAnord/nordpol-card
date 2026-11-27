@@ -11,6 +11,7 @@
   const VALID_TABS = new Set(["sleigh", "nice", "elf"]);
   const VALID_OVERLAYS = new Set(["minimal", "cctv", "off"]);
   const VALID_CCTV = new Set(["color", "mono"]);
+  const VALID_VIEWS = new Set(["grid", "cycle"]);
   const BAD_KEYS = new Set(["__proto__", "constructor", "prototype"]);
 
   const DEFAULT_SETTINGS = Object.freeze({
@@ -22,6 +23,7 @@
     eta: "23:59",
     time_zone: "",
     home: null,
+    cam_view: "grid",
     overlay: "minimal",
     cctv_style: "color",
     snow: true,
@@ -100,6 +102,9 @@
     if (isValidTimeZone(tz)) out.time_zone = tz;
 
     if (raw.home) out.home = sanitizeHome(raw.home);
+
+    const cv = String(raw.cam_view || "").trim();
+    if (VALID_VIEWS.has(cv)) out.cam_view = cv;
 
     const ov = String(raw.overlay || "").trim();
     if (VALID_OVERLAYS.has(ov)) out.overlay = ov;
@@ -397,6 +402,7 @@
       if (s.home.tz) p.set("ht", s.home.tz);
     }
     if (s.overlay && s.overlay !== "minimal") p.set("ov", s.overlay);
+    if (s.cam_view === "cycle") p.set("cv", "cycle");
     if (s.cctv_style && s.cctv_style !== "color") p.set("cs", s.cctv_style);
     if (s.snow === false) p.set("snow", "0");
     if (s.kid_lock === true) p.set("kl", "1");
@@ -408,7 +414,7 @@
     const raw = String(hash || "").replace(/^#\??/, "").trim();
     if (!raw) return null;
     const p = new URLSearchParams(raw);
-    const recognized = ["v", "lang", "tab", "date", "target", "eta", "tz", "hn", "hl", "ho", "ht", "ov", "cs", "snow", "kl"];
+    const recognized = ["v", "lang", "tab", "date", "target", "eta", "tz", "hn", "hl", "ho", "ht", "ov", "cv", "cs", "snow", "kl"];
     if (!recognized.some(k => p.has(k))) return null;
 
     const patch = {};
@@ -428,6 +434,7 @@
       if (h) patch.home = h;
     }
     if (p.has("ov")) patch.overlay = p.get("ov");
+    if (p.has("cv")) patch.cam_view = p.get("cv");
     if (p.has("cs")) patch.cctv_style = p.get("cs");
     if (p.has("snow")) patch.snow = p.get("snow") !== "0";
     if (p.has("kl")) patch.kid_lock = p.get("kl") === "1";

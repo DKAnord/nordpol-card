@@ -101,7 +101,8 @@ const I18N = {
    "Kanen får nye bjælder monteret 🔔","Nissebanden sorterer ønskesedler 📜","Gavepapir: 4.812 km rullet ud 🎁",
    "Julemanden prøver sin nye røde dragt 🎅","Rensdyrene får ekstra havre 🌾","Nisse-radaren kalibreres 📡","Slæde-GPS opdateres med nye veje 🗺️"],
   sl_btn_demo:"✈️ Prøvetur", sl_btn_stop:"⏹ Stop prøvetur", cam_conn:"Forbinder…", elf_prog:"⭐ {done}/24", elf_today:"I dag",
-  tab_sleigh:"Kanen", tab_nice:"Artig", tab_elf:"Nissen", locale:"da-DK"
+  tab_sleigh:"Kanen", tab_nice:"Artig", tab_elf:"Nissen", cam_view_grid:"4-delt gitter", cam_view_cycle:"1-delt cyklus", cam_letter_btn:"Send et brev til julemanden", cam_letter_title:"📮 Brev til julemanden", cam_letter_name:"Dit navn", cam_letter_name_ph:"Valgfrit (fx Freja)", cam_letter_msg:"Kære julemand…", cam_letter_msg_ph:"Skriv dit juleønske…", cam_letter_send:"Send til postrummet", cam_letter_incoming:"📮 NYT BREV · POSTRUMMET", cam_letter_reading:"✨ Nisserne læser dit brev…", cam_letter_dear:"Kære julemand,", cam_letter_from:"— {name}", cam_letter_approved:"★ MODTAGET · NORDPOLEN ★", cam_letter_back:"Tilbage",
+  locale:"da-DK"
  },
  sv: {
   hero_title:"🎅 Nordpolen", hero_sub:"Tomtens hemliga kontrollrum", until:"⏳ Julafton om",
@@ -167,7 +168,8 @@ const I18N = {
    "Släden får nya bjällror monterade 🔔","Nissarna sorterar önskelistor 📜","Presentpapper: 4 812 km utrullat 🎁",
    "Tomten provar sin nya röda dräkt 🎅","Renarna får extra havre 🌾","Nisseradarn kalibreras 📡","Slädens GPS får nya kartor 🗺️"],
   sl_btn_demo:"✈️ Provtur", sl_btn_stop:"⏹ Stoppa provtur", cam_conn:"Ansluter…", elf_prog:"⭐ {done}/24", elf_today:"I dag",
-  tab_sleigh:"Släden", tab_nice:"Snäll", tab_elf:"Nissen", locale:"sv-SE"
+  tab_sleigh:"Släden", tab_nice:"Snäll", tab_elf:"Nissen", cam_view_grid:"4-rutnätsvy", cam_view_cycle:"1-vycykel", cam_letter_btn:"Skicka ett brev till tomten", cam_letter_title:"📮 Brev till tomten", cam_letter_name:"Ditt namn", cam_letter_name_ph:"Valfritt (t.ex. Maja)", cam_letter_msg:"Kära tomte…", cam_letter_msg_ph:"Skriv din julönskan…", cam_letter_send:"Skicka till postrummet", cam_letter_incoming:"📮 INKOMMANDE BREV · POSTRUMMET", cam_letter_reading:"✨ Nissarna läser ditt brev…", cam_letter_dear:"Kära tomte,", cam_letter_from:"— {name}", cam_letter_approved:"★ MOTTAGET · NORDPOLEN ★", cam_letter_back:"Tillbaka",
+  locale:"sv-SE"
  },
  en: {
   hero_title:"🎅 North Pole", hero_sub:"Santa's secret control room", until:"⏳ Christmas Eve in",
@@ -233,7 +235,8 @@ const I18N = {
    "New bells are fitted to the sleigh 🔔","The elves are sorting wish lists 📜","Wrapping paper: 4,812 km rolled out 🎁",
    "Santa is trying on his new red suit 🎅","The reindeer get extra oats 🌾","The elf radar is being calibrated 📡","Sleigh GPS is getting new maps 🗺️"],
   sl_btn_demo:"✈️ Test flight", sl_btn_stop:"⏹ Stop test flight", cam_conn:"Connecting…", elf_prog:"⭐ {done}/24", elf_today:"Today",
-  tab_sleigh:"Sleigh", tab_nice:"Nice list", tab_elf:"Elf", locale:"en-GB"
+  tab_sleigh:"Sleigh", tab_nice:"Nice list", tab_elf:"Elf", cam_view_grid:"4-view grid", cam_view_cycle:"1-view cycle", cam_letter_btn:"Send a letter to Santa", cam_letter_title:"📮 Letter to Santa", cam_letter_name:"Your name", cam_letter_name_ph:"Optional (e.g. Ella)", cam_letter_msg:"Dear Santa…", cam_letter_msg_ph:"Write your Christmas wish…", cam_letter_send:"Send to Mailroom", cam_letter_incoming:"📮 INCOMING LETTER · MAILROOM", cam_letter_reading:"✨ Elves are reading your letter…", cam_letter_dear:"Dear Santa,", cam_letter_from:"— {name}", cam_letter_approved:"★ RECEIVED · NORTH POLE ★", cam_letter_back:"Back",
+  locale:"en-GB"
  },
  fr: {
   hero_title:"🎅 Pôle Nord", hero_sub:"La salle de contrôle secrète du Père Noël", until:"⏳ Noël dans",
@@ -299,7 +302,8 @@ const I18N = {
    "De nouveaux grelots sont posés sur le traîneau 🔔","Les lutins trient les listes de souhaits 📜","Papier cadeau : 4 812 km déroulés 🎁",
    "Le Père Noël essaie son nouveau costume rouge 🎅","Les rennes ont droit à une ration extra d’avoine 🌾","Le radar des lutins est en cours de calibrage 📡","Le GPS du traîneau met ses cartes à jour 🗺️"],
   sl_btn_demo:"✈️ Vol d’essai", sl_btn_stop:"⏹ Arrêter le vol", cam_conn:"Connexion…", elf_prog:"⭐ {done}/24", elf_today:"Aujourd’hui",
-  tab_sleigh:"Traîneau", tab_nice:"Sages", tab_elf:"Lutin", locale:"fr-FR"
+  tab_sleigh:"Traîneau", tab_nice:"Sages", tab_elf:"Lutin", cam_view_grid:"Grille 4 vues", cam_view_cycle:"Cycle 1 vue", cam_letter_btn:"Envoyer une lettre au Père Noël", cam_letter_title:"📮 Lettre au Père Noël", cam_letter_name:"Ton prénom", cam_letter_name_ph:"Optionnel (ex. Léa)", cam_letter_msg:"Cher Père Noël…", cam_letter_msg_ph:"Écris ton vœu de Noël…", cam_letter_send:"Envoyer au tri postal", cam_letter_incoming:"📮 LETTRE REÇUE · TRI POSTAL", cam_letter_reading:"✨ Les lutins lisent ta lettre…", cam_letter_dear:"Cher Père Noël,", cam_letter_from:"— {name}", cam_letter_approved:"★ REÇU · PÔLE NORD ★", cam_letter_back:"Retour",
+  locale:"fr-FR"
  },
  de: {
   hero_title:"🎅 Nordpol", hero_sub:"Geheimer Kontrollraum des Weihnachtsmanns", until:"⏳ Heiligabend in",
@@ -365,7 +369,8 @@ const I18N = {
    "Neue Glöckchen werden am Schlitten montiert 🔔","Die Wichtel sortieren Wunschzettel 📜","Geschenkpapier: 4.812 km ausgerollt 🎁",
    "Der Weihnachtsmann probiert seinen neuen roten Mantel 🎅","Die Rentiere bekommen extra Hafer 🌾","Das Wichtel-Radar wird kalibriert 📡","Das Schlitten-Navi lädt neue Karten 🗺️"],
   sl_btn_demo:"✈️ Testflug", sl_btn_stop:"⏹ Testflug stoppen", cam_conn:"Verbinde…", elf_prog:"⭐ {done}/24", elf_today:"Heute",
-  tab_sleigh:"Schlitten", tab_nice:"Artig", tab_elf:"Wichtel", locale:"de-DE"
+  tab_sleigh:"Schlitten", tab_nice:"Artig", tab_elf:"Wichtel", cam_view_grid:"4-fach-Gitter", cam_view_cycle:"1-Ansicht-Zyklus", cam_letter_btn:"Brief an den Weihnachtsmann senden", cam_letter_title:"📮 Brief an den Weihnachtsmann", cam_letter_name:"Dein Name", cam_letter_name_ph:"Optional (z. B. Mia)", cam_letter_msg:"Lieber Weihnachtsmann…", cam_letter_msg_ph:"Schreib deinen Weihnachtswunsch…", cam_letter_send:"An die Poststelle senden", cam_letter_incoming:"📮 NEUER BRIEF · POSTSTELLE", cam_letter_reading:"✨ Die Wichtel lesen deinen Brief…", cam_letter_dear:"Lieber Weihnachtsmann,", cam_letter_from:"— {name}", cam_letter_approved:"★ ERHALTEN · NORDPOL ★", cam_letter_back:"Zurück",
+  locale:"de-DE"
  },
  es: {
   hero_title:"🎅 Polo Norte", hero_sub:"La sala de control secreta de Papá Noel", until:"⏳ Navidad en",
@@ -431,7 +436,8 @@ const I18N = {
    "Colocan cascabeles nuevos en el trineo 🔔","Los elfos ordenan las cartas de deseos 📜","Papel de regalo: 4.812 km desenrollados 🎁",
    "Papá Noel se prueba su traje rojo nuevo 🎅","Los renos reciben avena extra 🌾","Calibrando el radar de los elfos 📡","El GPS del trineo descarga nuevos mapas 🗺️"],
   sl_btn_demo:"✈️ Vuelo de prueba", sl_btn_stop:"⏹ Detener vuelo", cam_conn:"Conectando…", elf_prog:"⭐ {done}/24", elf_today:"Hoy",
-  tab_sleigh:"Trineo", tab_nice:"Lista", tab_elf:"Elfo", locale:"es-ES"
+  tab_sleigh:"Trineo", tab_nice:"Lista", tab_elf:"Elfo", cam_view_grid:"Cuadrícula 4 vistas", cam_view_cycle:"Ciclo 1 vista", cam_letter_btn:"Enviar una carta a Papá Noel", cam_letter_title:"📮 Carta a Papá Noel", cam_letter_name:"Tu nombre", cam_letter_name_ph:"Opcional (p. ej. Lucía)", cam_letter_msg:"Querido Papá Noel…", cam_letter_msg_ph:"Escribe tu deseo de Navidad…", cam_letter_send:"Enviar a la sala postal", cam_letter_incoming:"📮 CARTA ENTRANTE · CORREO", cam_letter_reading:"✨ Los elfos leen tu carta…", cam_letter_dear:"Querido Papá Noel,", cam_letter_from:"— {name}", cam_letter_approved:"★ RECIBIDA · POLO NORTE ★", cam_letter_back:"Volver",
+  locale:"es-ES"
  },
  nb: {
   hero_title:"🎅 Nordpolen", hero_sub:"Julenissens hemmelige kontrollrom", until:"⏳ Julaften om",
@@ -470,7 +476,8 @@ const I18N = {
   sl_hint:"hold inne tittelen for en prøveflukt ✈️", sl_np:"Nordpolen", sl_home:"Hjem",
   sl_news:["Nissene lakker de siste gyngehestene 🐴","Rudolf øver på taklandinger 🏠","Mor Julenisse tester nye pepperkaker 🍪","Fjøsnissen får en skål risengrøt – mandelen er gjemt 🍚","Nissene sorterer ønskelister 📜","Gavepapir: 4 812 km rullet ut 🎁","Julenissen prøver den nye røde drakten 🎅","Reinen får ekstra havre 🌾","Noen øver på å gå julebukk med sang og masker 🐐","Slede-GPS-en får nye kart 🗺️"],
   sl_btn_demo:"✈️ Prøvetur", sl_btn_stop:"⏹ Stopp prøvetur", cam_conn:"Kobler til…", elf_prog:"⭐ {done}/24", elf_today:"I dag",
-  tab_sleigh:"Slede", tab_nice:"Snill", tab_elf:"Nissen", locale:"nb-NO"
+  tab_sleigh:"Slede", tab_nice:"Snill", tab_elf:"Nissen", cam_view_grid:"4-rutenett", cam_view_cycle:"1-visningssyklus", cam_letter_btn:"Send et brev til julenissen", cam_letter_title:"📮 Brev til julenissen", cam_letter_name:"Ditt navn", cam_letter_name_ph:"Valgfritt (f.eks. Nora)", cam_letter_msg:"Kjære julenisse…", cam_letter_msg_ph:"Skriv juleønsket ditt…", cam_letter_send:"Send til postrommet", cam_letter_incoming:"📮 NYTT BREV · POSTROMMET", cam_letter_reading:"✨ Nissene leser brevet ditt…", cam_letter_dear:"Kjære julenisse,", cam_letter_from:"— {name}", cam_letter_approved:"★ MOTTATT · NORDPOLEN ★", cam_letter_back:"Tilbake",
+  locale:"nb-NO"
  },
  nl: {
   hero_title:"🎅 Noordpool", hero_sub:"De geheime controlekamer van de Kerstman", until:"⏳ Kerstmis over",
@@ -509,7 +516,8 @@ const I18N = {
   sl_hint:"houd de titel ingedrukt voor een proefvlucht ✈️", sl_np:"Noordpool", sl_home:"Thuis",
   sl_news:["De elfen lakken de laatste hobbelpaarden 🐴","Rudolf oefent landingen op daken 🏠","Mevrouw Kerstman proeft een plakje kerststol 🍞","Er komen nieuwe bellen aan de arrenslee 🔔","De elfen sorteren verlanglijstjes 📜","Inpakpapier: 4.812 km uitgerold 🎁","De Kerstman past zijn nieuwe rode pak 🎅","De rendieren krijgen extra haver 🌾","De oliebollenpan staat al klaar voor oud en nieuw 🍩","De GPS van de arrenslee krijgt nieuwe kaarten 🗺️"],
   sl_btn_demo:"✈️ Testvlucht", sl_btn_stop:"⏹ Stop testvlucht", cam_conn:"Verbinden…", elf_prog:"⭐ {done}/24", elf_today:"Vandaag",
-  tab_sleigh:"Slee", tab_nice:"Lief", tab_elf:"Elf", locale:"nl-NL"
+  tab_sleigh:"Slee", tab_nice:"Lief", tab_elf:"Elf", cam_view_grid:"4-vaksraster", cam_view_cycle:"1-beeldcyclus", cam_letter_btn:"Stuur een brief naar de Kerstman", cam_letter_title:"📮 Brief aan de Kerstman", cam_letter_name:"Je naam", cam_letter_name_ph:"Optioneel (bijv. Emma)", cam_letter_msg:"Lieve Kerstman…", cam_letter_msg_ph:"Schrijf je kerstwens…", cam_letter_send:"Stuur naar de postkamer", cam_letter_incoming:"📮 NIEUWE BRIEF · POSTKAMER", cam_letter_reading:"✨ De elfen lezen je brief…", cam_letter_dear:"Lieve Kerstman,", cam_letter_from:"— {name}", cam_letter_approved:"★ ONTVANGEN · NOORDPOOL ★", cam_letter_back:"Terug",
+  locale:"nl-NL"
  },
  fi: {
   hero_title:"🎅 Pohjoisnapa", hero_sub:"Joulupukin salainen valvomo", until:"⏳ Jouluaattoon",
@@ -548,7 +556,8 @@ const I18N = {
   sl_hint:"pidä otsikkoa pohjassa koelentoa varten ✈️", sl_np:"Pohjoisnapa", sl_home:"Koti",
   sl_news:["Tontut maalaavat viimeisiä keinuhevosia 🐴","Rudolf harjoittelee laskeutumista katoille 🏠","Joulumuori testailee uusia pipareita 🍪","Joulupukki tarkistaa reittinsä Korvatunturilla 🗺️","Tontut järjestävät toivelistoja 📜","Paketointipaperia: 4 812 km rullattuna 🎁","Joulupukki sovittaa uutta punaista nuttuaan 🎅","Joulupuuro porisee ja manteli on piilossa 🍚","Joulusauna lämpenee 🔥","Reen GPS saa uudet kartat 🗺️"],
   sl_btn_demo:"✈️ Koelento", sl_btn_stop:"⏹ Pysäytä koelento", cam_conn:"Yhdistetään…", elf_prog:"⭐ {done}/24", elf_today:"Tänään",
-  tab_sleigh:"Reki", tab_nice:"Kiltti", tab_elf:"Tonttu", locale:"fi-FI"
+  tab_sleigh:"Reki", tab_nice:"Kiltti", tab_elf:"Tonttu", cam_view_grid:"4 ruudun ruudukko", cam_view_cycle:"1 kuvan kierto", cam_letter_btn:"Lähetä kirje joulupukille", cam_letter_title:"📮 Kirje joulupukille", cam_letter_name:"Nimesi", cam_letter_name_ph:"Valinnainen (esim. Aino)", cam_letter_msg:"Rakas joulupukki…", cam_letter_msg_ph:"Kirjoita joulutoiveesi…", cam_letter_send:"Lähetä postihuoneeseen", cam_letter_incoming:"📮 SAAPUVA KIRJE · POSTIHUONE", cam_letter_reading:"✨ Tontut lukevat kirjettäsi…", cam_letter_dear:"Rakas joulupukki,", cam_letter_from:"— {name}", cam_letter_approved:"★ VASTAANOTETTU · POHJOISNAPA ★", cam_letter_back:"Takaisin",
+  locale:"fi-FI"
  },
  pl: {
   hero_title:"🎅 Biegun Północny", hero_sub:"Tajna sterownia Świętego Mikołaja", until:"⏳ Wigilia za",
@@ -587,7 +596,8 @@ const I18N = {
   sl_hint:"przytrzymaj tytuł, aby zrobić lot próbny ✈️", sl_np:"Biegun Północny", sl_home:"Dom",
   sl_news:["Elfy malują ostatnie koniki na biegunach 🐴","Rudolf ćwiczy lądowania na dachach 🏠","W kuchni pachnie pierogami na Wigilię 🥟","Elfy przygotowują opłatki do składania życzeń ✨","Elfy sortują listy z życzeniami 📜","Papier do pakowania: 4 812 km rozwinięte 🎁","Święty Mikołaj przymierza nowy czerwony strój 🎅","Renifery dostają dodatkowy owies 🌾","Wolne miejsce przy wigilijnym stole jest już nakryte 🍽️","GPS sań pobiera nowe mapy 🗺️"],
   sl_btn_demo:"✈️ Lot próbny", sl_btn_stop:"⏹ Zatrzymaj lot", cam_conn:"Łączenie…", elf_prog:"⭐ {done}/24", elf_today:"Dzisiaj",
-  tab_sleigh:"Sanie", tab_nice:"Grzeczni", tab_elf:"Elf", locale:"pl-PL"
+  tab_sleigh:"Sanie", tab_nice:"Grzeczni", tab_elf:"Elf", cam_view_grid:"Siatka 4 widoków", cam_view_cycle:"Cykl 1 widoku", cam_letter_btn:"Wyślij list do Świętego Mikołaja", cam_letter_title:"📮 List do Świętego Mikołaja", cam_letter_name:"Twoje imię", cam_letter_name_ph:"Opcjonalnie (np. Zuzia)", cam_letter_msg:"Drogi Święty Mikołaju…", cam_letter_msg_ph:"Napisz swoje świąteczne życzenie…", cam_letter_send:"Wyślij na pocztę", cam_letter_incoming:"📮 NOWY LIST · POCZTA ELFÓW", cam_letter_reading:"✨ Elfy czytają Twój list…", cam_letter_dear:"Drogi Święty Mikołaju,", cam_letter_from:"— {name}", cam_letter_approved:"★ ODEBRANO · BIEGUN PÓŁNOCNY ★", cam_letter_back:"Wstecz",
+  locale:"pl-PL"
  },
  it: {
   hero_title:"🎅 Polo Nord", hero_sub:"La stanza di controllo segreta di Babbo Natale", until:"⏳ Natale tra",
@@ -626,7 +636,8 @@ const I18N = {
   sl_hint:"tieni premuto il titolo per un volo di prova ✈️", sl_np:"Polo Nord", sl_home:"Casa",
   sl_news:["Gli elfi stanno dipingendo gli ultimi cavallini a dondolo 🐴","Rudolf si allena agli atterraggi sui tetti 🏠","Mamma Natale prova il panettone appena sfornato 🍞","Gli elfi stanno preparando il presepe 🏡","Gli elfi ordinano le liste dei desideri 📜","Carta da regalo: 4.812 km srotolati 🎁","Babbo Natale prova il suo nuovo vestito rosso 🎅","Le renne ricevono avena extra 🌾","La Befana controlla la scopa per l'Epifania 🧹","Il GPS della slitta scarica nuove mappe 🗺️"],
   sl_btn_demo:"✈️ Volo di prova", sl_btn_stop:"⏹ Ferma volo", cam_conn:"Connessione…", elf_prog:"⭐ {done}/24", elf_today:"Oggi",
-  tab_sleigh:"Slitta", tab_nice:"Buoni", tab_elf:"Elfo", locale:"it-IT"
+  tab_sleigh:"Slitta", tab_nice:"Buoni", tab_elf:"Elfo", cam_view_grid:"Griglia 4 viste", cam_view_cycle:"Ciclo 1 vista", cam_letter_btn:"Invia una lettera a Babbo Natale", cam_letter_title:"📮 Lettera a Babbo Natale", cam_letter_name:"Il tuo nome", cam_letter_name_ph:"Facoltativo (es. Sofia)", cam_letter_msg:"Caro Babbo Natale…", cam_letter_msg_ph:"Scrivi il tuo desiderio di Natale…", cam_letter_send:"Invia all’ufficio postale", cam_letter_incoming:"📮 NUOVA LETTERA · POSTA", cam_letter_reading:"✨ Gli elfi leggono la tua lettera…", cam_letter_dear:"Caro Babbo Natale,", cam_letter_from:"— {name}", cam_letter_approved:"★ RICEVUTA · POLO NORD ★", cam_letter_back:"Indietro",
+  locale:"it-IT"
  },
  pt: {
   hero_title:"🎅 Polo Norte", hero_sub:"A sala de controlo secreta do Pai Natal", until:"⏳ Natal daqui a",
@@ -665,7 +676,8 @@ const I18N = {
   sl_hint:"mantém o título premido para um voo de teste ✈️", sl_np:"Polo Norte", sl_home:"Casa",
   sl_news:["Os elfos estão a pintar os últimos cavalos de baloiço 🐴","O Rudolf está a treinar aterragens nos telhados 🏠","A Senhora Natal prova o bolo-rei 👑","Os elfos estão a montar o presépio 🏡","Os elfos estão a ordenar as listas de desejos 📜","Papel de embrulho: 4 812 km desenrolados 🎁","O Pai Natal está a experimentar o fato vermelho novo 🎅","As renas recebem aveia extra 🌾","O bacalhau da Consoada já está a demolhar 🐟","O GPS do trenó está a receber mapas novos 🗺️"],
   sl_btn_demo:"✈️ Voo de teste", sl_btn_stop:"⏹ Parar voo", cam_conn:"A ligar…", elf_prog:"⭐ {done}/24", elf_today:"Hoje",
-  tab_sleigh:"Trenó", tab_nice:"Bons", tab_elf:"Elfo", locale:"pt-PT"
+  tab_sleigh:"Trenó", tab_nice:"Bons", tab_elf:"Elfo", cam_view_grid:"Grelha de 4 vistas", cam_view_cycle:"Ciclo de 1 vista", cam_letter_btn:"Enviar uma carta ao Pai Natal", cam_letter_title:"📮 Carta ao Pai Natal", cam_letter_name:"O teu nome", cam_letter_name_ph:"Opcional (ex. Maria)", cam_letter_msg:"Querido Pai Natal…", cam_letter_msg_ph:"Escreve o teu desejo de Natal…", cam_letter_send:"Enviar para os correios", cam_letter_incoming:"📮 CARTA RECEBIDA · CORREIOS", cam_letter_reading:"✨ Os elfos estão a ler a tua carta…", cam_letter_dear:"Querido Pai Natal,", cam_letter_from:"— {name}", cam_letter_approved:"★ RECEBIDA · POLO NORTE ★", cam_letter_back:"Voltar",
+  locale:"pt-PT"
  },
  cs: {
   hero_title:"🎅 Severní pól", hero_sub:"Tajná řídicí místnost Ježíška", until:"⏳ Štědrý den za",
@@ -704,7 +716,8 @@ const I18N = {
   sl_hint:"podržte titulek pro zkušební let ✈️", sl_np:"Severní pól", sl_home:"Domov",
   sl_news:["Elfové natírají poslední houpací koníky 🐴","Rudolf cvičí přistání na střechy 🏠","Peče se poslední várka vánočního cukroví 🍪","Kapr už plave ve vaně 🐟","Elfové třídí seznamy přání 📜","Balicí papír: 4 812 km rozvinuto 🎁","Ježíšek chystá dárky pod stromeček 🎁","Sobi dostávají extra oves 🌾","Formičky na lití olova jsou nachystané ✨","GPS saní stahuje nové mapy 🗺️"],
   sl_btn_demo:"✈️ Zkušební let", sl_btn_stop:"⏹ Zastavit let", cam_conn:"Připojování…", elf_prog:"⭐ {done}/24", elf_today:"Dnes",
-  tab_sleigh:"Saně", tab_nice:"Hodní", tab_elf:"Elf", locale:"cs-CZ"
+  tab_sleigh:"Saně", tab_nice:"Hodní", tab_elf:"Elf", cam_view_grid:"Mřížka 4 pohledů", cam_view_cycle:"Cyklus 1 pohledu", cam_letter_btn:"Poslat dopis Ježíškovi", cam_letter_title:"📮 Dopis Ježíškovi", cam_letter_name:"Tvé jméno", cam_letter_name_ph:"Volitelné (např. Eliška)", cam_letter_msg:"Milý Ježíšku…", cam_letter_msg_ph:"Napiš své vánoční přání…", cam_letter_send:"Poslat na poštu", cam_letter_incoming:"📮 PŘÍCHOZÍ DOPIS · POŠTA", cam_letter_reading:"✨ Elfové čtou tvůj dopis…", cam_letter_dear:"Milý Ježíšku,", cam_letter_from:"— {name}", cam_letter_approved:"★ PŘIJATO · SEVERNÍ PÓL ★", cam_letter_back:"Zpět",
+  locale:"cs-CZ"
  },
  hu: {
   hero_title:"🎅 Északi-sark", hero_sub:"A Mikulás titkos irányítóterme", until:"⏳ Szentestéig még",
@@ -743,7 +756,8 @@ const I18N = {
   sl_hint:"tartsd lenyomva a címet egy próbarepüléshez ✈️", sl_np:"Északi-sark", sl_home:"Otthon",
   sl_news:["A manók festik az utolsó hintalovakat 🐴","Rudolf a háztetőkre szállást gyakorolja 🏠","Sül a bejgli – mákos és diós is 🥮","Szaloncukrot kötöznek a fenyőágakra 🍬","A manók válogatják a kívánságlistákat 📜","Csomagolópapír: 4 812 km legöngyölítve 🎁","Fő a halászlé a szentesti vacsorához 🐟","A rénszarvasok extra zabot kapnak 🌾","A manók kürtőskalácsot kóstolnak a budapesti adventi vásárban 🎪","A szán GPS-e új térképeket tölt le 🗺️"],
   sl_btn_demo:"✈️ Próbarepülés", sl_btn_stop:"⏹ Megállítás", cam_conn:"Csatlakozás…", elf_prog:"⭐ {done}/24", elf_today:"Ma",
-  tab_sleigh:"Szán", tab_nice:"Jók", tab_elf:"Manó", locale:"hu-HU"
+  tab_sleigh:"Szán", tab_nice:"Jók", tab_elf:"Manó", cam_view_grid:"4 nézetes rács", cam_view_cycle:"1 nézetes váltás", cam_letter_btn:"Levél küldése a Mikulásnak", cam_letter_title:"📮 Levél a Mikulásnak", cam_letter_name:"A neved", cam_letter_name_ph:"Opcionális (pl. Hanna)", cam_letter_msg:"Kedves Mikulás…", cam_letter_msg_ph:"Írd meg a karácsonyi kívánságodat…", cam_letter_send:"Küldés a postázóba", cam_letter_incoming:"📮 BEÉRKEZŐ LEVÉL · POSTÁZÓ", cam_letter_reading:"✨ A manók olvassák a leveled…", cam_letter_dear:"Kedves Mikulás,", cam_letter_from:"— {name}", cam_letter_approved:"★ ÁTVÉVE · ÉSZAKI-SARK ★", cam_letter_back:"Vissza",
+  locale:"hu-HU"
  }
 };
 function langOf(c){ const l=String((c&&c.language)||document.documentElement.lang||navigator.language||"en").toLowerCase(); if(l.startsWith("nb")||l.startsWith("no")||l.startsWith("nn")) return "nb"; for(const k of ["da","fr","de","es","sv","nl","fi","pl","it","pt","cs","hu"]) if(l.startsWith(k)) return k; return "en"; }
@@ -804,25 +818,43 @@ const CCTV_OPTS_L = {
  cs:[{value:"color",label:"Barva"},{value:"mono",label:"Černobílá"}],
  hu:[{value:"color",label:"Színes"},{value:"mono",label:"Fekete-fehér"}]
 };
+const VIEW_OPTS_L = {
+ en:[{value:"grid",label:"4-view grid"},{value:"cycle",label:"1-view cycle (4 views)"}],
+ da:[{value:"grid",label:"4-delt gitter"},{value:"cycle",label:"1-delt cyklus (4 vinkler)"}],
+ fr:[{value:"grid",label:"Grille 4 vues"},{value:"cycle",label:"Cycle 1 vue (4 angles)"}],
+ de:[{value:"grid",label:"4-fach-Gitter"},{value:"cycle",label:"1-Ansicht-Zyklus (4 Blickwinkel)"}],
+ es:[{value:"grid",label:"Cuadrícula de 4 vistas"},{value:"cycle",label:"Ciclo de 1 vista (4 ángulos)"}],
+ sv:[{value:"grid",label:"4-rutnätsvy"},{value:"cycle",label:"1-vycykel (4 vyer)"}],
+ nb:[{value:"grid",label:"4-rutenett"},{value:"cycle",label:"1-visningssyklus (4 vinkler)"}],
+ nl:[{value:"grid",label:"4-vaksraster"},{value:"cycle",label:"1-beeldcyclus (4 hoeken)"}],
+ fi:[{value:"grid",label:"4 ruudun ruudukko"},{value:"cycle",label:"1 kuvan kierto (4 kuvakulmaa)"}],
+ pl:[{value:"grid",label:"Siatka 4 widoków"},{value:"cycle",label:"Cykl 1 widoku (4 ujęcia)"}],
+ it:[{value:"grid",label:"Griglia 4 viste"},{value:"cycle",label:"Ciclo 1 vista (4 angoli)"}],
+ pt:[{value:"grid",label:"Grelha de 4 vistas"},{value:"cycle",label:"Ciclo de 1 vista (4 ângulos)"}],
+ cs:[{value:"grid",label:"Mřížka 4 pohledů"},{value:"cycle",label:"Cyklus 1 pohledu (4 úhly)"}],
+ hu:[{value:"grid",label:"4 nézetes rács"},{value:"cycle",label:"1 nézetes váltás (4 kameraállás)"}]
+};
 const ovOpts = c => OV_OPTS_L[langOf(c)] || OV_OPTS_L.en;
+const viewOpts = c => VIEW_OPTS_L[langOf(c)] || VIEW_OPTS_L.en;
 const cctvOpts = c => CCTV_OPTS_L[langOf(c)] || CCTV_OPTS_L.en;
 const OV_OPTS = OV_OPTS_L.en;
 const CCTV_OPTS = CCTV_OPTS_L.en;
+const VIEW_OPTS = VIEW_OPTS_L.en;
 const ED_T = {
- en: {lang:"Language",tab:"Default tab",date:"Celebration date (MM-DD)",target:"Countdown target (MM-DD HH:MM)",until:"Countdown heading",eta:"Sleigh ETA (HH:MM)",store:"Nice list (Local To-do entity)",sel:"Select to-do list",log:"Elf log entity (optional)",dstart:"Default starting score",llines:"Visible log lines",ov:"Camera overlay",cctv:"CCTV filter style",df:"Camera clock format",foot:"Camera footer text",gl:"Camera signal glitch effect",hb:"Home button path (optional)",snow:"Falling snow in hero",tz:"Time zone (optional)",title:"Card title",sub:"Subtitle",elf_ent:"Custom elf entity (optional)",tip:"Tip: Advanced options (custom cams, strings, extra sleigh stops) are preserved in YAML."},
- da: {lang:"Sprog",tab:"Startfane",date:"Festdato (MM-DD)",target:"Nedtællingsmål (MM-DD TT:MM)",until:"Nedtællingstekst",eta:"Kane-ankomst (TT:MM)",store:"Artig-liste (Local To-do entitet)",sel:"Vælg to-do liste",log:"Nisse-log entitet (valgfri)",dstart:"Startpoint som standard",llines:"Synlige loglinjer",ov:"Kamera-overlay",cctv:"CCTV-filterstil",df:"Kamera-ur format",foot:"Kamera-bundtekst",gl:"Kamera signal-glitch effekt",hb:"Hjem-knap sti (valgfri)",snow:"Snevejr i toppen",tz:"Tidszone (valgfri)",title:"Korttitel",sub:"Undertitel",elf_ent:"Brugerdefineret nisse-entitet (valgfri)",tip:"Tip: Avancerede felter (kameraer, tekster, ekstra stop) bevares i YAML."},
- fr: {lang:"Langue",tab:"Onglet par défaut",date:"Date de fête (MM-JJ)",target:"Cible du compte à rebours (MM-JJ HH:MM)",until:"Titre du compte à rebours",eta:"Arrivée du traîneau (HH:MM)",store:"Liste des enfants sages (entité To-do)",sel:"Choisir une liste",log:"Entité journal des lutins (optionnel)",dstart:"Score de départ par défaut",llines:"Lignes de journal visibles",ov:"Superposition caméra",cctv:"Style de filtre CCTV",df:"Format de l’horloge caméra",foot:"Texte pied de carte caméra",gl:"Effet de brouillage caméra",hb:"Chemin bouton Accueil (optionnel)",snow:"Neige qui tombe dans l’en-tête",tz:"Fuseau horaire (optionnel)",title:"Titre de la carte",sub:"Sous-titre",elf_ent:"Entité lutin personnalisée (optionnel)",tip:"Astuce : Les options avancées (caméras, textes, arrêts) sont conservées en YAML."},
- de: {lang:"Sprache",tab:"Start-Tab",date:"Festtag (MM-TT)",target:"Countdown-Ziel (MM-TT HH:MM)",until:"Countdown-Überschrift",eta:"Schlitten-Ankunft (HH:MM)",store:"Artig-Liste (Local-To-do-Entität)",sel:"To-do-Liste wählen",log:"Wichtel-Log-Entität (optional)",dstart:"Standard-Startpunktzahl",llines:"Sichtbare Log-Zeilen",ov:"Kamera-Overlay",cctv:"CCTV-Filterstil",df:"Kamera-Uhrformat",foot:"Kamera-Fußzeile",gl:"Kamera-Signalstörung (Glitch)",hb:"Home-Button-Pfad (optional)",snow:"Schneefall im Kopfbereich",tz:"Zeitzone (optional)",title:"Kartentitel",sub:"Untertitel",elf_ent:"Benutzerdefinierte Wichtel-Entität (optional)",tip:"Tipp: Erweiterte Optionen (Kameras, Texte, Extra-Stopps) bleiben in YAML erhalten."},
- es: {lang:"Idioma",tab:"Pestaña inicial",date:"Fecha de celebración (MM-DD)",target:"Objetivo cuenta atrás (MM-DD HH:MM)",until:"Título cuenta atrás",eta:"Llegada del trineo (HH:MM)",store:"Lista de niños buenos (entidad To-do)",sel:"Seleccionar lista",log:"Entidad de registro élfico (opcional)",dstart:"Puntuación inicial por defecto",llines:"Líneas de registro visibles",ov:"Superposición de cámara",cctv:"Estilo de filtro CCTV",df:"Formato del reloj de cámara",foot:"Texto de pie de cámara",gl:"Efecto de interferencia en cámara",hb:"Ruta botón Inicio (opcional)",snow:"Nieve cayendo en la cabecera",tz:"Zona horaria (opcional)",title:"Título de la tarjeta",sub:"Subtítulo",elf_ent:"Entidad de elfo personalizada (opcional)",tip:"Consejo: Las opciones avanzadas (cámaras, textos, paradas) se conservan en YAML."},
- sv: {lang:"Språk",tab:"Startflik",date:"Festdatum (MM-DD)",target:"Nedräkningsmål (MM-DD TT:MM)",until:"Nedräkningsrubrik",eta:"Slädens ankomst (TT:MM)",store:"Snällista (Local To-do-entitet)",sel:"Välj att göra-lista",log:"Nisselogg-entitet (valfri)",dstart:"Startpoäng som standard",llines:"Synliga loggrader",ov:"Kameraöverlägg",cctv:"CCTV-filterstil",df:"Format för kameraklocka",foot:"Kamerans sidfot",gl:"Signalstörningseffekt för kamera",hb:"Sökväg för hemknapp (valfri)",snow:"Snöfall i toppen",tz:"Tidszon (valfri)",title:"Korttitel",sub:"Underrubrik",elf_ent:"Egen nisse-entitet (valfri)",tip:"Tips: Avancerade inställningar (kameror, texter, extra stopp) bevaras i YAML."},
- nb: {lang:"Språk",tab:"Startfane",date:"Festdato (MM-DD)",target:"Nedtellingsmål (MM-DD TT:MM)",until:"Nedtellingsoverskrift",eta:"Sledeankomst (TT:MM)",store:"Snilleliste (Local To-do-entitet)",sel:"Velg gjøremålsliste",log:"Nisselogg-entitet (valgfri)",dstart:"Standard startpoeng",llines:"Synlige logglinjer",ov:"Kameraoverlegg",cctv:"CCTV-filterstil",df:"Format for kameraklokke",foot:"Kameratekst nederst",gl:"Glitch-effekt for kamerasignalet",hb:"Sti for hjem-knapp (valgfri)",snow:"Snøfall i toppen",tz:"Tidssone (valgfri)",title:"Korttittel",sub:"Undertittel",elf_ent:"Egendefinert nisse-entitet (valgfri)",tip:"Tips: Avanserte innstillinger (kameraer, tekster, ekstra stopp) beholdes i YAML."},
- nl: {lang:"Taal",tab:"Standaardtabblad",date:"Feestdatum (MM-DD)",target:"Afteldoel (MM-DD UU:MM)",until:"Afteltitel",eta:"Aankomst arrenslee (UU:MM)",store:"Lieve lijst (Local To-do-entiteit)",sel:"Kies takenlijst",log:"Elfenlogboek-entiteit (optioneel)",dstart:"Standaard startscore",llines:"Zichtbare logregels",ov:"Camera-overlay",cctv:"CCTV-filterstijl",df:"Formaat cameraklok",foot:"Cameratekst onderaan",gl:"Camerasignaal-glitcheffect",hb:"Pad van de startknop (optioneel)",snow:"Vallende sneeuw bovenaan",tz:"Tijdzone (optioneel)",title:"Kaarttitel",sub:"Ondertitel",elf_ent:"Aangepaste elf-entiteit (optioneel)",tip:"Tip: geavanceerde opties (camera's, teksten, extra stops) blijven bewaard in YAML."},
- fi: {lang:"Kieli",tab:"Oletusvälilehti",date:"Juhlapäivä (KK-PP)",target:"Laskurin kohde (KK-PP TT:MM)",until:"Laskurin otsikko",eta:"Reen saapuminen (TT:MM)",store:"Kilttilista (Local To-do -entiteetti)",sel:"Valitse tehtävälista",log:"Tonttuloki-entiteetti (valinnainen)",dstart:"Oletusaloituspisteet",llines:"Näkyvät lokirivit",ov:"Kameran peittokuva",cctv:"CCTV-suodattimen tyyli",df:"Kamerakellon muoto",foot:"Kameran alatunniste",gl:"Kamerasignaalin häiriötehoste",hb:"Koti-painikkeen polku (valinnainen)",snow:"Putoavaa lunta yläosassa",tz:"Aikavyöhyke (valinnainen)",title:"Kortin otsikko",sub:"Alaotsikko",elf_ent:"Oma tonttu-entiteetti (valinnainen)",tip:"Vinkki: lisäasetukset (kamerat, tekstit, lisäpysähdykset) säilyvät YAML:ssä."},
- pl: {lang:"Język",tab:"Domyślna karta",date:"Data święta (MM-DD)",target:"Cel odliczania (MM-DD GG:MM)",until:"Nagłówek odliczania",eta:"Przyjazd sań (GG:MM)",store:"Lista grzecznych (encja Local To-do)",sel:"Wybierz listę zadań",log:"Encja dziennika elfów (opcjonalnie)",dstart:"Domyślna punktacja początkowa",llines:"Widoczne wiersze dziennika",ov:"Nakładka kamery",cctv:"Styl filtra CCTV",df:"Format zegara kamery",foot:"Stopka kamery",gl:"Efekt zakłócenia sygnału kamery",hb:"Ścieżka przycisku Strona główna (opcjonalnie)",snow:"Padający śnieg u góry",tz:"Strefa czasowa (opcjonalnie)",title:"Tytuł karty",sub:"Podtytuł",elf_ent:"Własna encja elfa (opcjonalnie)",tip:"Wskazówka: opcje zaawansowane (kamery, teksty, dodatkowe przystanki) zostają w YAML."},
- it: {lang:"Lingua",tab:"Scheda predefinita",date:"Data della festa (MM-GG)",target:"Obiettivo conto alla rovescia (MM-GG HH:MM)",until:"Titolo del conto alla rovescia",eta:"Arrivo della slitta (HH:MM)",store:"Lista dei buoni (entità Local To-do)",sel:"Seleziona elenco attività",log:"Entità diario degli elfi (facoltativa)",dstart:"Punteggio iniziale predefinito",llines:"Righe visibili del diario",ov:"Sovrapposizione telecamera",cctv:"Stile filtro CCTV",df:"Formato orologio telecamera",foot:"Piè di pagina della telecamera",gl:"Effetto disturbo del segnale",hb:"Percorso del pulsante Home (facoltativo)",snow:"Neve che cade in alto",tz:"Fuso orario (facoltativo)",title:"Titolo della scheda",sub:"Sottotitolo",elf_ent:"Entità elfo personalizzata (facoltativa)",tip:"Suggerimento: le opzioni avanzate (telecamere, testi, tappe extra) restano nel YAML."},
- pt: {lang:"Idioma",tab:"Separador predefinido",date:"Data da festa (MM-DD)",target:"Alvo da contagem (MM-DD HH:MM)",until:"Título da contagem",eta:"Chegada do trenó (HH:MM)",store:"Lista dos bem-comportados (entidade Local To-do)",sel:"Escolher lista de tarefas",log:"Entidade do diário dos elfos (opcional)",dstart:"Pontuação inicial predefinida",llines:"Linhas visíveis do diário",ov:"Sobreposição da câmara",cctv:"Estilo do filtro CCTV",df:"Formato do relógio da câmara",foot:"Rodapé da câmara",gl:"Efeito de interferência do sinal",hb:"Caminho do botão Início (opcional)",snow:"Neve a cair no topo",tz:"Fuso horário (opcional)",title:"Título do cartão",sub:"Subtítulo",elf_ent:"Entidade de elfo personalizada (opcional)",tip:"Dica: as opções avançadas (câmaras, textos, paragens extra) mantêm-se no YAML."},
- cs: {lang:"Jazyk",tab:"Výchozí karta",date:"Datum svátku (MM-DD)",target:"Cíl odpočtu (MM-DD HH:MM)",until:"Nadpis odpočtu",eta:"Příjezd saní (HH:MM)",store:"Seznam hodných (entita Local To-do)",sel:"Vybrat seznam úkolů",log:"Entita elfího deníku (volitelné)",dstart:"Výchozí startovní skóre",llines:"Viditelné řádky deníku",ov:"Překryv kamery",cctv:"Styl filtru CCTV",df:"Formát hodin kamery",foot:"Zápatí kamery",gl:"Efekt rušení kamerového signálu",hb:"Cesta tlačítka Domů (volitelné)",snow:"Padající sníh nahoře",tz:"Časové pásmo (volitelné)",title:"Název karty",sub:"Podtitul",elf_ent:"Vlastní entita elfa (volitelné)",tip:"Tip: pokročilé volby (kamery, texty, další zastávky) zůstanou v YAML."},
- hu: {lang:"Nyelv",tab:"Kezdő lap",date:"Ünnepnap (HH-NN)",target:"Visszaszámlálás célja (HH-NN ÓÓ:PP)",until:"Visszaszámlálás címe",eta:"Szán érkezése (ÓÓ:PP)",store:"Jók listája (Local To-do entitás)",sel:"Teendőlista kiválasztása",log:"Manónapló entitás (opcionális)",dstart:"Alapértelmezett kezdő pontszám",llines:"Látható naplósorok",ov:"Kamera-átfedés",cctv:"CCTV-szűrő stílusa",df:"Kameraóra formátuma",foot:"Kamera lábléc szövege",gl:"Kamerajel-zavar effekt",hb:"Kezdőlap gomb útvonala (opcionális)",snow:"Hóesés a fejlécben",tz:"Időzóna (opcionális)",title:"Kártya címe",sub:"Alcím",elf_ent:"Saját manó entitás (opcionális)",tip:"Tipp: a haladó beállítások (saját kamerák, szövegek, extra szánmegállók) YAML-ben megmaradnak."}
+ en: {view:"Camera layout",lang:"Language",tab:"Default tab",date:"Celebration date (MM-DD)",target:"Countdown target (MM-DD HH:MM)",until:"Countdown heading",eta:"Sleigh ETA (HH:MM)",store:"Nice list (Local To-do entity)",sel:"Select to-do list",log:"Elf log entity (optional)",dstart:"Default starting score",llines:"Visible log lines",ov:"Camera overlay",cctv:"CCTV filter style",df:"Camera clock format",foot:"Camera footer text",gl:"Camera signal glitch effect",hb:"Home button path (optional)",snow:"Falling snow in hero",tz:"Time zone (optional)",title:"Card title",sub:"Subtitle",elf_ent:"Custom elf entity (optional)",tip:"Tip: Advanced options (custom cams, strings, extra sleigh stops) are preserved in YAML."},
+ da: {view:"Kamera-visning",lang:"Sprog",tab:"Startfane",date:"Festdato (MM-DD)",target:"Nedtællingsmål (MM-DD TT:MM)",until:"Nedtællingstekst",eta:"Kane-ankomst (TT:MM)",store:"Artig-liste (Local To-do entitet)",sel:"Vælg to-do liste",log:"Nisse-log entitet (valgfri)",dstart:"Startpoint som standard",llines:"Synlige loglinjer",ov:"Kamera-overlay",cctv:"CCTV-filterstil",df:"Kamera-ur format",foot:"Kamera-bundtekst",gl:"Kamera signal-glitch effekt",hb:"Hjem-knap sti (valgfri)",snow:"Snevejr i toppen",tz:"Tidszone (valgfri)",title:"Korttitel",sub:"Undertitel",elf_ent:"Brugerdefineret nisse-entitet (valgfri)",tip:"Tip: Avancerede felter (kameraer, tekster, ekstra stop) bevares i YAML."},
+ fr: {view:"Disposition caméras",lang:"Langue",tab:"Onglet par défaut",date:"Date de fête (MM-JJ)",target:"Cible du compte à rebours (MM-JJ HH:MM)",until:"Titre du compte à rebours",eta:"Arrivée du traîneau (HH:MM)",store:"Liste des enfants sages (entité To-do)",sel:"Choisir une liste",log:"Entité journal des lutins (optionnel)",dstart:"Score de départ par défaut",llines:"Lignes de journal visibles",ov:"Superposition caméra",cctv:"Style de filtre CCTV",df:"Format de l’horloge caméra",foot:"Texte pied de carte caméra",gl:"Effet de brouillage caméra",hb:"Chemin bouton Accueil (optionnel)",snow:"Neige qui tombe dans l’en-tête",tz:"Fuseau horaire (optionnel)",title:"Titre de la carte",sub:"Sous-titre",elf_ent:"Entité lutin personnalisée (optionnel)",tip:"Astuce : Les options avancées (caméras, textes, arrêts) sont conservées en YAML."},
+ de: {view:"Kamera-Ansicht",lang:"Sprache",tab:"Start-Tab",date:"Festtag (MM-TT)",target:"Countdown-Ziel (MM-TT HH:MM)",until:"Countdown-Überschrift",eta:"Schlitten-Ankunft (HH:MM)",store:"Artig-Liste (Local-To-do-Entität)",sel:"To-do-Liste wählen",log:"Wichtel-Log-Entität (optional)",dstart:"Standard-Startpunktzahl",llines:"Sichtbare Log-Zeilen",ov:"Kamera-Overlay",cctv:"CCTV-Filterstil",df:"Kamera-Uhrformat",foot:"Kamera-Fußzeile",gl:"Kamera-Signalstörung (Glitch)",hb:"Home-Button-Pfad (optional)",snow:"Schneefall im Kopfbereich",tz:"Zeitzone (optional)",title:"Kartentitel",sub:"Untertitel",elf_ent:"Benutzerdefinierte Wichtel-Entität (optional)",tip:"Tipp: Erweiterte Optionen (Kameras, Texte, Extra-Stopps) bleiben in YAML erhalten."},
+ es: {view:"Vista de cámaras",lang:"Idioma",tab:"Pestaña inicial",date:"Fecha de celebración (MM-DD)",target:"Objetivo cuenta atrás (MM-DD HH:MM)",until:"Título cuenta atrás",eta:"Llegada del trineo (HH:MM)",store:"Lista de niños buenos (entidad To-do)",sel:"Seleccionar lista",log:"Entidad de registro élfico (opcional)",dstart:"Puntuación inicial por defecto",llines:"Líneas de registro visibles",ov:"Superposición de cámara",cctv:"Estilo de filtro CCTV",df:"Formato del reloj de cámara",foot:"Texto de pie de cámara",gl:"Efecto de interferencia en cámara",hb:"Ruta botón Inicio (opcional)",snow:"Nieve cayendo en la cabecera",tz:"Zona horaria (opcional)",title:"Título de la tarjeta",sub:"Subtítulo",elf_ent:"Entidad de elfo personalizada (opcional)",tip:"Consejo: Las opciones avanzadas (cámaras, textos, paradas) se conservan en YAML."},
+ sv: {view:"Kameravy",lang:"Språk",tab:"Startflik",date:"Festdatum (MM-DD)",target:"Nedräkningsmål (MM-DD TT:MM)",until:"Nedräkningsrubrik",eta:"Slädens ankomst (TT:MM)",store:"Snällista (Local To-do-entitet)",sel:"Välj att göra-lista",log:"Nisselogg-entitet (valfri)",dstart:"Startpoäng som standard",llines:"Synliga loggrader",ov:"Kameraöverlägg",cctv:"CCTV-filterstil",df:"Format för kameraklocka",foot:"Kamerans sidfot",gl:"Signalstörningseffekt för kamera",hb:"Sökväg för hemknapp (valfri)",snow:"Snöfall i toppen",tz:"Tidszon (valfri)",title:"Korttitel",sub:"Underrubrik",elf_ent:"Egen nisse-entitet (valfri)",tip:"Tips: Avancerade inställningar (kameror, texter, extra stopp) bevaras i YAML."},
+ nb: {view:"Kameravisning",lang:"Språk",tab:"Startfane",date:"Festdato (MM-DD)",target:"Nedtellingsmål (MM-DD TT:MM)",until:"Nedtellingsoverskrift",eta:"Sledeankomst (TT:MM)",store:"Snilleliste (Local To-do-entitet)",sel:"Velg gjøremålsliste",log:"Nisselogg-entitet (valgfri)",dstart:"Standard startpoeng",llines:"Synlige logglinjer",ov:"Kameraoverlegg",cctv:"CCTV-filterstil",df:"Format for kameraklokke",foot:"Kameratekst nederst",gl:"Glitch-effekt for kamerasignalet",hb:"Sti for hjem-knapp (valgfri)",snow:"Snøfall i toppen",tz:"Tidssone (valgfri)",title:"Korttittel",sub:"Undertittel",elf_ent:"Egendefinert nisse-entitet (valgfri)",tip:"Tips: Avanserte innstillinger (kameraer, tekster, ekstra stopp) beholdes i YAML."},
+ nl: {view:"Camera-indeling",lang:"Taal",tab:"Standaardtabblad",date:"Feestdatum (MM-DD)",target:"Afteldoel (MM-DD UU:MM)",until:"Afteltitel",eta:"Aankomst arrenslee (UU:MM)",store:"Lieve lijst (Local To-do-entiteit)",sel:"Kies takenlijst",log:"Elfenlogboek-entiteit (optioneel)",dstart:"Standaard startscore",llines:"Zichtbare logregels",ov:"Camera-overlay",cctv:"CCTV-filterstijl",df:"Formaat cameraklok",foot:"Cameratekst onderaan",gl:"Camerasignaal-glitcheffect",hb:"Pad van de startknop (optioneel)",snow:"Vallende sneeuw bovenaan",tz:"Tijdzone (optioneel)",title:"Kaarttitel",sub:"Ondertitel",elf_ent:"Aangepaste elf-entiteit (optioneel)",tip:"Tip: geavanceerde opties (camera's, teksten, extra stops) blijven bewaard in YAML."},
+ fi: {view:"Kameranäkymä",lang:"Kieli",tab:"Oletusvälilehti",date:"Juhlapäivä (KK-PP)",target:"Laskurin kohde (KK-PP TT:MM)",until:"Laskurin otsikko",eta:"Reen saapuminen (TT:MM)",store:"Kilttilista (Local To-do -entiteetti)",sel:"Valitse tehtävälista",log:"Tonttuloki-entiteetti (valinnainen)",dstart:"Oletusaloituspisteet",llines:"Näkyvät lokirivit",ov:"Kameran peittokuva",cctv:"CCTV-suodattimen tyyli",df:"Kamerakellon muoto",foot:"Kameran alatunniste",gl:"Kamerasignaalin häiriötehoste",hb:"Koti-painikkeen polku (valinnainen)",snow:"Putoavaa lunta yläosassa",tz:"Aikavyöhyke (valinnainen)",title:"Kortin otsikko",sub:"Alaotsikko",elf_ent:"Oma tonttu-entiteetti (valinnainen)",tip:"Vinkki: lisäasetukset (kamerat, tekstit, lisäpysähdykset) säilyvät YAML:ssä."},
+ pl: {view:"Układ kamer",lang:"Język",tab:"Domyślna karta",date:"Data święta (MM-DD)",target:"Cel odliczania (MM-DD GG:MM)",until:"Nagłówek odliczania",eta:"Przyjazd sań (GG:MM)",store:"Lista grzecznych (encja Local To-do)",sel:"Wybierz listę zadań",log:"Encja dziennika elfów (opcjonalnie)",dstart:"Domyślna punktacja początkowa",llines:"Widoczne wiersze dziennika",ov:"Nakładka kamery",cctv:"Styl filtra CCTV",df:"Format zegara kamery",foot:"Stopka kamery",gl:"Efekt zakłócenia sygnału kamery",hb:"Ścieżka przycisku Strona główna (opcjonalnie)",snow:"Padający śnieg u góry",tz:"Strefa czasowa (opcjonalnie)",title:"Tytuł karty",sub:"Podtytuł",elf_ent:"Własna encja elfa (opcjonalnie)",tip:"Wskazówka: opcje zaawansowane (kamery, teksty, dodatkowe przystanki) zostają w YAML."},
+ it: {view:"Layout telecamere",lang:"Lingua",tab:"Scheda predefinita",date:"Data della festa (MM-GG)",target:"Obiettivo conto alla rovescia (MM-GG HH:MM)",until:"Titolo del conto alla rovescia",eta:"Arrivo della slitta (HH:MM)",store:"Lista dei buoni (entità Local To-do)",sel:"Seleziona elenco attività",log:"Entità diario degli elfi (facoltativa)",dstart:"Punteggio iniziale predefinito",llines:"Righe visibili del diario",ov:"Sovrapposizione telecamera",cctv:"Stile filtro CCTV",df:"Formato orologio telecamera",foot:"Piè di pagina della telecamera",gl:"Effetto disturbo del segnale",hb:"Percorso del pulsante Home (facoltativo)",snow:"Neve che cade in alto",tz:"Fuso orario (facoltativo)",title:"Titolo della scheda",sub:"Sottotitolo",elf_ent:"Entità elfo personalizzata (facoltativa)",tip:"Suggerimento: le opzioni avanzate (telecamere, testi, tappe extra) restano nel YAML."},
+ pt: {view:"Disposição das câmaras",lang:"Idioma",tab:"Separador predefinido",date:"Data da festa (MM-DD)",target:"Alvo da contagem (MM-DD HH:MM)",until:"Título da contagem",eta:"Chegada do trenó (HH:MM)",store:"Lista dos bem-comportados (entidade Local To-do)",sel:"Escolher lista de tarefas",log:"Entidade do diário dos elfos (opcional)",dstart:"Pontuação inicial predefinida",llines:"Linhas visíveis do diário",ov:"Sobreposição da câmara",cctv:"Estilo do filtro CCTV",df:"Formato do relógio da câmara",foot:"Rodapé da câmara",gl:"Efeito de interferência do sinal",hb:"Caminho do botão Início (opcional)",snow:"Neve a cair no topo",tz:"Fuso horário (opcional)",title:"Título do cartão",sub:"Subtítulo",elf_ent:"Entidade de elfo personalizada (opcional)",tip:"Dica: as opções avançadas (câmaras, textos, paragens extra) mantêm-se no YAML."},
+ cs: {view:"Rozvržení kamer",lang:"Jazyk",tab:"Výchozí karta",date:"Datum svátku (MM-DD)",target:"Cíl odpočtu (MM-DD HH:MM)",until:"Nadpis odpočtu",eta:"Příjezd saní (HH:MM)",store:"Seznam hodných (entita Local To-do)",sel:"Vybrat seznam úkolů",log:"Entita elfího deníku (volitelné)",dstart:"Výchozí startovní skóre",llines:"Viditelné řádky deníku",ov:"Překryv kamery",cctv:"Styl filtru CCTV",df:"Formát hodin kamery",foot:"Zápatí kamery",gl:"Efekt rušení kamerového signálu",hb:"Cesta tlačítka Domů (volitelné)",snow:"Padající sníh nahoře",tz:"Časové pásmo (volitelné)",title:"Název karty",sub:"Podtitul",elf_ent:"Vlastní entita elfa (volitelné)",tip:"Tip: pokročilé volby (kamery, texty, další zastávky) zůstanou v YAML."},
+ hu: {view:"Kameranézet",lang:"Nyelv",tab:"Kezdő lap",date:"Ünnepnap (HH-NN)",target:"Visszaszámlálás célja (HH-NN ÓÓ:PP)",until:"Visszaszámlálás címe",eta:"Szán érkezése (ÓÓ:PP)",store:"Jók listája (Local To-do entitás)",sel:"Teendőlista kiválasztása",log:"Manónapló entitás (opcionális)",dstart:"Alapértelmezett kezdő pontszám",llines:"Látható naplósorok",ov:"Kamera-átfedés",cctv:"CCTV-szűrő stílusa",df:"Kameraóra formátuma",foot:"Kamera lábléc szövege",gl:"Kamerajel-zavar effekt",hb:"Kezdőlap gomb útvonala (opcionális)",snow:"Hóesés a fejlécben",tz:"Időzóna (opcionális)",title:"Kártya címe",sub:"Alcím",elf_ent:"Saját manó entitás (opcionális)",tip:"Tipp: a haladó beállítások (saját kamerák, szövegek, extra szánmegállók) YAML-ben megmaradnak."}
 };
 const ED_H = {
  en: {date:"Default 12-24 (or e.g. 12-25, 01-07).",target:"MM-DD HH:MM or HH:MM (uses celebration date). Default 12-24 18:00 (fr/es/nl/it/pt 12-25 00:00).",eta:"Local 24-hour arrival time (default 23:59).",tz:"IANA zone, e.g. Europe/Copenhagen (defaults to Home Assistant time zone).",df:"Tokens: YYYY, MM, DD, HH, mm, ss.",hb:"Lovelace path, e.g. /lovelace/0 (adds a Home tab button).",store:"Stores children & scores; defaults to todo.nordpol_nice_list if present.",log:"Optional input_text entity; otherwise logs are saved inside the To-do list.",elf_ent:"State formatted as Name|Joke? Answer|Task."},
@@ -843,7 +875,7 @@ const ED_H = {
 const ED_KEY = {
   language:"lang", default_tab:"tab", date:"date", target:"target", until:"until", eta:"eta",
   store:"store", log_entity:"log", default_start:"dstart", log_lines:"llines",
-  overlay:"ov", cctv_style:"cctv", date_format:"df", footer:"foot", glitch:"gl",
+  view:"view", overlay:"ov", cctv_style:"cctv", date_format:"df", footer:"foot", glitch:"gl",
   home_button_path:"hb", snow:"snow", time_zone:"tz", title:"title", subtitle:"sub", entity:"elf_ent"
 };
 const ED_HKEY = {
@@ -1074,6 +1106,7 @@ class NordpolCams extends HTMLElement {
           {name:"language", selector:{select:{mode:"dropdown", options:LANG_OPTS}}},
           {name:"title", selector:{text:{}}}
         ]},
+        {name:"view", default:"grid", selector:{select:{mode:"dropdown", options:VIEW_OPTS}}},
         {type:"grid", schema:[
           {name:"overlay", default:"minimal", selector:{select:{mode:"dropdown", options:OV_OPTS}}},
           {name:"cctv_style", default:"color", selector:{select:{mode:"dropdown", options:CCTV_OPTS}}}
@@ -1090,44 +1123,113 @@ class NordpolCams extends HTMLElement {
       computeHelper: mkHelper()
     };
   }
-  setConfig(c){ this._t=T(c); this._tr=TRaw(c); this._c = Object.assign({title:this._tr.cam_title, cams:DEFAULT_CAMS, lost_label:this._tr.cam_lost_label, glitch:true}, c||{}); this._blob={}; this._build(); }
+  _savedView(){ try{ const v=localStorage.getItem("nordpol-cam-view"); return (v==="cycle"||v==="grid")?v:null; }catch(e){ return null; } }
+  _isCycle(){ return this._mode==="cycle" && (this._c?.cams?.length||0) > 1; }
+  _mailroomIdx(){
+    const cams=this._c?.cams||[]; if(!cams.length) return 0;
+    const mi=Number(this._c.mailroom_index);
+    if(Number.isInteger(mi) && mi>=0 && mi<cams.length) return mi;
+    const found=cams.findIndex(c=>c && /mail|post|brev|brief|correo|posti|poczt|posta|dopis|levél/i.test(String(c.label||"")));
+    return found>=0 ? found : (cams.length>=3 ? 2 : 0);
+  }
+  setConfig(c){
+    this._t=T(c); this._tr=TRaw(c);
+    this._c = Object.assign({title:this._tr.cam_title, cams:DEFAULT_CAMS, lost_label:this._tr.cam_lost_label, glitch:true}, c||{});
+    this._blob={};
+    this._mode = (c && (c.view==="cycle" || c.view==="grid")) ? c.view : (this._savedView() || "grid");
+    this._cycIdx=0; this._cycSlot=0; this._cycPreloaded=-1;
+    this._clearLetter(true);
+    clearTimeout(this._blipT); this._blipT=null;
+    this._build();
+  }
   set hass(h){ const first=!this._hass; this._hass=h; if(first){ this._clock(); this._update(true); } }
   getCardSize(){ return 6; }
   getGridOptions(){ return {columns:"full", rows:"auto"}; }
   _build(){
+    this._clearLetter(true);
+    clearTimeout(this._blipT); this._blipT=null;
     const r = this.shadowRoot || this.attachShadow({mode:"open"}); r.innerHTML="";
     css(r, BASE_CSS + `
+    .np{container-type:inline-size}
+    .hd{flex-wrap:wrap;gap:6px 8px}
+    .hdt{min-width:0;overflow-wrap:anywhere}
+    .hdctl{display:inline-flex;align-items:center;gap:5px;flex-shrink:0}
+    .hdb{appearance:none;font:700 12px/1 system-ui,sans-serif;color:#fff8e7;background:rgba(255,255,255,.1);
+       border:1px solid rgba(255,214,120,.45);border-radius:999px;padding:5px 8px;min-height:28px;cursor:pointer;
+       display:inline-flex;align-items:center;gap:4px;white-space:nowrap;transition:background .15s,border-color .15s}
+    .hdb:hover{background:rgba(255,255,255,.18);border-color:#ffd878}
+    .hdb.on{background:rgba(214,32,47,.48);border-color:#ffd878}
+    @container (max-width: 480px){.hd{font-size:clamp(18px,6.2cqi,24px);padding:14px 12px 6px}.hd small{margin-left:0;flex-basis:100%;white-space:normal}}
     .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
     .grid.one{grid-template-columns:1fr}
+    .grid.ltr-hidden{display:none}
+    .ltr-wrap{width:100%}
     .tile{position:relative;aspect-ratio:16/9;container-type:inline-size;border-radius:10px;overflow:hidden;background:#000;cursor:pointer;
        border:2px solid #1d2a1d;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 4px 14px rgba(0,0,0,.6)}
     .tile video,.tile canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15) brightness(.95)}
     .tile canvas{image-rendering:pixelated}
-    .scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px);
+    .cycstage video{opacity:0;z-index:0;pointer-events:none;transition:opacity .2s ease}
+    .cycstage video.active{opacity:1;z-index:1;pointer-events:auto}
+    .scan{position:absolute;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px);
        box-shadow:inset 0 0 40px rgba(0,0,0,.85);mix-blend-mode:multiply}
-    .ov{position:absolute;inset:0;pointer-events:none;font-family:"Courier New",ui-monospace,monospace;color:#f2f2f2;
+    .ov{position:absolute;inset:0;z-index:3;pointer-events:none;font-family:"Courier New",ui-monospace,monospace;color:#f2f2f2;
        text-shadow:0 0 3px #000,0 0 6px #000;font-size:clamp(8.5px,3.9cqi,15.5px);font-weight:700}
     .rec{position:absolute;top:6px;left:8px;display:flex;align-items:center;gap:5px}
     .dot{width:.72em;height:.72em;border-radius:50%;background:#ff2230;box-shadow:0 0 8px #ff2230;animation:bl 1s steps(1) infinite}
     @keyframes bl{50%{opacity:0}}
     .clk{position:absolute;top:6px;right:8px}
     .lab{position:absolute;bottom:6px;left:8px;right:26px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cycstage .lab{right:126px}
     .exp{position:absolute;bottom:6px;right:8px;opacity:0;transition:opacity .18s ease;font-size:1.05em;line-height:1}
     @container (max-width: 220px){.exp{display:none}.lab{right:8px}}
     @media (hover: hover){.tile[data-i]:hover{border-color:#ffd878;box-shadow:0 0 0 1px rgba(255,216,120,.5),0 6px 18px rgba(0,0,0,.7)}.tile[data-i]:hover .exp{opacity:.9}}
-    .buf{display:none;position:absolute;inset:0;align-items:center;justify-content:center;pointer-events:none;font-size:clamp(11px,3.2cqi,14px);font-weight:700;color:#cfe8d8;
+    .cycdots{position:absolute;bottom:6px;right:28px;z-index:4;display:flex;align-items:center;gap:5px;padding:3px 6px;border-radius:999px;
+       background:rgba(5,11,31,.62);border:1px solid rgba(255,214,120,.36)}
+    .cdot{appearance:none;width:16px;height:16px;padding:0;border-radius:50%;border:1px solid rgba(255,248,231,.55);background:rgba(255,255,255,.16);
+       color:#fff8e7;font:700 9px/1 system-ui,sans-serif;cursor:pointer;display:grid;place-items:center;transition:transform .15s,background .15s,border-color .15s}
+    .cdot.on{background:#ffd878;color:#081026;border-color:#fff8e7;transform:scale(1.12)}
+    @container (max-width: 340px){.cycstage .lab{right:26px}.cycdots{bottom:24px;right:8px}}
+    .buf{display:none;position:absolute;inset:0;z-index:2;align-items:center;justify-content:center;pointer-events:none;font-size:clamp(11px,3.2cqi,14px);font-weight:700;color:#cfe8d8;
        background:radial-gradient(circle at 50% 50%,rgba(20,38,78,.72),rgba(5,11,31,.88))}
     .buf span{padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,214,120,.3)}
     .tile[data-kind=file]:not(.ready) .buf{display:flex}
-    .lost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;
+    .lost{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;
        font-family:"Courier New",monospace;font-weight:700;color:#fff;text-shadow:0 0 6px #000;font-size:clamp(12px,2.6vw,18px);letter-spacing:2px}
     .lost span{background:rgba(0,0,0,.6);padding:3px 8px;border-radius:4px}
     .gl{display:none}.tile.glitch .gl{display:flex}.tile.glitch video{filter:grayscale(1) blur(2px) contrast(2)}
     .tile[data-kind=none] .gl{display:flex}.tile[data-kind=none] video{display:none}
     .tile[data-kind=preview] canvas.gl{display:block;opacity:.3}.tile[data-kind=preview] video{display:none}
     .lost .rs{display:none;font-size:.7em}.tile[data-kind=none] .lost .rs,.lostT .lost .rs{display:inline}
-    .tile.blip canvas.gl{display:block;opacity:.22;mix-blend-mode:screen}
+    .tile.blip canvas.gl{display:block;z-index:2;opacity:.22;mix-blend-mode:screen}
     .tile.blip video{filter:contrast(1.15) brightness(1.08)}
+    .tile.mail-hi{border-color:#ffd878;box-shadow:0 0 0 2px #ffd878,0 0 22px rgba(255,216,120,.8);animation:mhi .45s ease-in-out infinite alternate}
+    .tile.mail-hi::after{content:attr(data-ping);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;padding:5px 10px;border-radius:999px;
+       background:rgba(179,18,31,.92);border:1.5px solid #ffd878;color:#fff8e7;font:800 clamp(9.5px,3cqi,13.5px) system-ui,sans-serif;max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.7);pointer-events:none}
+    @keyframes mhi{from{box-shadow:0 0 0 2px #ffd878,0 0 12px rgba(255,216,120,.5)}to{box-shadow:0 0 0 3px #ff5a64,0 0 28px rgba(255,216,120,.95)}}
+    .letter-stage{border-color:#ffd878;box-shadow:0 0 0 1px rgba(255,216,120,.65),0 8px 26px rgba(0,0,0,.75);cursor:default}
+    .ltr-banner{position:absolute;top:24px;left:8px;z-index:4;padding:4px 10px;border-radius:999px;background:rgba(179,18,31,.88);border:1px solid rgba(255,216,120,.7);
+       color:#fff8e7;font:800 clamp(9px,2.4cqi,12.5px) system-ui,sans-serif;letter-spacing:.3px;box-shadow:0 2px 10px rgba(0,0,0,.6);max-width:65%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+    .np:not(.cctv) .ltr-banner{top:8px}
+    .ltr-back{position:absolute;top:24px;right:8px;z-index:6;appearance:none;border:1px solid rgba(255,216,120,.65);border-radius:999px;padding:4px 9px;
+       background:rgba(8,16,38,.82);color:#fff8e7;font:700 clamp(10px,2.2cqi,12px) system-ui,sans-serif;cursor:pointer}
+    .np:not(.cctv) .ltr-back{top:8px}
+    .ltr-back:hover{background:#8d0f19;border-color:#ffd878}
+    .ltr-status{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:4;padding:4px 12px;border-radius:999px;background:rgba(8,16,38,.78);
+       border:1px solid rgba(255,216,120,.4);color:#ffd878;font:700 clamp(10px,2.5cqi,13px) system-ui,sans-serif;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis;pointer-events:none;transition:opacity .35s ease}
+    .ltr-status.hide{opacity:0}
+    .ltr-paper{position:absolute;left:var(--lx,50%);top:var(--ly,63%);width:var(--lw,56%);max-width:90%;z-index:5;padding:clamp(8px,2.4cqi,16px) clamp(10px,2.8cqi,20px);
+       box-sizing:border-box;border-radius:6px;background:linear-gradient(155deg,rgba(255,247,226,.95),rgba(242,224,185,.93));color:#3a210f;
+       border:1px solid rgba(139,94,43,.45);box-shadow:0 12px 32px rgba(0,0,0,.62),0 0 22px rgba(255,222,150,.35),inset 0 0 18px rgba(186,141,78,.22);
+       transform:translate(-50%,-50%) perspective(700px) rotateX(var(--ltilt,9deg)) rotate(var(--lrot,-1.2deg)) scale(.84);
+       opacity:0;pointer-events:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1);font-family:${FONT_X};text-align:left}
+    .ltr-paper.show{opacity:1;transform:translate(-50%,-50%) perspective(700px) rotateX(var(--ltilt,9deg)) rotate(var(--lrot,-1.2deg)) scale(1)}
+    .ltr-dear{font-size:clamp(10px,2.3cqi,15px);font-weight:700;color:#7a1010;margin-bottom:2px}
+    .ltr-body{font-weight:700;line-height:1.25;overflow-wrap:anywhere;white-space:pre-wrap;max-height:42cqh;overflow:hidden}
+    .ltr-from{margin-top:4px;text-align:right;font-size:clamp(10px,2.2cqi,14px);font-weight:700;color:#5a3316}
+    .ltr-stamp{position:absolute;right:10px;bottom:8px;padding:2px 7px;border:1.5px solid #b3121f;border-radius:4px;color:#b3121f;
+       font:800 clamp(7.5px,1.7cqi,10.5px) "Courier New",monospace;letter-spacing:.5px;transform:rotate(-8deg) scale(1.3);opacity:0;
+       transition:opacity .25s ease,transform .25s cubic-bezier(.2,1.4,.4,1);background:rgba(255,247,226,.85)}
+    .ltr-stamp.show{opacity:.92;transform:rotate(-8deg) scale(1)}
     :host(.fill){height:100%}
     :host(.fill) ha-card{height:100%;display:flex;flex-direction:column;box-sizing:border-box}
     :host(.fill) .bd{flex:1;min-height:0;display:flex;flex-direction:column;padding:4px 14px 10px}
@@ -1135,10 +1237,11 @@ class NordpolCams extends HTMLElement {
     :host(.fill) .grid{--tw:min(calc((100cqw - 10px)/2),calc((100cqh - 10px)/2*16/9));grid-template-columns:repeat(2,var(--tw));gap:10px}
     :host(.fill) .grid.one{--tw:min(100cqw,calc(100cqh*16/9));grid-template-columns:var(--tw)}
     :host(.fill) .tile{aspect-ratio:16/9;width:var(--tw)}
-    :host(.fill) .hd{font-size:clamp(18px,2.2vw,28px);padding:14px 16px 6px;gap:8px;white-space:nowrap}
+    :host(.fill) .hd{font-size:clamp(18px,2.2vw,28px);padding:14px 16px 6px;gap:8px;flex-wrap:nowrap;white-space:nowrap}
+    :host(.fill) .hdt{overflow:hidden;text-overflow:ellipsis;flex-shrink:1}
     :host(.fill) .hd small{font-size:clamp(11px,1.05vw,14.5px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex-shrink:1}
-    @media (max-width: 560px){:host(.fill) .hd{white-space:normal;flex-wrap:wrap}:host(.fill) .hd small{white-space:normal}}
-    .mini{display:none;position:absolute;bottom:7px;right:9px;width:6px;height:6px;border-radius:50%;background:#ff2230;opacity:.7;box-shadow:0 0 4px #ff2230;animation:bl 1.4s steps(1) infinite;pointer-events:none}
+    @media (max-width: 560px){:host(.fill) .hd{white-space:normal;flex-wrap:wrap}:host(.fill) .hdt{overflow:visible}:host(.fill) .hd small{white-space:normal;flex-basis:100%;margin-left:0}}
+    .mini{display:none;position:absolute;bottom:7px;right:9px;z-index:3;width:6px;height:6px;border-radius:50%;background:#ff2230;opacity:.7;box-shadow:0 0 4px #ff2230;animation:bl 1.4s steps(1) infinite;pointer-events:none}
     .tile[data-kind=file] video{filter:none;object-fit:contain}
     .np:not(.cctv) .tile[data-kind=file] .scan,.np:not(.cctv) .tile[data-kind=file] .ov{display:none}
     .np:not(.cctv) .tile[data-kind=file] .mini{display:block}
@@ -1151,27 +1254,83 @@ class NordpolCams extends HTMLElement {
     .tile[data-kind=file]{border-color:#2a3550}
     .foot{margin-top:6px;font-size:clamp(11.5px,1vw,14px);color:#cfe8d8;opacity:.88;text-align:center}
     `);
-    const cams = this._c.cams || []; const L=this._t;
-    const tiles = cams.map((c,i)=>`<div class="tile" data-i="${i}"><video muted playsinline loop autoplay preload="auto"></video>
-      <div class="buf"><span>📡 ${L.cam_conn}</span></div>
-      <canvas class="gl" width="96" height="72"></canvas><div class="lost gl"><span>${L.cam_lost}</span><span class="rs">${L.cam_restore}</span></div>
-      <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(c.label||("CAM "+(i+1)))}</div><span class="exp" aria-hidden="true">⛶</span></div><i class="mini"></i></div>`).join("");
-    const lost = `<div class="tile lostT"><canvas width="96" height="72" style="display:block"></canvas><div class="lost"><span>${L.cam_lost}</span><span class="rs">${L.cam_restore}</span></div>
-      <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(this._c.lost_label)}</div></div></div>`;
-    const showLost = cams.length > 1 && cams.length % 2 === 1 && this._c.fill_lost !== false;
-    const ov=this._ov(); r.innerHTML += `<ha-card class="np ${ov!==false?"cctv":""} ${ov==="minimal"?"min":"st-"+esc(this._c.cctv_style||"color")}"><div class="hd">${esc(this._c.title)}<small>${L.cam_live} · <span class="per"></span> · ${L.cam_tap}</small></div>
-      <div class="bd"><div class="wrap"><div class="grid${cams.length===1?" one":""}">${tiles}${showLost?lost:""}</div></div>
+    const cams = this._c.cams || []; const L=this._t; const isCyc=this._isCycle();
+    if(this._cycIdx >= cams.length) this._cycIdx=0;
+    const ctrls = (this._c.letter!==false || cams.length>1) ? `<span class="hdctl">${
+      this._c.letter!==false ? `<button type="button" class="hdb" id="ltrbtn" title="${esc(this._tr.cam_letter_btn)}" aria-label="${esc(this._tr.cam_letter_btn)}">📮</button>` : ""
+    }${
+      cams.length>1 ? `<button type="button" class="hdb${isCyc?" on":""}" id="viewbtn" aria-pressed="${isCyc?"true":"false"}" title="${esc(isCyc?this._tr.cam_view_grid:this._tr.cam_view_cycle)}" aria-label="${esc(isCyc?this._tr.cam_view_grid:this._tr.cam_view_cycle)}">${isCyc?"⊞ 4":"▢ 1"}</button>` : ""
+    }</span>` : "";
+    let bodyHtml="";
+    if(isCyc){
+      const idx=this._cycIdx; const cur=cams[idx]||{};
+      const dots=cams.map((c,i)=>`<button type="button" class="cdot${i===idx?" on":""}" data-ci="${i}" aria-label="${esc(c.label||("CAM "+(i+1)))}" aria-current="${i===idx?"true":"false"}">${i+1}</button>`).join("");
+      bodyHtml=`<div class="grid one"><div class="tile cycstage" data-i="${idx}">
+        <video class="va active" muted playsinline autoplay preload="auto"></video>
+        <video class="vb" muted playsinline preload="auto"></video>
+        <div class="buf"><span>📡 ${L.cam_conn}</span></div>
+        <canvas class="gl" width="96" height="72"></canvas><div class="lost gl"><span>${L.cam_lost}</span><span class="rs">${L.cam_restore}</span></div>
+        <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(cur.label||("CAM "+(idx+1)))}</div><span class="exp" aria-hidden="true">⛶</span></div><i class="mini"></i>
+        <div class="cycdots" role="group" aria-label="${esc(this._tr.cam_view_cycle)}">${dots}</div></div></div>`;
+    } else {
+      const tiles = cams.map((c,i)=>`<div class="tile" data-i="${i}"><video muted playsinline loop autoplay preload="auto"></video>
+        <div class="buf"><span>📡 ${L.cam_conn}</span></div>
+        <canvas class="gl" width="96" height="72"></canvas><div class="lost gl"><span>${L.cam_lost}</span><span class="rs">${L.cam_restore}</span></div>
+        <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(c.label||("CAM "+(i+1)))}</div><span class="exp" aria-hidden="true">⛶</span></div><i class="mini"></i></div>`).join("");
+      const lost = `<div class="tile lostT"><canvas width="96" height="72" style="display:block"></canvas><div class="lost"><span>${L.cam_lost}</span><span class="rs">${L.cam_restore}</span></div>
+        <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(this._c.lost_label)}</div></div></div>`;
+      const showLost = cams.length > 1 && cams.length % 2 === 1 && this._c.fill_lost !== false;
+      bodyHtml=`<div class="grid${cams.length===1?" one":""}">${tiles}${showLost?lost:""}</div>`;
+    }
+    const ov=this._ov(); r.innerHTML += `<ha-card class="np ${ov!==false?"cctv":""} ${ov==="minimal"?"min":"st-"+esc(this._c.cctv_style||"color")}"><div class="hd"><span class="hdt">${esc(this._c.title)}</span>${ctrls}<small>${L.cam_live} · <span class="per"></span> · ${L.cam_tap}</small></div>
+      <div class="bd"><div class="wrap">${bodyHtml}</div>
       <div class="foot">${this._c.footer!=null?esc(this._c.footer):L.cam_foot}</div></div></ha-card>`;
-    this._vids=[...r.querySelectorAll("video")];
-    this._vids.forEach((v,i)=>{ v.muted=true; v.defaultMuted=true;
-      const markReady=()=>{ const tl=v.closest(".tile"); tl&&tl.classList.add("ready"); };
-      v.addEventListener("loadeddata",markReady);
-      v.addEventListener("playing",markReady);
-      v.addEventListener("error",()=>{ if(v.dataset.kind==="file"){ this._exists[v.dataset.url]={ok:false,t:Date.now()}; this._update(true); } }); });
+    const vb=r.getElementById("viewbtn");
+    if(vb) vb.addEventListener("click",()=>{
+      this._mode = this._isCycle() ? "grid" : "cycle";
+      try{ localStorage.setItem("nordpol-cam-view", this._mode); }catch(e){}
+      this.dispatchEvent(new CustomEvent("nordpol-cam-view",{detail:{view:this._mode},bubbles:true,composed:true}));
+      this.dispatchEvent(new CustomEvent("nordpol-sfx",{detail:{type:"toggle"},bubbles:true,composed:true}));
+      this._cycIdx=0; this._cycSlot=0; this._cycPreloaded=-1;
+      this._build(); this._clock(); this._update(true);
+    });
+    const lb=r.getElementById("ltrbtn");
+    if(lb) lb.addEventListener("click",()=>{
+      const ev=new CustomEvent("nordpol-letter-open",{bubbles:true,composed:true,cancelable:true});
+      this.dispatchEvent(ev);
+      if(!ev.defaultPrevented) this._openLetterModal();
+    });
+    if(isCyc){
+      this._cycSlot=0; this._cycPreloaded=-1;
+      const stage=r.querySelector(".cycstage");
+      this._cycVids=[stage.querySelector("video.va"), stage.querySelector("video.vb")];
+      this._vids=[this._cycVids[0]];
+      this._cycVids.forEach((v,slot)=>{ v.muted=true; v.defaultMuted=true;
+        const onReady=()=>{ if(slot===this._cycSlot){ stage.classList.add("ready"); if(v.duration>0 && v.duration<=8) this._preloadCycle((this._cycIdx+1)%cams.length); } };
+        v.addEventListener("loadeddata",onReady);
+        v.addEventListener("playing",onReady);
+        v.addEventListener("timeupdate",()=>{ if(slot===this._cycSlot && !this._ltr && v.duration>4 && v.currentTime>=v.duration-6) this._preloadCycle((this._cycIdx+1)%cams.length); });
+        v.addEventListener("ended",()=>{ if(slot===this._cycSlot && !this._ltr) this._advanceCycle(); });
+        v.addEventListener("error",()=>{ if(v.dataset.kind==="file" && v.dataset.url){ this._exists[v.dataset.url]={ok:false,t:Date.now()};
+          if(slot===this._cycSlot) this._loadCycleSlot(slot, this._cycIdx, this._period(), true);
+          else if(this._cycPreloaded>=0) this._loadCycleSlot(slot, this._cycPreloaded, this._period(), false); } });
+      });
+      stage.querySelectorAll(".cdot").forEach(btn=>btn.addEventListener("click",e=>{ e.stopPropagation(); this._jumpCycle(+btn.dataset.ci); }));
+      stage.addEventListener("click",()=>this._full(this._cycIdx));
+      keyAct(stage, (cams[this._cycIdx]&&cams[this._cycIdx].label)||`Cam ${this._cycIdx+1}`, ()=>this._full(this._cycIdx));
+    } else {
+      this._cycVids=null;
+      this._vids=[...r.querySelectorAll("video")];
+      this._vids.forEach((v,i)=>{ v.muted=true; v.defaultMuted=true;
+        const markReady=()=>{ const tl=v.closest(".tile"); tl&&tl.classList.add("ready"); };
+        v.addEventListener("loadeddata",markReady);
+        v.addEventListener("playing",markReady);
+        v.addEventListener("error",()=>{ if(v.dataset.kind==="file"){ this._exists[v.dataset.url]={ok:false,t:Date.now()}; this._update(true); } }); });
+      r.querySelectorAll(".tile[data-i]").forEach(t=>{ t.addEventListener("click",()=>this._full(+t.dataset.i));
+        const cc=(this._c.cams||[])[+t.dataset.i]||{}; keyAct(t, cc.label||`Cam ${+t.dataset.i+1}`, ()=>this._full(+t.dataset.i)); });
+    }
     this._exists = this._exists || {};
     this._update(true);
-    r.querySelectorAll(".tile[data-i]").forEach(t=>{ t.addEventListener("click",()=>this._full(+t.dataset.i));
-      const cc=(this._c.cams||[])[+t.dataset.i]||{}; keyAct(t, cc.label||`Cam ${+t.dataset.i+1}`, ()=>this._full(+t.dataset.i)); });
     this._canv=[...r.querySelectorAll("canvas")];
   }
   /* overlay: "minimal" (default: REC, clock, label only) | true/"cctv" (+ scanlines, vignette, muted colours) | false/"off" */
@@ -1182,10 +1341,11 @@ class NordpolCams extends HTMLElement {
     for(const p of P) if(m>=p.min) cur=p; return cur.name; }
   _fallback(i){ const c=this._c.cams[i]; if(!c||!c.src) return ""; if(!this._blob) this._blob={}; if(this._blob[i]) return this._blob[i];
     if(!c.src.startsWith("data:")) return c.src; try{ return (this._blob[i]=dataToBlobUrl(c.src)); }catch(e){ return ""; } }
-  _setNone(i){ const v=this._vids[i]; if(!v||v.dataset.kind==="none") return; v.removeAttribute("src"); v.dataset.src=""; v.dataset.kind="none"; v.load&&v.load();
-    const tile=v.closest(".tile"); if(tile) tile.dataset.kind="none"; }
-  _fileUrl(i,per){ const c=this._c.cams[i]; const dir=(this._c.file_dir||CAM_FILE_DIR).replace(/\/$/,"");
-    const base=c.file||`${dir}/cam${i+1}`; return `${base}_${per}.mp4?v=${VER}`; }
+  _setVidNone(v, tile){ if(!v) return; if(v.dataset.kind!=="none"){ v.removeAttribute("src"); v.dataset.src=""; v.dataset.kind="none"; v.dataset.url=""; v.load&&v.load(); }
+    if(tile) tile.dataset.kind="none"; }
+  _setNone(i){ const v=this._vids&&this._vids[i]; this._setVidNone(v, v&&v.closest(".tile")); }
+  _fileUrl(i,per,pref){ const c=this._c.cams[i]; const dir=(this._c.file_dir||CAM_FILE_DIR).replace(/\/$/,"");
+    const base=pref?`${dir}/${pref}${i+1}`:(c.file||`${dir}/cam${i+1}`); return `${base}_${per}.mp4?v=${VER}`; }
   /* Local clips are only looked for when you opt in (prefer_files: true, file_dir, cams[].file or remote: false), so the
      default hosted-clip setup makes no /local requests and no 404s in the console. */
   _localOn(){ const c=this._c; if(c.prefer_files===false) return false;
@@ -1194,9 +1354,71 @@ class NordpolCams extends HTMLElement {
     const fl=this._inflight=this._inflight||{}; if(fl[url]) return fl[url];      /* never probe the same URL twice at once */
     return fl[url]=(async()=>{ let ok=false; try{ const r=await fetch(url,{method:"HEAD",cache:"no-store"}); ok=r.ok && /^video\//i.test(r.headers.get("content-type")||""); }catch(err){ ok=false; }
       this._exists[url]={ok,t:Date.now()}; delete fl[url]; return ok; })(); }
-  _setSrc(i,src,kind,url){ const v=this._vids[i]; if(!v||!src||v.dataset.src===src) return;
-    v.dataset.src=src; v.dataset.kind=kind; v.dataset.url=url||""; v.src=src; const p=v.play&&v.play(); p&&p.catch&&p.catch(()=>{});
-    const tile=v.closest(".tile"); if(tile){ tile.dataset.kind=kind; if(kind==="file"&&v.readyState<2) tile.classList.remove("ready"); else tile.classList.add("ready"); } }
+  _setVidSrc(v,src,kind,url,play,tile){ if(!v||!src) return;
+    if(v.dataset.src!==src){ v.dataset.src=src; v.dataset.kind=kind; v.dataset.url=url||""; v.src=src; }
+    if(play){ const p=v.play&&v.play(); p&&p.catch&&p.catch(()=>{}); }
+    if(tile){ tile.dataset.kind=kind; if(kind==="file"&&v.readyState<2) tile.classList.remove("ready"); else tile.classList.add("ready"); } }
+  _setSrc(i,src,kind,url){ const v=this._vids&&this._vids[i]; if(!v) return; this._setVidSrc(v,src,kind,url,true,v.closest(".tile")); }
+  async _resolveCamSrc(i,per,preferCycle){
+    const order=[per,...this._periods().map(p=>p.name).filter(n=>n!==per)];
+    const pref=this._c.cycle_prefix||"cycle";
+    if(this._localOn()){
+      if(preferCycle && !this._c.cams[i]?.file) for(const n of order){ const u=this._fileUrl(i,n,pref); if(await this._probe(u)) return {src:u,kind:"file",url:u}; }
+      for(const n of order){ const u=this._fileUrl(i,n); if(await this._probe(u)) return {src:u,kind:"file",url:u}; }
+    }
+    const fb=this._fallback(i); if(fb) return {src:fb,kind:"embed",url:""};
+    if(this._c.remote!==false && !this._c.cams[i]?.file){
+      const rdir=(this._c.remote_dir||CAM_REMOTE_DIR).replace(/\/$/,"");
+      if(preferCycle){
+        const curl=`${rdir}/${pref}${i+1}_${per}.mp4`; const cc=this._exists[curl];
+        if(!cc || cc.ok || Date.now()-cc.t >= CAM_RECHECK_MIN*60000) return {src:curl,kind:"file",url:curl};
+      }
+      const rurl=`${rdir}/cam${i+1}_${per}.mp4`; const cached=this._exists[rurl];
+      if(!cached || cached.ok || Date.now()-cached.t >= CAM_RECHECK_MIN*60000) return {src:rurl,kind:"file",url:rurl};
+    }
+    return {src:"",kind:"none",url:""};
+  }
+  async _loadCycleSlot(slot,i,per,play){
+    if(!this._cycVids || !this.isConnected || inPicker(this)) return;
+    const v=this._cycVids[slot]; if(!v) return;
+    const res=await this._resolveCamSrc(i,per,true);
+    if(!this._cycVids || !this.isConnected) return;
+    const stage=slot===this._cycSlot ? this.shadowRoot.querySelector(".cycstage") : null;
+    if(res.kind==="none"){ this._setVidNone(v,stage); return; }
+    this._setVidSrc(v,res.src,res.kind,res.url,play,stage);
+  }
+  _preloadCycle(nextIdx){
+    if(!this._isCycle() || !this._cycVids || this._cycPreloaded===nextIdx || inPicker(this)) return;
+    this._cycPreloaded=nextIdx;
+    this._loadCycleSlot(1-this._cycSlot, nextIdx, this._per||this._period(), false);
+  }
+  _jumpCycle(nextIdx){
+    if(!this._isCycle() || !this._cycVids || !this.isConnected) return;
+    const cams=this._c.cams||[]; nextIdx=((nextIdx%cams.length)+cams.length)%cams.length;
+    const prevVid=this._cycVids[this._cycSlot];
+    const nextSlot=1-this._cycSlot; const nextVid=this._cycVids[nextSlot];
+    const stage=this.shadowRoot.querySelector(".cycstage"); if(!stage||!nextVid) return;
+    const needLoad = this._cycPreloaded!==nextIdx || !nextVid.dataset.src;
+    this._cycSlot=nextSlot; this._cycIdx=nextIdx; this._cycPreloaded=-1; this._vids=[nextVid];
+    this._cycVids.forEach((v,s)=>v.classList.toggle("active",s===nextSlot));
+    if(prevVid){ try{ prevVid.pause(); prevVid.currentTime=0; }catch(e){} }
+    stage.dataset.i=String(nextIdx);
+    const lbl=(cams[nextIdx]&&cams[nextIdx].label)||("CAM "+(nextIdx+1));
+    stage.setAttribute("aria-label",lbl);
+    const lab=stage.querySelector(".lab"); if(lab) lab.textContent=lbl;
+    stage.querySelectorAll(".cdot").forEach((b,bi)=>{ const on=bi===nextIdx; b.classList.toggle("on",on); b.setAttribute("aria-current",on?"true":"false"); });
+    if(this._c.glitch && !reducedMotion()){ clearTimeout(this._blipT); stage.classList.add("blip"); this._blipT=setTimeout(()=>stage.classList.remove("blip"),180); }
+    if(needLoad){
+      this._loadCycleSlot(nextSlot, nextIdx, this._per||this._period(), true);
+    } else {
+      try{ nextVid.currentTime=0; }catch(e){}
+      stage.dataset.kind=nextVid.dataset.kind||"none";
+      if(nextVid.dataset.kind==="file"&&nextVid.readyState<2) stage.classList.remove("ready"); else stage.classList.add("ready");
+      const p=nextVid.play&&nextVid.play(); p&&p.catch&&p.catch(()=>{});
+      if(nextVid.readyState>=1 && nextVid.duration>0 && nextVid.duration<=8) this._preloadCycle((nextIdx+1)%cams.length);
+    }
+  }
+  _advanceCycle(){ if(this._isCycle()) this._jumpCycle(this._cycIdx+1); }
   /* one update at a time: calls that arrive meanwhile are merged into a single follow-up run */
   _update(force){ if(!this._vids) return Promise.resolve();
     if(this._busy){ this._again = this._again===true || force===true ? true : "soft"; return this._busy; }
@@ -1204,21 +1426,206 @@ class NordpolCams extends HTMLElement {
   async _doUpdate(force){ if(!this._vids || !this.isConnected) return; const per=this._period();
     if(inPicker(this)){ this._showPreview(); return; }
     if(!force && per===this._per && Date.now()-(this._lastProbe||0) < CAM_RECHECK_MIN*60000) return;
-    this._per=per; this._lastProbe=Date.now();
-    /* order: local file for the period → same cam's other periods → explicit src → hosted release clip (remote!==false) → "signal lost" */
-    const order=[per,...this._periods().map(p=>p.name).filter(n=>n!==per)];
-    await Promise.all(this._vids.map(async (v,i)=>{
-      if(this._localOn()) for(const n of order){ const url=this._fileUrl(i,n);
-        if(await this._probe(url)){ this._setSrc(i,url,"file",url); return; } }
-      const fb=this._fallback(i); if(fb){ this._setSrc(i,fb,"embed"); return; }
-      if(this._c.remote!==false && !this._c.cams[i]?.file){
-        const rdir=(this._c.remote_dir||CAM_REMOTE_DIR).replace(/\/$/,"");
-        const rurl=`${rdir}/cam${i+1}_${per}.mp4`;
-        const cached=this._exists[rurl];
-        if(!cached || cached.ok || Date.now()-cached.t >= CAM_RECHECK_MIN*60000){ this._setSrc(i,rurl,"file",rurl); return; }
-      }
-      this._setNone(i); }));
+    const perChanged=this._per!==per; this._per=per; this._lastProbe=Date.now();
+    if(perChanged) this._cycPreloaded=-1;
+    if(this._isCycle()){
+      await this._loadCycleSlot(this._cycSlot, this._cycIdx, per, !this._ltr);
+    } else {
+      /* order: local file for the period → same cam's other periods → explicit src → hosted release clip (remote!==false) → "signal lost" */
+      await Promise.all(this._vids.map(async (v,i)=>{
+        const res=await this._resolveCamSrc(i,per,false);
+        if(res.kind==="none") this._setNone(i); else this._setSrc(i,res.src,res.kind,res.url);
+      }));
+    }
     const pl=this.shadowRoot.querySelector(".per"); if(pl) pl.textContent=(this._c.period_labels||this._tr.periods)[per]||per; }
+  _openLetterModal(){
+    if(this._ltrModal){ this._ltrModal.remove(); this._ltrModal=null; }
+    const L=this._t, TR=this._tr;
+    const m=document.createElement("div"); this._ltrModal=m;
+    m.innerHTML=`<div style="width:min(92vw,420px);border-radius:18px;background:linear-gradient(160deg,#0d1836,#081026);border:1.5px solid rgba(255,214,120,.65);
+      box-shadow:0 16px 48px rgba(0,0,0,.85);color:#fff8e7;font-family:system-ui,sans-serif;overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,214,120,.25)">
+        <strong style="font-size:16px;color:#ffd878">${esc(TR.cam_letter_title)}</strong>
+        <button type="button" id="npl-x" aria-label="${esc(TR.cam_letter_back)}" style="appearance:none;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,214,120,.4);background:rgba(255,255,255,.08);color:#fff8e7;cursor:pointer;font-weight:700">✕</button>
+      </div>
+      <div style="padding:14px 16px;display:grid;gap:10px">
+        <label style="display:grid;gap:4px;font-size:13px;font-weight:600">${esc(TR.cam_letter_name)}
+          <input id="npl-name" type="text" maxlength="40" placeholder="${esc(TR.cam_letter_name_ph)}" style="box-sizing:border-box;width:100%;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,214,120,.35);background:rgba(255,255,255,.08);color:#fff8e7;font-size:14px">
+        </label>
+        <label style="display:grid;gap:4px;font-size:13px;font-weight:600">${esc(TR.cam_letter_msg)}
+          <textarea id="npl-msg" rows="4" maxlength="280" placeholder="${esc(TR.cam_letter_msg_ph)}" style="box-sizing:border-box;width:100%;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,214,120,.35);background:rgba(255,255,255,.08);color:#fff8e7;font-size:14px;resize:vertical;font-family:inherit"></textarea>
+        </label>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:2px">
+          <button type="button" id="npl-cancel" style="appearance:none;padding:8px 14px;border-radius:10px;border:1px solid rgba(255,214,120,.35);background:rgba(255,255,255,.08);color:#fff8e7;font-weight:700;cursor:pointer">${L.cancel}</button>
+          <button type="button" id="npl-send" style="appearance:none;padding:8px 16px;border-radius:10px;border:1px solid rgba(255,214,120,.7);background:linear-gradient(180deg,#d6202f,#94111c);color:#fff8e7;font-weight:700;cursor:pointer">📮 ${esc(TR.cam_letter_send)}</button>
+        </div>
+      </div>
+    </div>`;
+    Object.assign(m.style,{position:"fixed",inset:"0",zIndex:"10000",background:"rgba(0,0,0,.78)",display:"flex",alignItems:"center",justifyContent:"center"});
+    m.setAttribute("role","dialog"); m.setAttribute("aria-modal","true"); m.setAttribute("aria-label",TR.cam_letter_title);
+    document.body.appendChild(m);
+    const backBtn=this.shadowRoot.getElementById("ltrbtn");
+    const nameIn=m.querySelector("#npl-name"), msgIn=m.querySelector("#npl-msg");
+    const close=(restore)=>{ document.removeEventListener("keydown",onKey,true); m.remove(); if(this._ltrModal===m) this._ltrModal=null; if(restore && backBtn && backBtn.focus) backBtn.focus(); };
+    const onKey=e=>{ if(e.key==="Escape"){ e.preventDefault(); e.stopPropagation(); close(true); } };
+    m.addEventListener("click",e=>{ if(e.target===m) close(true); });
+    m.querySelector("#npl-x").addEventListener("click",()=>close(true));
+    m.querySelector("#npl-cancel").addEventListener("click",()=>close(true));
+    m.querySelector("#npl-send").addEventListener("click",()=>{
+      const text=msgIn.value.trim().slice(0,280); if(!text){ msgIn.focus(); return; }
+      const child=nameIn.value.trim().slice(0,40);
+      close(false);
+      this.dispatchEvent(new CustomEvent("nordpol-letter-sent",{detail:{child,text},bubbles:true,composed:true}));
+      this.dispatchEvent(new CustomEvent("nordpol-sfx",{detail:{type:"stamp"},bubbles:true,composed:true}));
+      this.triggerLetter({child,text});
+    });
+    document.addEventListener("keydown",onKey,true);
+    msgIn.focus();
+  }
+  _clearLetter(skipResume){
+    if(this._ltr){ this._ltr.timers.forEach(id=>clearTimeout(id)); this._ltr=null; }
+    const sr=this.shadowRoot; if(!sr) return;
+    sr.querySelectorAll(".tile.mail-hi").forEach(t=>t.classList.remove("mail-hi"));
+    sr.querySelectorAll(".ltr-wrap").forEach(w=>w.remove());
+    const grid=sr.querySelector(".grid:not(.ltr-wrap)"); if(grid) grid.classList.remove("ltr-hidden");
+    this._canv=[...sr.querySelectorAll("canvas")];
+    if(skipResume || !this.isConnected) return;
+    if(this._isCycle()){
+      this._jumpCycle((this._mailroomIdx()+1)%(this._c.cams||[]).length);
+    } else {
+      (this._vids||[]).forEach(v=>{ if(v.dataset.kind&&v.dataset.kind!=="none"){ const p=v.play&&v.play(); p&&p.catch&&p.catch(()=>{}); } });
+    }
+    this._clock();
+  }
+  triggerLetter(opts){
+    const text=String((opts&&opts.text)||"").trim().slice(0,280);
+    if(!text || inPicker(this) || !this.shadowRoot) return;
+    const child=String((opts&&opts.child)||"").trim().slice(0,40);
+    this._clearLetter(true);
+    const ltr=this._ltr={child,text,timers:[],stamped:false,dedicated:false};
+    const addT=(fn,ms)=>{ const id=setTimeout(()=>{ if(this._ltr===ltr) fn(); },ms); ltr.timers.push(id); return id; };
+    const mi=this._mailroomIdx();
+    if(!this._isCycle()){
+      const tile=this.shadowRoot.querySelector(`.tile[data-i="${mi}"]`);
+      if(tile){
+        tile.dataset.ping=this._tr.cam_letter_incoming;
+        tile.classList.add("mail-hi");
+        addT(()=>this._startLetterStage(mi,ltr), reducedMotion()?80:750);
+        return;
+      }
+    }
+    this._startLetterStage(mi,ltr);
+  }
+  async _startLetterStage(mi,ltr){
+    if(this._ltr!==ltr || !this.isConnected) return;
+    const sr=this.shadowRoot, wrap=sr.querySelector(".wrap"), grid=sr.querySelector(".grid");
+    if(!wrap || !grid) return;
+    sr.querySelectorAll(".tile.mail-hi").forEach(t=>t.classList.remove("mail-hi"));
+    sr.querySelectorAll(".grid video").forEach(v=>{ try{ v.pause(); }catch(e){} });
+    grid.classList.add("ltr-hidden");
+    const cams=this._c.cams||[], L=this._t, TR=this._tr;
+    const mailLabel=(cams[mi]&&cams[mi].label)||("CAM "+(mi+1));
+    const cue=Object.assign({start:8.5,end:21.5,stampAt:19.0,x:50,y:63,w:56,rot:-1.2,tilt:9,fallback_ms:12000},(this._c&&this._c.letter_cue)||{});
+    const n=(v,d)=>v!=null && Number.isFinite(Number(v))?Number(v):d;
+    const bodySz=ltr.text.length<=55?"clamp(13px,3.6cqi,22px)":ltr.text.length<=130?"clamp(11.5px,2.9cqi,18px)":"clamp(10px,2.4cqi,15px)";
+    const lw=document.createElement("div"); lw.className="grid one ltr-wrap";
+    lw.innerHTML=`<div class="tile letter-stage ready" data-active="true" data-kind="file"
+        style="--lx:${n(cue.x,50)}%;--ly:${n(cue.y,63)}%;--lw:${n(cue.w,56)}%;--lrot:${n(cue.rot,-1.2)}deg;--ltilt:${n(cue.tilt,9)}deg">
+      <video class="ltr-vid" muted playsinline autoplay preload="auto"></video>
+      <canvas class="gl" width="96" height="72"></canvas><div class="lost gl"><span>${L.cam_lost}</span><span class="rs">${L.cam_restore}</span></div>
+      <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(mailLabel)}</div></div><i class="mini"></i>
+      <div class="ltr-banner">${esc(TR.cam_letter_incoming)}</div>
+      <button type="button" class="ltr-back" id="ltrback" aria-label="${esc(TR.cam_letter_back)}">✕ ${esc(TR.cam_letter_back)}</button>
+      <div class="ltr-paper" aria-live="polite">
+        <div class="ltr-dear">${esc(TR.cam_letter_dear)}</div>
+        <div class="ltr-body" style="font-size:${bodySz}">${esc(ltr.text)}</div>
+        ${ltr.child?`<div class="ltr-from">${F(L.cam_letter_from,{name:esc(ltr.child)})}</div>`:""}
+        <div class="ltr-stamp">${esc(TR.cam_letter_approved)}</div>
+      </div>
+      <div class="ltr-status">${esc(TR.cam_letter_reading)}</div></div>`;
+    wrap.appendChild(lw);
+    this._canv=[...sr.querySelectorAll("canvas")];
+    this._clock();
+    const stage=lw.querySelector(".letter-stage"), vid=lw.querySelector(".ltr-vid");
+    const paper=lw.querySelector(".ltr-paper"), stamp=lw.querySelector(".ltr-stamp"), status=lw.querySelector(".ltr-status");
+    vid.muted=true; vid.defaultMuted=true;
+    lw.querySelector("#ltrback").addEventListener("click",e=>{ e.stopPropagation(); this._clearLetter(); });
+
+    const cands=[], seen=new Set();
+    const push=(url,kind,dedicated)=>{ if(url && !seen.has(url)){ seen.add(url); cands.push({url,kind,dedicated}); } };
+    const per=this._per||this._period();
+    const pref=this._c.cycle_prefix||"cycle";
+    if(this._c.letter_clip) push(this._c.letter_clip,"file",true);
+    if(this._localOn()){
+      const dir=(this._c.file_dir||CAM_FILE_DIR).replace(/\/$/,"");
+      for(const u of [`${dir}/mailroom_letter_${per}.mp4?v=${VER}`, `${dir}/mailroom_letter.mp4?v=${VER}`]){
+        if(await this._probe(u)){ push(u,"file",true); break; }
+      }
+      if(this._ltr!==ltr || !this.isConnected) return;
+      const localMail=await this._resolveCamSrc(mi,per,true);
+      if(this._ltr!==ltr || !this.isConnected) return;
+      if(localMail.src) push(localMail.src,localMail.kind,false);
+    }
+    const fb=this._fallback(mi); if(fb) push(fb,"embed",false);
+    if(this._c.remote!==false && !this._c.cams?.[mi]?.file){
+      const rdir=(this._c.remote_dir||CAM_REMOTE_DIR).replace(/\/$/,"");
+      const notFailed=u=>{ const c=this._exists[u]; return !c || c.ok || Date.now()-c.t >= CAM_RECHECK_MIN*60000; };
+      for(const [u,ded] of [
+        [`${rdir}/mailroom_letter_${per}.mp4`,true],
+        [`${rdir}/mailroom_letter.mp4`,true],
+        [`${rdir}/${pref}${mi+1}_${per}.mp4`,false],
+        [`${rdir}/cam${mi+1}_${per}.mp4`,false]
+      ]) if(notFailed(u)) push(u,"file",ded);
+    }
+
+    let fbScheduled=false;
+    const startFallbackTimers=()=>{
+      if(fbScheduled || this._ltr!==ltr) return;
+      fbScheduled=true;
+      const fbMs=Math.max(200,Number(cue.fallback_ms)||12000);
+      const revMs=Math.min(600,Math.round(fbMs*0.08));
+      const stpMs=Math.round(fbMs*0.71);
+      const hideMs=Math.round(fbMs*0.93);
+      ltr.timers.push(setTimeout(()=>{ if(this._ltr===ltr){ paper.classList.add("show"); status.classList.add("hide"); } },revMs));
+      ltr.timers.push(setTimeout(()=>{ if(this._ltr===ltr && !ltr.stamped){ ltr.stamped=true; stamp.classList.add("show"); this.dispatchEvent(new CustomEvent("nordpol-sfx",{detail:{type:"stamp"},bubbles:true,composed:true})); } },stpMs));
+      ltr.timers.push(setTimeout(()=>{ if(this._ltr===ltr) paper.classList.remove("show"); },hideMs));
+      ltr.timers.push(setTimeout(()=>{ if(this._ltr===ltr) this._clearLetter(); },fbMs));
+    };
+
+    let ci=0, cur=null;
+    const loadNext=()=>{
+      if(this._ltr!==ltr || !this.isConnected) return;
+      if(ci>=cands.length){ this._setVidNone(vid,stage); startFallbackTimers(); return; }
+      cur=cands[ci++];
+      stage.dataset.kind=cur.kind;
+      vid.dataset.kind=cur.kind; vid.dataset.url=cur.url;
+      vid.loop=false; vid.src=cur.url;
+      const p=vid.play&&vid.play(); p&&p.catch&&p.catch(()=>{});
+    };
+    vid.addEventListener("error",()=>{ if(this._ltr!==ltr) return; if(cur && cur.kind==="file") this._exists[cur.url]={ok:false,t:Date.now()}; loadNext(); });
+    vid.addEventListener("loadedmetadata",()=>{
+      if(this._ltr!==ltr) return;
+      const ded=Boolean(cur && cur.dedicated && Number.isFinite(vid.duration) && vid.duration>=16);
+      ltr.dedicated=ded;
+      if(ded){
+        vid.loop=false;
+        ltr.timers.push(setTimeout(()=>{ if(this._ltr===ltr) this._clearLetter(); }, Math.max(35000,((vid.duration||30)+3)*1000)));
+      } else {
+        vid.loop=true;
+        startFallbackTimers();
+      }
+    });
+    vid.addEventListener("timeupdate",()=>{
+      if(this._ltr!==ltr || !ltr.dedicated) return;
+      const t=vid.currentTime;
+      const show=t>=cue.start && t<=cue.end;
+      paper.classList.toggle("show",show);
+      status.classList.toggle("hide",show);
+      if(t>=cue.stampAt && !ltr.stamped){ ltr.stamped=true; stamp.classList.add("show"); this.dispatchEvent(new CustomEvent("nordpol-sfx",{detail:{type:"stamp"},bubbles:true,composed:true})); }
+    });
+    vid.addEventListener("ended",()=>{ if(this._ltr===ltr && ltr.dedicated) this._clearLetter(); });
+    loadNext();
+  }
   _showPreview(){ for(const t of this.shadowRoot.querySelectorAll(".tile[data-i]")) t.dataset.kind="preview"; this._noise(true); }
   _noise(once){
     if (document.hidden) return;
@@ -1244,7 +1651,8 @@ class NordpolCams extends HTMLElement {
     if(real.length && Math.random()<0.25){ const t=real[Math.random()*real.length|0]; t.classList.add("blip"); setTimeout(()=>t.classList.remove("blip"), 250+Math.random()*200); }
   }
   _full(i){
-    const c=this._c.cams[i]; const v=this._vids[i]; if(!c||!v||v.dataset.kind==="none") return;
+    const c=this._c.cams[i]; const v=this._isCycle()?(this._cycVids&&this._cycVids[this._cycSlot]):(this._vids&&this._vids[i]);
+    if(!c||!v||v.dataset.kind==="none") return;
     const m=document.createElement("div"); const real=v.dataset.kind==="file" && this._ov()===false; const minimal=v.dataset.kind==="file" && this._ov()==="minimal";
     const FILT={color:"saturate(.6) contrast(1.08)",mono:"grayscale(1) contrast(1.15)"};
     const fl=v.dataset.kind==="file"?(minimal?"none":(FILT[this._c.cctv_style]||FILT.color)):FILT.mono;
@@ -1256,7 +1664,7 @@ class NordpolCams extends HTMLElement {
       <div class="npscan" style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0 1px,transparent 1px 3px);box-shadow:inset 0 0 90px rgba(0,0,0,.9)"></div>
       <div style="position:absolute;top:12px;left:14px;font:700 clamp(14px,2.5vw,24px) 'Courier New',monospace;color:#fff;text-shadow:0 0 4px #000"><span class="npd" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#ff2230;box-shadow:0 0 10px #ff2230;margin-right:8px"></span>REC</div>
       <div class="npc" style="position:absolute;top:12px;right:14px;font:700 clamp(14px,2.5vw,24px) 'Courier New',monospace;color:#fff;text-shadow:0 0 4px #000"></div>
-      <div style="position:absolute;bottom:12px;left:14px;font:700 clamp(14px,2.5vw,24px) 'Courier New',monospace;color:#fff;text-shadow:0 0 4px #000">${esc(c.label||"")}</div>
+      <div class="npl" style="position:absolute;bottom:12px;left:14px;font:700 clamp(14px,2.5vw,24px) 'Courier New',monospace;color:#fff;text-shadow:0 0 4px #000">${esc(c.label||"")}</div>
       <div style="position:absolute;bottom:12px;right:14px;font:600 13px system-ui;color:#ddd;opacity:.8">${this._t.cam_close}</div></div>`;
     Object.assign(m.style,{position:"fixed",inset:"0",zIndex:"10000",background:"rgba(0,0,0,.88)",display:"flex",alignItems:"center",justifyContent:"center"});
     if(minimal){ const sc=m.querySelector(".npscan"); if(sc) sc.remove(); }
@@ -1278,7 +1686,12 @@ class NordpolCams extends HTMLElement {
     this._gv=setInterval(()=>this._glitch(), 7000+Math.random()*5000);
     (this._vids||[]).forEach(v=>{const p=v.play&&v.play(); p&&p.catch&&p.catch(()=>{});});
   }
-  disconnectedCallback(){ clearInterval(this._iv); clearInterval(this._nv); clearInterval(this._gv); clearInterval(this._pv); }
+  disconnectedCallback(){
+    clearInterval(this._iv); clearInterval(this._nv); clearInterval(this._gv); clearInterval(this._pv);
+    clearTimeout(this._blipT); this._blipT=null;
+    this._clearLetter(true);
+    if(this._ltrModal){ this._ltrModal.remove(); this._ltrModal=null; }
+  }
 }
 
 /* ---------- NAUGHTY / NICE (children + scores stored in a HA to-do list) ----------
@@ -1901,6 +2314,7 @@ class NordpolBoardEditor extends HTMLElement {
       target: (c.hero&&c.hero.target)||c.target||"",
       eta: (c.sleigh&&c.sleigh.eta)||"",
       store: (c.nice&&c.nice.store)||"",
+      view: (c.cams&&c.cams.view==="cycle")?"cycle":"grid",
       overlay: ov,
       cctv_style: (c.cams&&c.cams.cctv_style)||"color",
       home_button_path: (c.home_button&&c.home_button.path)||"",
@@ -1917,6 +2331,7 @@ class NordpolBoardEditor extends HTMLElement {
     const tgt=s("target"); if(tgt) n.hero=Object.assign({},n.hero,{target:tgt}); else { if(n.hero) delete n.hero.target; delete n.target; }
     const eta=s("eta"); if(eta) n.sleigh=Object.assign({},n.sleigh,{eta}); else if(n.sleigh) delete n.sleigh.eta;
     const st=s("store"); if(st) n.nice=Object.assign({},n.nice,{store:st}); else if(n.nice) delete n.nice.store;
+    const vw=v.view; if(vw==="cycle") n.cams=Object.assign({},n.cams,{view:"cycle"}); else if(n.cams) delete n.cams.view;
     const ov=v.overlay; n.cams=Object.assign({},n.cams,{overlay:ov==="off"||ov===false?false:ov==="cctv"||ov===true?true:"minimal"});
     const cs=v.cctv_style; if(cs&&cs!=="color") n.cams=Object.assign({},n.cams,{cctv_style:cs}); else if(n.cams) delete n.cams.cctv_style;
     const hb=s("home_button_path"); if(hb) n.home_button=Object.assign({label:"Home",icon:"🏠"},n.home_button,{path:hb}); else delete n.home_button;
@@ -1945,6 +2360,7 @@ class NordpolBoardEditor extends HTMLElement {
             {name:"eta", default:"23:59", selector:{text:{}}},
             {name:"store", selector:{entity:{filter:{domain:"todo"}}}}
           ]},
+          {name:"view", default:"grid", selector:{select:{mode:"dropdown", options:viewOpts(c)}}},
           {type:"grid", schema:[
             {name:"overlay", default:"minimal", selector:{select:{mode:"dropdown", options:ovOpts(c)}}},
             {name:"cctv_style", default:"color", selector:{select:{mode:"dropdown", options:cctvOpts(c)}}}
@@ -1974,6 +2390,7 @@ class NordpolBoardEditor extends HTMLElement {
     this._form=null; this._schema=null; this._schemaKey=null;
     const todos=this._hass?Object.keys(this._hass.states).filter(k=>k.startsWith("todo.")).sort():[];
     const niceStore=(c.nice&&c.nice.store)||""; const camOv=(c.cams&&c.cams.overlay);
+    const viewVal=(c.cams&&c.cams.view==="cycle")?"cycle":"grid";
     const ovVal=(camOv===false||camOv==="false"||camOv==="off")?"off":(camOv===true||camOv==="true"||camOv==="cctv")?"cctv":"minimal";
     const cctvVal=(c.cams&&c.cams.cctv_style)||"color";
     const snowOn=!c.hero||c.hero.snow!==false; const hb=(c.home_button&&c.home_button.path)||"";
@@ -2014,6 +2431,9 @@ class NordpolBoardEditor extends HTMLElement {
           `<input id="store" placeholder="todo.nordpol_nice_list" value="${esc(niceStore)}">`}
         </label>
       </div>
+      <label>${esc(ed.view)}
+        <select id="view">${viewOpts(c).map(o=>`<option value="${esc(o.value)}" ${viewVal===o.value?"selected":""}>${esc(o.label)}</option>`).join("")}</select>
+      </label>
       <div class="row">
         <label>${esc(ed.ov)}
           <select id="ov">${ovOpts(c).map(o=>`<option value="${esc(o.value)}" ${ovVal===o.value?"selected":""}>${esc(o.label)}</option>`).join("")}</select>
@@ -2041,6 +2461,7 @@ class NordpolBoardEditor extends HTMLElement {
     $("target").addEventListener("change",e=>upd(n=>{ const v=e.target.value.trim(); if(v) n.hero=Object.assign({},n.hero,{target:v}); else { if(n.hero) delete n.hero.target; delete n.target; } }));
     $("eta").addEventListener("change",e=>upd(n=>{ const v=e.target.value.trim(); if(v) n.sleigh=Object.assign({},n.sleigh,{eta:v}); else if(n.sleigh) delete n.sleigh.eta; }));
     $("store").addEventListener("change",e=>upd(n=>{ const v=e.target.value.trim(); if(v) n.nice=Object.assign({},n.nice,{store:v}); else if(n.nice) delete n.nice.store; }));
+    $("view").addEventListener("change",e=>upd(n=>{ const v=e.target.value; if(v==="cycle") n.cams=Object.assign({},n.cams,{view:"cycle"}); else if(n.cams) delete n.cams.view; }));
     $("ov").addEventListener("change",e=>upd(n=>{ const v=e.target.value; n.cams=Object.assign({},n.cams,{overlay:v==="off"?false:v==="cctv"?true:"minimal"}); }));
     $("cctv").addEventListener("change",e=>upd(n=>{ const v=e.target.value; if(v&&v!=="color") n.cams=Object.assign({},n.cams,{cctv_style:v}); else if(n.cams) delete n.cams.cctv_style; }));
     $("hb").addEventListener("change",e=>upd(n=>{ const v=e.target.value.trim(); if(v) n.home_button=Object.assign({label:"Home",icon:"🏠"},n.home_button,{path:v}); else delete n.home_button; }));
