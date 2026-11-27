@@ -2,6 +2,13 @@
 
 All notable changes to Nordpol Card are documented here. Dates are in Europe/Copenhagen.
 
+## 2.6.0 – 2026-11-28
+
+- **1-View Cycle Mode (`cams.view: "cycle"` / `#viewbtn`):** Toggle between the classic 4-view CCTV wall (`view: "grid"`, default) and a single-screen 4-scene cycle view (`view: "cycle"`) with dual-`<video>` background preloading, `1..4` scene dots, visual-editor support (`nordpol-board-card` & `nordpol-cam-card`), and 12 dedicated 25-second perspective-shifted clips (`cycle1..4_{morning,day,evening}.mp4`, with automatic fallback to `cam1..4_*`).
+- **Letter-to-Santa Live Mailroom Spotlight (`#ltrbtn`, `triggerLetter({ child, text })`, `cams.letter_cue`):** Added an in-card wish composer dialog and programmatic `triggerLetter` hook across all 14 languages; highlights CAM 03 Mailroom, plays a dedicated 25-second pneumatic-tube arrival clip (`mailroom_letter.mp4`), and unfolds an XSS-safe aged-parchment overlay showing the wish + `★ RECEIVED · NORTH POLE ★` stamp timed to the wax stamper (`cams.letter_cue`).
+- **Card UX & Advent History:** Added visible `✈️ Test flight` / `⏹` toggle button (`#demobtn`), drag-safe `#holdpill` Parent Mode button, visible `NordpolElf` header in tab mode, gift-tag joke reveal pill, December Advent history (`◀ / ▶ / Today` + `⭐ done/24`), cam buffering & hover expand indicators, and desktop typography/flex refinements.
+- **Standalone Public Web App (`web/`):** Zero-build PWA live at [nordpol.pages.dev](https://nordpol.pages.dev/) and GitHub Pages (`LocalStorageBackend`, 14-language Settings drawer including grid/cycle view toggle, Santa's Mailroom Postbox + Parent Inbox, printable Nice List certificate, clickable city picker, optional Web Audio chimes, offline QR sharing, and optional cookie-free visitor counter).
+
 ## 2.5.1 – 2026-11-22
 
 - **Languages:** Added built-in **Hungarian (`hu`)** — card strings, visual-editor labels, helpers and dropdown options, 16 sleigh-route country names, and 30 localized elves (jokes and daily tasks). Auto-detected from `language: hu`, `<html lang="hu-HU">` or a Hungarian browser; dates and numbers use `hu-HU` (“december 24.”).

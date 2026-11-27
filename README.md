@@ -5,7 +5,7 @@
 A self-contained Christmas dashboard for Home Assistant — **no YAML required**:
 
 * ⏳ **Countdown hero** with falling snow
-* 📹 **North Pole CCTV wall** — 4 looping elf cams that change by time of day (streams automatically, no downloads needed)
+* 📹 **North Pole CCTV wall & 1-view cycle** — 4 looping elf cams plus a toggleable 1-view 25s scene cycle (`cycle1..4`) and live **✉️ Letter-to-Santa** Mailroom spotlight (`mailroom_letter`), changing by time of day (streams automatically, no downloads needed)
 * 🛷 **Sleigh tracker** — live Santa flight to *your* home on Christmas Eve
 * ⭐ **Nice list** — kids, scores, parent mode & elf log stored in a Home Assistant Local To-do list
 * 🧝 **Elf of the day** — 30 built-in elves (one per day with a joke & daily task) or bring your own
@@ -45,11 +45,12 @@ Create a dedicated **Local To-do** list named **`Nordpol nice list`** (`todo.nor
 2. Click **+ Add Card** → choose **Nordpol: tablet board**.
 3. Pick your **Language**, **Sleigh ETA**, and **Nice list** to-do entity in the visual editor and click **Save**.
 
-All 12 North Pole cam videos and your Home Assistant location & time zone work automatically out of the box.
+All 25 North Pole cam videos (`12` 4-grid cams + `12` 25s 1-view cycle clips + `mailroom_letter.mp4`) and your Home Assistant location & time zone work automatically out of the box.
 
 > [!TIP]
 > **Quick & parent controls:**
 > * **Nice list:** Press and hold the **Nice list** title (or the bottom **Parent Mode** pill) for **1 second** to unlock **Parent Mode** (add/edit children, award ⭐/+5/−5 points, or reset; on Web, also read Santa’s Mailroom wishes and print certificates).
+> * **North Pole cams:** Click **1-View / 4-View** (`#viewbtn`) to switch between the 4-cam grid and the 25s 1-view scene cycle, or click **✉️** (`#ltrbtn`) to send a wish/letter to Santa's Mailroom live spotlight.
 > * **Sleigh tracker:** Click **✈️ Test flight** (or press and hold the **Sleigh tracker** title for **1 second**) to launch a **test flight** any day of the year.
 > * **Elf of the day:** In December, browse previous Advent elves and completed tasks with **◀ / ▶** (future days stay locked).
 
@@ -149,8 +150,9 @@ Use `prefer_files: true` instead if you want local clips first with the hosted c
 | `hero.title/subtitle/target/snow` | – | header; `hero.target` (`MM-DD HH:MM` or `HH:MM`) sets the exact countdown target (defaults to `12-24 18:00` for `en`/`da`/`de`/`sv`/`nb`/`fi`/`pl`/`cs`/`hu`, `12-25 00:00` for `fr`/`es`/`nl`/`it`/`pt`, or `00:00` when `date` is changed) |
 | `cams.cams[]` | 4 built-in | `label`, optional `file`, optional fallback `src` |
 | `cams.file_dir` / `cams.periods` | `/local/nordpol` / morning, day, evening | see [docs/VIDEOS.md](docs/VIDEOS.md). Setting `file_dir` also turns on local clips |
+| `cams.view` / `cams.letter_cue` | `grid` / calibrated defaults | `grid` (4-view CCTV wall) or `cycle` (1-view 25s scene rotation); `letter_cue` tunes parchment overlay `{start, end, stampAt, x, y, w, rot, tilt}` on `mailroom_letter.mp4` |
 | `cams.remote` | `true` | `false` = never stream the hosted clips from github.io (see *Privacy*); only local files are played |
-| `cams.remote_dir` | `https://dkanord.github.io/nordpol-card/media` | where hosted clips are streamed from (`cam1_morning.mp4` … `cam4_evening.mp4`) |
+| `cams.remote_dir` | `https://dkanord.github.io/nordpol-card/media` | where hosted clips are streamed from (`cam1..4_*`, `cycle1..4_*`, and `mailroom_letter.mp4`) |
 | `cams.prefer_files` | off | `true` = look for your own clips in `file_dir` first (one quick check per clip, rechecked every 10 minutes), hosted clips are the fallback. Off by default, so a normal install makes no requests to `/local/nordpol`. `false` = never look for local files |
 | `cams.fill_lost` / `cams.lost_label` | `true` / `CAM 01 – REINDEER PADDOCK` (translated) | with an odd number of cams, add a "signal lost" tile to fill the grid, and its label |
 | `cams.period_labels` | translated | override the period names shown in the header, e.g. `{morning: "AM", day: "Day", evening: "PM"}` |
