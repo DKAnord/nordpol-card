@@ -119,35 +119,35 @@ Unlike the 4-grid wall (which needed identical first/last frames to loop in plac
 
 ---
 
-## 7. LIVE-ACTION MAILROOM LETTER ARRIVAL (`mailroom_letter.mp4`)
+## 7. LIVE-ACTION MAILROOM LETTER ARRIVAL (`mailroom_letter.mp4`, `Veo 3.1 - Quality`)
 
-Anchor image: `mailroom_letter_anchor.png`
+Anchor image: `mailroom_letter_anchor.png` (tabletop-grounded staging: curved brass pneumatic nozzle & small wicker tray on far-left oak tabletop, open center workspace with wooden brass stamp, open crimson velvet mailbag on right tabletop).
 
 > [!IMPORTANT]
-> **Choreography timing matters!** `NordpolCams` fades the child's live letter text onto a translucent aged parchment sheet centered over the lower-center oak table from **`9.8s` to `20.2s`** (with the `"★ RECEIVED · NORTH POLE ★"` stamp popping in at **`18.0s`**). Keep the lower-center foreground table space open and hold a **completely blank cream parchment sheet** steady there during the middle beat!
+> **Choreography timing matters!** `Veo 3.1 - Quality` unfolds the cream letter flat onto the oak table around `~6.5s` revealing warm vintage **sepia-ink cursive scripture** on the physical page first (`6.5s–9.0s`), before `NordpolCams` fades the translucent wish overlay in from **`9.0s` to `17.0s`** (with `"★ RECEIVED · NORTH POLE ★"` stamping at **`14.8s`** right as the brass hand-stamp taps down!).
 
-- **Beat 1 — Pneumatic Arrival (0–8.5s):**
-  Locked closer angled mailroom camera in warm timeless golden lantern light. Suddenly, the open curved brass pneumatic mail pipe on the left brick wall vents a dramatic crisp puff of white steam and shoots a cream envelope sealed with red wax spinning out of the brass chute straight down into the woven wicker basket. Both delighted elves jump excitedly, rush over to the basket, lift the envelope triumphantly, hurry forward to the empty oak table in the lower-center foreground, carefully break the red wax seal, and unfold a **large, flat, completely blank cream parchment sheet** squarely in the center of the lower-center oak tabletop so its entire blank surface faces the camera cleanly.
-- **Beat 2 — Reading & Inspecting (8.5–21.5s, Omni Extend or Veo Extend #1):**
-  Keep the **large blank cream parchment sheet completely flat, steady, still, and utterly blank** in the lower-center foreground of the oak table (zero drawn lines, zero text, zero handwriting, zero squiggles on the paper). Both elves lean joyfully side-by-side over the far/back edge of the table looking down at the blank cream parchment with delighted wide smiles, pointing gently near its edges, whispering and nodding enthusiastically in wonder as warm pendant light illuminates the paper evenly. At the end of the beat, one elf picks up the wooden brass stamp from the left corner and presses a crisp tap onto the bottom corner edge of the parchment.
-- **Beat 3 — Filed for Santa (21.5–24/30s, Omni finish or Veo Extend #2):**
-  The elves neatly fold the parchment into an envelope, tuck it carefully into Santa's velvet red mailbag, exchange an excited celebratory high-five / thumbs-up toward the camera, and turn back smiling toward the brass pneumatic tubes as warm dust motes dance in the golden lantern glow.
+- **Beat 1 — Pneumatic Arrival & Opening (`0–8s`, `Veo 3.1 - Quality`):**
+  Static locked-off 35mm cinema shot in warm golden lantern light, natural real-time motion, grounded physics. On the left side of the foreground oak table, the curved brass pneumatic chute vents a gentle puff of white steam and a cream parchment letter folded once in half with a red wax seal slides smoothly down into the small wicker tray on the tabletop. Both smiling bearded elder postal elves reach calmly over; the left elf lifts the folded cream letter from the tray, places it squarely in the lower-center of the dark oak tabletop, and smoothly opens the single fold flat onto the wood—revealing warm vintage sepia-ink flowing cursive calligraphy scripture lines written neatly across the aged cream parchment page.
+- **Beat 2 — Reading & Stamping (`8–16s`, `Veo 3.1 - Quality` anchored on Beat 1 end frame):**
+  Static locked-off 35mm cinema shot, natural unhurried motion. The unfolded aged cream parchment letter covered in warm sepia-ink flowing cursive calligraphy lines stays completely flat, steady, and still in the lower-center of the dark oak tabletop. Both bearded elder postal elves lean warmly over the back edge of the oak table reading the handwritten cursive script together with delighted smiles, nodding happily as the bespectacled right elf gestures gently near the margin without covering the page. Near the end of the shot, the left elf calmly picks up the wooden brass hand-stamp from beside the letter, presses one deliberate crisp stamp onto the bottom-left corner of the parchment, and sets the stamp back down on the oak table.
+- **Beat 3 — Single Fold & Filed for Santa (`16–24s`, `Veo 3.1 - Quality` anchored on Beat 2 end frame):**
+  Static locked-off 35mm cinema shot, calm natural motion. Working smoothly together, the two bearded elder postal elves fold the cream handwritten parchment letter cleanly once in half along its center crease, lift the folded letter gently off the oak table, and slide it neatly into the open crimson velvet Santa mailbag resting on the right side of the tabletop. The right elf pats the velvet mailbag warmly while both elder elves share a proud, joyful smile under the warm brass lantern glow.
 
 ### Fine-Tuning the Parchment Overlay Coordinates
 
-If your generated `mailroom_letter.mp4` unfolds the blank paper at slightly different timestamps or coordinates on the oak table, adjust `letter_cue` on `nordpol-cam-card` (or inside `cams:` of `nordpol-board-card`) without regenerating the video:
+Adjust `letter_cue` on `nordpol-cam-card` (or inside `cams:` of `nordpol-board-card`) to fine-tune the overlay window or oak tabletop alignment:
 
 ```yaml
 cams:
   letter_cue:
-    start: 9.8     # seconds when parchment fades in
-    end: 20.2      # seconds when parchment fades out
-    stampAt: 18.0  # seconds when ★ RECEIVED ★ stamp pops in
-    x: 50          # horizontal center (%)
-    y: 79          # vertical center (%)
-    w: 42          # parchment width (% of video width)
-    rot: -0.6      # planar tilt (deg)
-    tilt: 18       # perspective X-tilt matching tabletop angle (deg)
+    start: 9.0     # seconds when parchment fades in (shows physical sepia scripture first from ~6.5–9.0s)
+    end: 17.0      # seconds when parchment fades out (~1s before Beat 3 folds letter)
+    stampAt: 14.8  # seconds when ★ RECEIVED ★ stamp pops in
+    x: 52          # horizontal center (%)
+    y: 83          # vertical center (%)
+    w: 36          # parchment width (% of video width)
+    rot: -0.4      # planar tilt (deg)
+    tilt: 19       # perspective X-tilt matching tabletop angle (deg)
 ```
 
 ---

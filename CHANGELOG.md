@@ -2,6 +2,11 @@
 
 All notable changes to Nordpol Card are documented here. Dates are in Europe/Copenhagen.
 
+## 2.6.1 – 2026-11-28
+
+- **Mailroom Letter Clip Upgrade (`mailroom_letter.mp4`):** Replaced the `v2.6.0` Mailroom letter arrival video with a cleaner `Veo 3.1 - Quality` (`x2` candidate-selected, `-crf 20`) 24-second production featuring grounded tabletop props (pneumatic chute & wicker tray on the left oak table, clear workspace + brass stamp, crimson velvet Santa mailbag on the right) and visible sepia cursive scripture on the opened physical parchment before the wish overlay rises in (`letter_cue` calibrated to `9.0s–17.0s`, `stampAt: 14.8`, `x: 52`, `y: 83`, `w: 36`, `rot: -0.4`, `tilt: 19`).
+- **Cache Busting (`dist/nordpol-card.js`, `web/sw.js`):** Appended `?v=${VER}` to remote `mailroom_letter` URLs so browsers bypass the 7-day `/media/*` cache and load the updated video immediately, and bumped the PWA shell cache to `nordpol-shell-v9`.
+
 ## 2.6.0 – 2026-11-28
 
 - **1-View Cycle Mode (`cams.view: "cycle"` / `#viewbtn`):** Toggle between the classic 4-view CCTV wall (`view: "grid"`, default) and a single-screen 4-scene cycle view (`view: "cycle"`) with dual-`<video>` background preloading, `1..4` scene dots, visual-editor support (`nordpol-board-card` & `nordpol-cam-card`), and 12 dedicated 25-second perspective-shifted clips (`cycle1..4_{morning,day,evening}.mp4`, with automatic fallback to `cam1..4_*`).
