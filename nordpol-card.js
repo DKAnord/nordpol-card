@@ -3,7 +3,7 @@
    Cam clips stream from CAM_REMOTE_DIR (GitHub Pages) by default. Your own /local/nordpol clips are used with
    cams.prefer_files: true (local first) or cams.remote: false (local only, never contacts github.io). */
 (() => {
-const VER = "2.6.0";
+const VER = "2.6.1";
 const REPO_URL = "https://github.com/DKAnord/nordpol-card";
 /* === Camera periods (override in card config: periods / file_dir). Each period starts at "from" (local time). === */
 const CAM_PERIODS = [
@@ -1217,12 +1217,12 @@ class NordpolCams extends HTMLElement {
     .ltr-status{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:4;padding:4px 12px;border-radius:999px;background:rgba(8,16,38,.78);
        border:1px solid rgba(255,216,120,.4);color:#ffd878;font:700 clamp(10px,2.5cqi,13px) system-ui,sans-serif;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis;pointer-events:none;transition:opacity .35s ease}
     .ltr-status.hide{opacity:0}
-    .ltr-paper{position:absolute;left:var(--lx,50%);top:var(--ly,79%);width:var(--lw,42%);max-width:90%;z-index:5;padding:clamp(6px,1.8cqi,12px) clamp(8px,2.2cqi,16px);
+    .ltr-paper{position:absolute;left:var(--lx,52%);top:var(--ly,83%);width:var(--lw,36%);max-width:90%;z-index:5;padding:clamp(6px,1.8cqi,12px) clamp(8px,2.2cqi,16px);
        box-sizing:border-box;border-radius:6px;background:linear-gradient(155deg,rgba(255,247,226,.95),rgba(242,224,185,.93));color:#3a210f;
        border:1px solid rgba(139,94,43,.45);box-shadow:0 12px 32px rgba(0,0,0,.62),0 0 22px rgba(255,222,150,.35),inset 0 0 18px rgba(186,141,78,.22);
-       transform:translate(-50%,-50%) perspective(700px) rotateX(var(--ltilt,18deg)) rotate(var(--lrot,-0.6deg)) scale(.84);
+       transform:translate(-50%,-50%) perspective(700px) rotateX(var(--ltilt,19deg)) rotate(var(--lrot,-0.4deg)) scale(.84);
        opacity:0;pointer-events:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1);font-family:${FONT_X};text-align:left}
-    .ltr-paper.show{opacity:1;transform:translate(-50%,-50%) perspective(700px) rotateX(var(--ltilt,18deg)) rotate(var(--lrot,-0.6deg)) scale(1)}
+    .ltr-paper.show{opacity:1;transform:translate(-50%,-50%) perspective(700px) rotateX(var(--ltilt,19deg)) rotate(var(--lrot,-0.4deg)) scale(1)}
     .ltr-dear{font-size:clamp(10px,2.3cqi,15px);font-weight:700;color:#7a1010;margin-bottom:2px}
     .ltr-body{font-weight:700;line-height:1.25;overflow-wrap:anywhere;white-space:pre-wrap;max-height:24cqh;overflow:hidden}
     .ltr-from{margin-top:4px;text-align:right;font-size:clamp(10px,2.2cqi,14px);font-weight:700;color:#5a3316}
@@ -1525,12 +1525,12 @@ class NordpolCams extends HTMLElement {
     grid.classList.add("ltr-hidden");
     const cams=this._c.cams||[], L=this._t, TR=this._tr;
     const mailLabel=(cams[mi]&&cams[mi].label)||("CAM "+(mi+1));
-    const cue=Object.assign({start:9.8,end:20.2,stampAt:18.0,x:50,y:79,w:42,rot:-0.6,tilt:18,fallback_ms:12000},(this._c&&this._c.letter_cue)||{});
+    const cue=Object.assign({start:9.0,end:17.0,stampAt:14.8,x:52,y:83,w:36,rot:-0.4,tilt:19,fallback_ms:12000},(this._c&&this._c.letter_cue)||{});
     const n=(v,d)=>v!=null && Number.isFinite(Number(v))?Number(v):d;
     const bodySz=ltr.text.length<=55?"clamp(13px,3.6cqi,22px)":ltr.text.length<=130?"clamp(11.5px,2.9cqi,18px)":"clamp(10px,2.4cqi,15px)";
     const lw=document.createElement("div"); lw.className="grid one ltr-wrap";
     lw.innerHTML=`<div class="tile letter-stage ready" data-active="true" data-kind="file"
-        style="--lx:${n(cue.x,50)}%;--ly:${n(cue.y,79)}%;--lw:${n(cue.w,42)}%;--lrot:${n(cue.rot,-0.6)}deg;--ltilt:${n(cue.tilt,18)}deg">
+        style="--lx:${n(cue.x,52)}%;--ly:${n(cue.y,83)}%;--lw:${n(cue.w,36)}%;--lrot:${n(cue.rot,-0.4)}deg;--ltilt:${n(cue.tilt,19)}deg">
       <video class="ltr-vid" muted playsinline autoplay preload="auto"></video>
       <canvas class="gl" width="96" height="72"></canvas><div class="lost gl"><span>${L.cam_lost}</span><span class="rs">${L.cam_restore}</span></div>
       <div class="scan"></div><div class="ov"><div class="rec"><i class="dot"></i>REC</div><div class="clk"></div><div class="lab">${esc(mailLabel)}</div></div><i class="mini"></i>
@@ -1571,8 +1571,8 @@ class NordpolCams extends HTMLElement {
       const rdir=(this._c.remote_dir||CAM_REMOTE_DIR).replace(/\/$/,"");
       const notFailed=u=>{ const c=this._exists[u]; return !c || c.ok || Date.now()-c.t >= CAM_RECHECK_MIN*60000; };
       for(const [u,ded] of [
-        [`${rdir}/mailroom_letter_${per}.mp4`,true],
-        [`${rdir}/mailroom_letter.mp4`,true],
+        [`${rdir}/mailroom_letter_${per}.mp4?v=${VER}`,true],
+        [`${rdir}/mailroom_letter.mp4?v=${VER}`,true],
         [`${rdir}/${pref}${mi+1}_${per}.mp4`,false],
         [`${rdir}/cam${mi+1}_${per}.mp4`,false]
       ]) if(notFailed(u)) push(u,"file",ded);
